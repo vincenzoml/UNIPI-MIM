@@ -20,7 +20,7 @@ The course is based on lectures and laboratory sessions. The lab exercises make 
 
 - Basics of medical image analysis
 - Digital images
-- Medical images, topology and peculiarities
+- Medical images, classification and peculiarities
 - Digital topology, digital morphology, connected components, segmentation.
 
 
