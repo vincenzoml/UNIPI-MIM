@@ -12,9 +12,11 @@
 ## Declarative image analysis
 
 - Introduction to formal methods and model checking
+- Spatial models for images (Closure Spaces)
 - Spatial logic for images
 - The spatial model checker VoxLogicA
 - Declarative image analysis exercises
+- Case studies (Segmentation of Brain lesions, Brain tissue identification, segmentation of skin lesions)
 
 
 ## Machine learning and hybrid AI
