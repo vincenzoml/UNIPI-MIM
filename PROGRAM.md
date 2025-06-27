@@ -17,17 +17,17 @@
   - dataset preparation (harmonization,...)
 
 - Principles of image processing
+
   - Problems in image analysis: detection, segmentation, contouring, volumetry, statistics, ...
   - Convolution, edge detection
   - Digital morphology
-    
+  - Imaging features, descriptors, radiomics, tools
 
-Programming for Medical Imaging 
+- Programming for Medical Imaging 
 
-- File formats
-- ITK/SimpleITK and OpenCV libraries
-- Medical Imaging exercises in Python
-
+  - File formats
+  - ITK/SimpleITK and OpenCV libraries
+  - Medical Imaging exercises in Python
 
 ## Declarative image analysis
 
@@ -39,10 +39,15 @@ Programming for Medical Imaging
 - Case studies (Segmentation of Brain lesions, Brain tissue identification, segmentation of skin lesions)
 
 
-## Machine learning and hybrid AI
+## Machine learning and radiomics 
 
-- General considerations and ethical / professional aspects
-- A fully automatic neural network dedicated to image segmentation
-- Exercises on the joint use of VoxLogicA and neural networks
+- General considerations and ethical / professional aspects (also in data management, model cards, ...)
+- NNUNet: A fully automatic neural network dedicated to image segmentation
+- Case study: Prostate tumours, breast tumours
+
+## Hybrid methods
+
+- Brain tumour segmentation
+- Black-box network capabilities
 
 
