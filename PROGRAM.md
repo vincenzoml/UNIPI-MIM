@@ -1,8 +1,28 @@
 # Detailed program
 
 
+# Introduction
 
-## Programming for Medical Imaging 
+- Symbolic, formal, subsymbolic, hybrid methods
+
+- Physics (principles of medical imaging)
+  - Where do images come from?
+  - Different types of images (MRI, CAT, Ultrasound, etc.)
+  - What are the imaging modalities
+  - reconstruction
+  
+- The lifecycle of data analysis:  
+  - the notion of dataset
+  - preprocessing, processing, postprocessing  
+  - dataset preparation (harmonization,...)
+
+- Principles of image processing
+  - Problems in image analysis: detection, segmentation, contouring, volumetry, statistics, ...
+  - Convolution, edge detection
+  - Digital morphology
+    
+
+Programming for Medical Imaging 
 
 - File formats
 - ITK/SimpleITK and OpenCV libraries
