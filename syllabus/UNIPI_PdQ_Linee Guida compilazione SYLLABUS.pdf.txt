@@ -1,0 +1,862 @@
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+LINEE GUIDA PER LA COMPILAZIONE E LA REVISIONE
+DEL SYLLABUS (SCHEDE INSEGNAMENTO)
+
+INDICE
+1. IL SYLLABUS COME STRUMENTO INFORMATIVO ................................................................................ 3
+1.1 Chiarezza, efficacia e coerenza interna all’insegnamento .................................................................... 3
+1.2 Coerenza esterna: il Syllabus nell’economia dell’offerta didattica del corso ........................................ 4
+2. IL SYLLABUS NEL SISTEMA AQ ............................................................................................................ 5
+3. DIDATTICA INNOVATIVA E SVILUPPO SOSTENIBILE ............................................................................. 6
+4. ISTRUZIONI DI COMPILAZIONE........................................................................................................... 6
+4.1 Informazioni preliminari alla compilazione .......................................................................................... 6
+4.2 Istruzioni specifiche per la compilazione di Obiettivi di Apprendimento ............................................. 7
+A.1. Conoscenze ................................................................................................................................. 8
+A.2. Modalità di verifica delle conoscenze......................................................................................... 8
+A.3. Capacità...................................................................................................................................... 9
+A.4. Modalità di verifica delle capacità ............................................................................................. 9
+A.5. Comportamenti ........................................................................................................................ 10
+A.6. Modalità di verifica dei comportamenti ................................................................................... 11
+4.3 Istruzioni specifiche per la compilazione di Altre informazioni ......................................................... 11
+B.1. Prerequisiti................................................................................................................................ 11
+B.2. Co-requisiti................................................................................................................................ 12
+B.3. Prerequisiti per studi successivi ................................................................................................ 12
+B.4. Indicazioni metodologiche ........................................................................................................ 13
+B.5. Programma............................................................................................................................... 13
+B.6. Bibliografia e materiale didattico ............................................................................................. 14
+B.7. Stage e tirocini .......................................................................................................................... 15
+B.8. Modalità d’esame..................................................................................................................... 15
+B.9. Indicazioni per non frequentanti .............................................................................................. 17
+1
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+B.10. Pagina web del corso.............................................................................................................. 18
+B.11. Altri riferimenti web ............................................................................................................... 18
+B.12. Note ..................................................................................................................................... 18
+B.13. Obiettivi Agenda 2030 per lo sviluppo sostenibile.................................................................. 19
+ALLEGATO – I descrittori di Dublino ...................................................................................................... 20
+
+Il sistema AVA (Autovalutazione – Valutazione – Accreditamento) prevede che per ciascuna attività
+formativa erogata dai CdS (Corsi di Studio) venga compilato il Syllabus, ovvero una scheda informativa
+nella quale vengono esplicitati gli obiettivi e i contenuti dell’insegnamento, specificati dettagliatamente gli argomenti e i materiali didattici, e descritte le modalità di verifica previste.
+Le presenti Linee Guida intendono fornire informazioni utili per favorire il processo di compilazione
+e revisione delle schede insegnamento (Syllabus) attraverso indicazioni di carattere generale – orientate ad esplicitare le funzioni assegnate alle schede, la relazione tra le singole schede e l’offerta formativa del CdS, e il ruolo assegnato alle schede dal Sistema di Assicurazione Qualità AVA3 – e di
+carattere specifico, destinate ad esplicitare contenuti obbligatori e facoltativi della scheda e a fornire,
+per ciascun campo, istruzioni utili per la compilazione. Ciascuna sezione è corredata da una sintesi
+operativa (“In breve”) che intende ricapitolare (senza pretesa di esaustività) gli elementi fondamentali da tenere in considerazione nella compilazione di ciascun campo.
+
+2
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+1. IL SYLLABUS COME STRUMENTO INFORMATIVO
+1.1 Chiarezza, efficacia e coerenza interna all’insegnamento
+Nell’accostarsi alla predisposizione dei contenuti delle schede insegnamento (Syllabus) è importante
+considerare che si tratta di uno strumento informativo rivolto principalmente agli/alle studenti interessati/e a quella specifica attività formativa. In ragione di questo obiettivo il Syllabus deve contenere
+informazioni chiare ed esaustive ed esplicitare, laddove i corsi non prevedano l’obbligo di frequenza,
+eventuali specifiche richieste differenziate per frequentanti e non frequentanti.
+Il contenuto del Syllabus dovrebbe mettere lo/la studente in condizione di conoscere e di comprendere le finalità dell'insegnamento, le conoscenze e le abilità da acquisire, quelle che devono essere
+già state acquisite per poter affrontare l’insegnamento, il metodo didattico in cui l’insegnamento sarà
+impartito, i risultati di apprendimento attesi, le modalità di verifica di quei risultati e come quell'insegnamento contribuirà a costruire e consolidare le conoscenze e competenze previste al termine del
+percorso curriculare di quello specifico CdS (rimandiamo al paragrafo successivo, par. 1.2, per informazioni più di dettaglio su questo aspetto).
+Per questo, è importante che il Syllabus sia:
+−
+−
+−
+−
+
+chiaro e dettagliato: per evitare ambiguità e fraintendimenti;
+accessibile: scritto in un linguaggio comprensibile agli/alle studenti;
+inclusivo: dovrebbe considerare le diverse esigenze e background degli/delle studenti;
+motivante: dovrebbe stimolare l'interesse e l'impegno degli/delle studenti verso l’insegnamento.
+
+Nell’esplicitare i contenuti all’interno dei campi presenti nella scheda è molto importante considerare
+che la lettura del Syllabus dovrà far emergere la coerenza interna del percorso formativo offerto
+dall’insegnamento, per cui i risultati di apprendimento attesi, il programma dell'insegnamento, la
+metodologia didattica e la modalità di verifica dell'apprendimento dovranno risultare coerenti tra
+loro e con gli obiettivi formativi dell'insegnamento (per l’altra dimensione concorrente, quella relativa
+alla coerenza esterna, rimandiamo ai contenuti del par. 1.2).
+Nel redigere il Syllabus si invita, inoltre, a considerare come abbia una valenza didattica intrinseca,
+influenzando positivamente l'approccio degli/delle studenti al corso di insegnamento il loro processo
+di apprendimento. I contenuti presenti nella scheda informativa rappresentano il primo passo per
+stabilire un ambiente di apprendimento positivo, produttivo, accogliente e inclusivo e svolge un ruolo
+fondamentale nella comunicazione tra docenti e studenti:
+−
+−
+−
+−
+−
+−
+−
+
+stabilendo le aspettative reciproche tra docente e studenti;
+definendo chiaramente i requisiti dell’insegnamento, l’organizzazione e le procedure;
+fissando la corrispondenza fra CFU e argomenti trattati;
+fornendo una base per risolvere eventuali controversie o malintesi;
+offrendo una panoramica completa dell’insegnamento e dei suoi obiettivi;
+funzionando come guida di riferimento per le e gli studenti durante tutto il periodo di lezione;
+incoraggiando le e gli studenti a riflettere sui propri obiettivi di apprendimento.
+
+Si consideri, infine, come il Syllabus:
+3
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+− documenta il contenuto e la struttura dell’insegnamento anche in vista di future revisioni o
+accreditamenti;
+− consente di verificare la coerenza a valle, mostrando la coerenza tra l’insegnamento erogato
+(il cui effettivo svolgimento e articolazione è testimoniato dal registro delle lezioni) e i contenuti dichiarati nel Syllabus.
+
+1.2 Coerenza esterna: il Syllabus nell’economia dell’offerta didattica del corso
+Nell’accostarsi alla compilazione del Syllabus è importante considerare anche che ciascun insegnamento si colloca all’interno di un preciso percorso formativo, concorrendo a garantire il raggiungimento degli obiettivi generali del CdS, in termini di conoscenze, competenze e abilità.
+I Syllabus devono, pertanto, essere coerenti con i contenuti della Scheda Unica Annuale del Corso di
+Studio (SUA-CdS), che descrivono i risultati di apprendimento attesi a livello di CdS (identificati, a
+livello generale, nel Quadro A4.a e poi articolati: in termini di conoscenze e capacità dai Quadri A4.b
+1 e 2; e in termini di comportamenti dal Quadro A4.c). Ogni insegnamento deve contribuire in modo
+specifico e documentato al raggiungimento di tali risultati, rendendo il Syllabus uno strumento di
+raccordo tra progettazione didattica e valutazione degli esiti formativi.
+Per questo:
+−
+
+da un punto di vista sostanziale, è importante che gli obiettivi formativi dell’insegnamento e i
+risultati di apprendimento attesi siano in linea con quanto descritto all’interno della SUA-CdS
+in riferimento a:
+· obiettivi generali, descritti all’interno del Quadro A4.a;
+
+· obiettivi di apprendimento in termini di conoscenza e comprensione e capacità di applicare
+conoscenza e comprensione (hard skills 1), identificati all’interno dei Quadri A4.b.1 e
+A4.b.2;
+· (qualora sia il caso) obiettivi di apprendimento di capacità trasversali/comportamenti (soft
+skills 2) identificati e descritti dal Quadro A4.c.
+Ricordiamo che gli altri campi, ad esempio quelli relativi alle modalità di insegnamento e di
+valutazione, dovranno risultare coerenti con i risultati di apprendimento attesi (le schede SUA
+contengono elementi generali di orientamento anche in relazione alla corrispondenza tra risultati di apprendimento, metodi e modalità di valutazione all’interno degli stessi quadri sopra
+menzionati);
+
+1
+
+Le hard-skills identificano le conoscenze e competenze disciplinari specifiche del corso di studi e indicano le competenze
+professionali e tecniche del profilo professionale in uscita.
+2
+Le soft-skills, o competenze trasversali, sono abilità personali e relazionali che influenzano il modo in cui interagiamo
+con gli altri e affrontiamo le sfide, sia nel contesto universitario che nel mondo del lavoro; non sono correlate a singole
+discipline, anche se possono essere declinate in maniera diversa a seconda del corso di studi. Sono complementari alle
+competenze tecniche (hard skills) e comprendono capacità come la comunicazione, il problem solving, la gestione del
+tempo, la capacità di lavorare in gruppo, etc.
+
+4
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+−
+
+da un punto di vista formale, è importante che questa coerenza venga esplicitata all’interno
+del testo di presentazione dei contenuti dell’insegnamento, evidenziando in che termini – anche in virtù della sua collocazione all’interno dell’offerta formativa – l’insegnamento concorre
+al raggiungimento degli obiettivi formativi generali. L’esplicitazione di questo collegamento
+consente agli/alle studenti di comprendere come l’insegnamento si inserisca all’interno del
+percorso formativo nel suo complesso e contribuisca al conseguimento dei risultati di apprendimento previsti dal profilo formativo in uscita.
+
+2. IL SYLLABUS NEL SISTEMA AQ
+Nel contesto del sistema universitario italiano, il Syllabus rappresenta uno strumento chiave per le
+attività di accreditamento e valutazione della qualità dei Corsi di Studio, in linea con i requisiti previsti
+dal sistema AVA3, contribuendo alla trasparenza, alla coerenza e alla verificabilità dell’offerta formativa.
+Nella struttura del modello AVA3 dell’ANVUR, il Syllabus è espressamente considerato nei requisiti
+relativi alla progettazione, erogazione, monitoraggio e miglioramento dei CdS ed è, quindi, parte integrante del sistema di AQ ed è oggetto di valutazione nei processi di accreditamento iniziale e periodico dei CdS.
+In particolare, il punto di attenzione D.CDS.1.4 del modello AVA3 richiede che:
+− i contenuti e i programmi degli insegnamenti siano coerenti con gli obiettivi formativi del CdS
+e chiaramente illustrati;
+− le modalità di verifica dell’apprendimento siano adeguate, esplicitate nel Syllabus e comunicate in modo tempestivo agli studenti;
+− la pubblicazione dei Syllabus avvenga in tempi utili per orientare le scelte degli studenti.
+Per questo, i Syllabus devono (cfr. supra par. 1.2) essere coerenti con i quadri A4.a, A4.b e A4.c della
+Scheda Unica Annuale (SUA-CdS), che descrivono i risultati di apprendimento attesi a livello di CdS,
+contribuendo in modo specifico e documentato al raggiungimento di tali risultati. Il Syllabus si configura, quindi, come uno strumento di raccordo tra progettazione didattica e valutazione degli esiti
+formativi e, pertanto, la stesura del Syllabus si inserisce nell’intero processo di Assicurazione della
+Qualità dei CdS, secondo uno schema che si può riassumere come segue:
+− Progettazione iniziale del CdS: anche attraverso le consultazioni con le parti interessate, vengono definiti gli obiettivi formativi generali e specifici del CdS, dei percorsi formativi e dei
+relativi insegnamenti, e i profili professionali che si intendono formare (quadri A2.a, A2.b,
+A4.a, A4.b.1, A4.c della scheda SUA).
+− Consultazione periodica delle parti interessate: in base a quanto rilevato dalle consultazioni
+periodiche, il CdS potrà ridefinire in parte i risultati di apprendimento attesi dal corso; i Syllabus degli insegnamenti saranno perciò soggetti a una nuova valutazione di coerenza;
+− Attivazione annuale del CdS: i docenti che si dovessero avvicendare nell’insegnamento esercitano la loro libertà di docenza nel rispetto degli obiettivi formativi dichiarati nel regolamento
+didattico del CdS contribuendo eventualmente a intervenire sul piano della riprogettazione
+del CdS laddove se ne evidenziasse la necessità.
+5
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+Una volta completato, ciascun Syllabus diventa, a pieno titolo, parte integrante dell’offerta formativa
+ufficiale del Corso di Studio.
+
+3. DIDATTICA INNOVATIVA E SVILUPPO SOSTENIBILE
+Il Syllabus rappresenta anche uno strumento di promozione della didattica innovativa e della sostenibilità, in linea con le trasformazioni dei processi formativi e con gli obiettivi dell’Agenda 2030.
+I/Le docenti sono invitati/e a valorizzare, ove pertinente, l’adozione di metodologie didattiche attive
+e inclusive, volte a promuovere lo sviluppo delle soft-skills, quali il problem-based learning, la flipped
+classroom, le simulazioni, i lavori di gruppo e l’uso di tecnologie digitali, esplicitando tali scelte nel
+sottocampo “Comportamenti” degli “Obiettivi di apprendimento” e nel campo “Indicazioni metodologiche” del Syllabus (per maggiori dettagli rimandiamo alle indicazioni fornite nella sezione dedicata
+delle presenti Linee Guida).
+Il Syllabus contiene inoltre una sezione apposita, dedicata ad esplicitare gli “Obiettivi per lo Sviluppo
+Sostenibile (SDGs)” a cui l’insegnamento concorre, in modo da permettere di evidenziare l’impegno
+del CdS nella promozione di una cittadinanza responsabile e consapevole.
+
+4. ISTRUZIONI DI COMPILAZIONE
+4.1 Informazioni preliminari alla compilazione
+Prima di illustrare più nello specifico il contenuto di ciascuno dei campi che compongono la scheda
+di insegnamento, si raccomanda di tenere presenti le indicazioni fornite nei precedenti paragrafi,
+prestando attenzione alla coerenza tra i diversi campi che sono strettamente concatenati (obiettivi
+formativi, risultati di apprendimento attesi, prerequisiti, programma, modalità di verifica dell’apprendimento, etc.) e valorizzando tutti gli aspetti che sottolineano la coerenza tra contenuti, obiettivi e
+metodi dell’insegnamento e architettura complessiva del CdS.
+Alla luce di questa impostazione si precisa che per gli insegnamenti articolati in più corsi paralleli (es.
+per gli studenti A-L, M-Z):
+− i campi “Obiettivi formativi” e “Risultati di apprendimento attesi” sono definiti a livello di insegnamento e pertanto saranno comuni a tutti i corsi paralleli;
+− i campi “Prerequisiti”, “Programma”, “Metodi didattici”, “Materiale di riferimento”, “Modalità
+di verifica dell’apprendimento” sono da compilare a livello di singolo corso e il contenuto dei
+campi sarà curato e inserito dal/dalla docente responsabile di quel corso, eventualmente in
+accordo con altri/e docenti coinvolti/e nell’erogazione dell’insegnamento.
+Per facilitare la consultazione delle presenti Linee Guida, le istruzioni specifiche sulla compilazione
+dei singoli campi vengono fornite in due paragrafi distinti, il primo dedicato agli obiettivi di apprendimento e il secondo dedicato alle ulteriori informazioni richieste.
+
+6
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+4.2 Istruzioni specifiche per la compilazione di Obiettivi di Apprendimento
+Le istruzioni di seguito fornite consentono di articolare i diversi sottocampi in cui devono essere formulati gli obiettivi di apprendimento in relazione ai descrittori di Dublino (insieme di criteri concordati
+a livello europeo per descrivere i risultati di apprendimento attesi al termine di un ciclo di studi universitari), specificando conoscenze, abilità, competenze trasversali e autonomia che la/lo studente
+acquisirà attraverso l’insegnamento. I descrittori di Dublino sono riportati in Allegato in modo da permettere ai/alle docenti di articolare gli obiettivi di apprendimento dell’insegnamento in linea con gli
+standard europei. L’allegato contiene anche una descrizione degli obiettivi collegati a ciascun Descrittore, distinguendo quanto previsto per il primo ciclo (lauree triennali) dagli obiettivi relativi al secondo (lauree magistrali e a ciclo unico).
+In termini generali è importante ricordare che la formulazione degli obiettivi di apprendimento in
+termini di conoscenze, capacità e comportamenti deve permetterne la misurabilità secondo distinti
+livelli di padronanza che trova poi la sua declinazione nella sezione dedicata alle modalità di verifica
+(collegate a ciascun aspetto) e alle modalità di esame (cfr. infra B.8).
+BOX 1.
+Gli apprendimenti (A.1, A.3 e A.5) e le modalità di verifica (A.2, A.4, A.6) possono prevedere modalità
+differenziate che possono anche essere contestualmente presenti, ovvero:
+A) livello individuale: durante lo studio individuale si può prevedere la possibilità per la/lo studente
+di autovalutare i propri apprendimenti (verifica in autonomia); rientrano nelle attività di verifica di
+questo tipo l’autosomministrazione di prove di autovalutazione come, ad esempio, tramite l’esplicitazione del risultato, delle risposte corrette, testo a fronte, etc.;
+B) confronto tra pari: questa modalità si traduce in attività cooperative e collaborative di apprendimento tra studenti. Tale modalità può trovare applicazione anche in termini valutativi attraverso consegne che prevedano la possibilità di valutazioni reciproche (verifica tra pari); rientrano in questo tipo
+di attività prove di restituzione delle conoscenze in gruppo (con valutazione da parte degli altri membri del gruppo), correzione reciproca tra studenti di esercizi, project-work, etc.;
+C) esercitazioni/seminari guidati da un/una docente o tutor. Tale modalità di apprendimento si realizza ogni qualvolta l’insegnamento preveda esercitazioni, studi di caso, attività laboratoriali in aula
+sotto la supervisione di un/una docente o esercitatore/trice. Questa modalità consente anche al/la
+docente di monitorare in itinere il progresso della classe. Essa assume inoltre una doppia funzione:
+da un lato consente agli/alle studenti di valutare il proprio livello di apprendimento; dall’altro permette al/alla docente di monitorare in itinere i progressi della classe (verifica supervisionata).
+Queste prime tre modalità sono eventuali e puramente formative, ovvero sono orientate a consentire
+allo/alla studente di verificare il proprio livello di apprendimento e non devono concorrere al
+voto/giudizio finale.
+D) Ciascun insegnamento deve obbligatoriamente prevedere le modalità di valutazione finale (verifica valutativa) esplicitando nel campo opportuno B.8 “Modalità di esame” come (attraverso quali tipi
+di prove, scritte/orali, in itinere e no, e di scale di valutazione) si determinerà il voto finale.
+7
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+A.1. Conoscenze
+Utilizzare questo sottocampo per esplicitare gli obiettivi dell’insegnamento in termini di conoscenze
+(acquisizione di teorie, modelli, approcci, concetti, informazioni, etc.) e comprensione di contenuti e
+problemi caratteristici della disciplina o di un suo specifico ambito (hard-skills), che la/lo studente
+dovrebbe acquisire. Si ricorda che all’interno della scheda SUA-CdS Quadri A4.b 1 e 2 ciascun/a docente può trovare esplicitati gli obiettivi di apprendimento del CdS con particolare riferimento a “conoscenze e comprensione”. La rilettura di questa parte della Scheda SUA può essere utile a ciascun/a
+docente per esplicitare con maggiore chiarezza la coerenza tra obiettivi di apprendimento dell’insegnamento e quelli più ampi del CdS, in riferimento all’area delle conoscenze.
+Per facilitare la comprensione del testo ed evidenziare la coerenza interna all’insegnamento si suggerisce, laddove possibile, di inserire una lista di “blocchi tematici”, teorie, concetti, principi, metodi
+e informazioni specifiche che gli/le studenti dovrebbero conoscere al termine del corso (ad es. "conoscenza della storia del diritto romano", "comprensione dei principi della fisica quantistica", "familiarità con le principali tecniche di marketing").
+È molto importante che la struttura utilizzata per esplicitare le conoscenze sia ripresa nella sezione
+contenente il “programma d’esame” (cfr. infra par. B.5) che dovrà essere utilizzata per restituire i
+contenuti del programma.
+In breve
+· Acquisizione di teorie, modelli, approcci, concetti, informazioni, etc.; comprensione di contenuti e
+problemi caratteristici della disciplina o di un suo specifico ambito (hard-skills).
+· Consiglio: suddividere il testo in Blocchi Tematici, in analogia con i titoli dei capitoli di un ideale
+testo del corso. Questi blocchi devono essere ripresi nella sezione contenente il “programma
+d’esame” (B.5).
+A.2. Modalità di verifica delle conoscenze
+Il secondo sottocampo è strettamente collegato al primo, ed è destinato ad evidenziare modi e/o
+strumenti utilizzati per verificare l’apprendimento delle conoscenze identificate.
+Questo passaggio consente di chiarire ulteriormente gli obiettivi in termini di conoscenze, contestualizzando i metodi di verifica che verranno utilizzati. I metodi di verifica possono variare a seconda
+delle preferenze didattiche del/della titolare dell’insegnamento e questo passaggio permette alla/allo
+studente di comprendere meglio gli obiettivi di apprendimento in base al grado di importanza loro
+assegnato in sede di valutazione. Si ricorda che all’interno del Quadro A4.b 2 SUA-CdS si forniscono
+indicazioni di carattere generale sulle modalità di verifica delle conoscenze previste all’interno del
+percorso curriculare.
+Per esempio, in questa sede potrebbe essere specificata la presenza di prove in itinere; eventuali
+progetti di gruppo/laboratori dedicati ad un tema del corso; la discussione in aula ai fini di sondare i
+progressi dell’apprendimento; etc. In questi casi è necessario esplicitare se queste attività hanno una
+funzione di valutazione formativa o sommativa (ovvero se concorrono o meno alla definizione del
+voto finale):
+• valutazione formativa: tutte le attività realizzate durante il corso e volte a permettere alla/allo
+studente di autovalutare la propria preparazione;
+8
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+•
+
+valutazione sommativa: le attività le cui valutazioni concorrono alla definizione del voto finale
+(in questi casi si dovrà richiamare l’attività svolta e rimandare al campo dedicato alle “Modalità d’esame” che consentirà di chiarire quanto e come queste valutazioni concorreranno a
+definire il voto finale).
+
+In breve:
+· Vedi A.4 e A.6 e B.8 evitando sovrapposizioni.
+· Vedi BOX 1 per le modalità attraverso le quali l’insegnamento può declinare le modalità di verifica
+di conoscenza e comprensione: esposizione orale, scritta, in forma grafica in autonomia o in
+gruppo degli argomenti del corso; costruzione di diagrammi/schemi/altre forme di rappresentazioni grafiche/visuali, etc.
+A.3. Capacità
+Il presente sottocampo chiede di esplicitare le abilità di applicare conoscenza e comprensione che
+la/lo studente dovrebbe sviluppare e direttamente collegati e collegabili al sapere disciplinare (hardskills). Vanno in questa direzione sia la capacità di sostenere argomentazioni, sia quella di risolvere
+problemi (con livelli di complessità differenziati in base alla collocazione dell’insegnamento e del CdS
+in cui si inserisce). Si ricorda che all’interno della scheda SUA-CdS Quadri A4.b 1 e 2 ciascun/a docente
+può trovare esplicitati gli obiettivi di apprendimento del CdS con particolare riferimento a “capacità
+di applicare conoscenza e comprensione”. La rilettura di questa parte della Scheda SUA può essere
+utile a ciascun/a docente per esplicitare con maggiore chiarezza la coerenza tra obiettivi di apprendimento dell’insegnamento e quelli più ampi del CdS, in riferimento all’area delle capacità.
+In questa sede si può fare riferimento a competenze specifiche, quali, ad esempio: la corretta e appropriata applicazione dei quadri conoscitivi, delle operazioni pratiche/computazionali/sperimentali
+proprie della disciplina; la capacità di utilizzo (base, avanzato) di un software; la capacità di concepire/progettare/realizzare un progetto di ricerca, etc.
+In breve:
+· Tipicamente, una capacità consiste nell’applicazione delle conoscenze (A.1).
+· Risolvere esercizi e problemi; analizzare testi/opere/materiali; comprendere e farsi comprendere;
+utilizzare o sviluppare strumenti/software; progettare; produrre prototipi; argomentare in forma
+scritta/orale; rappresentare per mezzo di schemi/diagrammi/filmati; sintetizzare, parafrasare, tradurre, criticare, reinterpretare un testo, etc.
+A.4. Modalità di verifica delle capacità
+Il sottocampo è volto ad ospitare l’esplicitazione di modi e/o strumenti che verranno utilizzati al fine
+di verificare l’acquisizione delle capacità. Anche in questo caso (come per il campo dedicato alla modalità di verifica delle conoscenze) la verifica è strettamente legata agli obiettivi dichiarati in termini
+di acquisizione di capacità attese (sottocampo precedente). Si ribadisce la necessità di una elevata
+coerenza e armonizzazione tra obiettivi e verifica, in modo da permettere alla/allo studente di comprendere con chiarezza quali competenze deve acquisire e come verrà valutato il suo apprendimento.
+Si ricorda che all’interno del Quadro A4.b 2 SUA-CdS si forniscono indicazioni di carattere generale
+9
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+sulle modalità di verifica delle capacità di applicazione della conoscenza e comprensione previste
+all’interno del percorso curriculare.
+Ad esempio, in questa sede potrebbe essere descritta la presenza di momenti più o meno strutturati
+di confronto in cui valutare le capacità (eventualmente anche attraverso specifici esercizi svolti in
+aula, o la predisposizione di project-work individuali e di gruppo, etc.).
+Anche in questo sottocampo, come in quello relativo alle modalità di verifica delle conoscenze, è utile
+specificare se le modalità previste per la verifica delle capacità concorrano o meno alla definizione
+del voto finale e abbiano, quindi, una funzione formativa o sommativa. Sulle modalità di verifica, si
+ricorda quanto detto in A.2.
+In breve:
+· Vedi A.2 e A.6 e B.8 evitando sovrapposizioni
+· Vedi BOX 1 per le modalità attraverso le quali l’insegnamento può declinare le modalità di verifica
+della capacità di applicare conoscenza e comprensione: svolgimento di esercizi; argomentare una
+tesi; traduzione; sintesi; previsione e simulazione di un andamento; riconoscimento e quantificazione di campioni/reperti/sintomi/dati; individuazione di un contesto/fattispecie; progettazione/costruzione di prototipi, etc.
+A.5. Comportamenti
+Il sottocampo “comportamenti” è dedicato a fare emergere con chiarezza gli atteggiamenti e le competenze trasversali che la/lo studente dovrebbe sviluppare/affinare grazie all’insegnamento. Rientrano in questo ambito quegli atteggiamenti, competenze trasversali e le abilità di carattere trasversale (soft-skills; cfr. supra nota 2) che gli/le studenti svilupperanno o affineranno attraverso l’insegnamento. Queste ultime possono essere alleate importanti per esporre e contestualizzare la maturazione di conoscenze e capacità nel quadro più ampio riferibile all’interezza del percorso di studi e, in
+prospettiva, al mondo del lavoro.
+Si ricorda che all’interno della scheda SUA-CdS Quadro A4.c ciascun/a docente può trovare esplicitati
+gli obiettivi di apprendimento del CdS con particolare riferimento ai comportamenti. La rilettura di
+questa parte della Scheda SUA può essere utile a ciascun/a docente per esplicitare con maggiore
+chiarezza la coerenza tra obiettivi di apprendimento dell’insegnamento e quelli più ampi del CdS, in
+riferimento all’area dei comportamenti.
+Questo campo deve essere utilizzato per fornire alla/allo studente un quadro di riferimento riguardo
+delle soft-skills che verranno apprese/sviluppate/affinate attraverso l’insegnamento e le sue modalità
+di erogazione (ad esempio: “capacità di analisi critica e valutazione di idee, processi, progetti”; “capacità di lavorare in gruppo”, “capacità di comunicare efficacemente in pubblico”, “atteggiamento
+critico e riflessivo”, “capacità di problem solving”, etc.).
+Richiamando più direttamente i Descrittori di Dublino, si può fare riferimento alle capacità relative
+all’autonomia di giudizio (capacità della/dello studente ad acquisire informazioni e/o dati in un determinato campo di studi, utili per la riflessione, la formulazione di ipotesi e la determinazione di
+giudizi autonomi); alle capacità comunicative (capacità della/o studente a comunicare in modo chiaro
+conoscenze, idee, problemi e soluzioni a interlocutori specialisti e non specialisti); alla capacità di
+
+10
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+apprendere (intesa come capacità della/dello studente a studiare e ad apprendere in modo autonomo, promuovendo, in contesti accademici e professionali, un avanzamento tecnologico, sociale o
+culturale nella società basata sulla conoscenza).
+In breve:
+· Rientra in questa voce qualsiasi soft skill che l’insegnamento permetta di apprendere, sviluppare,
+affinare, quali l’autonomia di giudizio, il lavoro in gruppo, il parlare in pubblico, la divulgazione, la
+disseminazione, la condotta in situazioni specifiche della disciplina (ad esempio in aula, in laboratorio, in campo, etc.)
+A.6. Modalità di verifica dei comportamenti
+Esattamente come per le modalità di verifica delle conoscenze e delle capacità, metodi e strumenti
+utilizzati ai fini della verifica devono armonizzarsi con gli obiettivi in termini di comportamenti, riportati dal/dalla docente nel campo precedente. Si ricorda, anche in questa sede, l’importanza della coerenza tra gli obiettivi dei comportamenti e la loro verifica. La sinergia tra i due campi permetterà
+alla/allo studente di interpretare correttamente gli obiettivi dell’insegnamento, agevolando in tal
+modo il loro raggiungimento. Si ricorda che all’interno del Quadro A4.c SUA-CdS si forniscono indicazioni di carattere generale sulle modalità di verifica dei comportamenti previsti all’interno del percorso curriculare.
+In questo campo si suggerisce di evidenziare come le modalità di verifica di conoscenze e capacità
+consentiranno anche di rilevare il livello di apprendimento dei comportamenti attesi (ad esempio
+esplicitando che il corso prevede di esporre in aula il risultato di esercizi, project-work, ricerche, etc.).
+Anche in questo caso il/la docente dovrà esplicitare se la valutazione associata alle attività di verifica
+dei comportamenti concorre alla definizione del voto finale. Sulle modalità di verifica, si ricorda
+quanto detto in A.2.
+In breve:
+· (vedi A.2, A.4 e B.8 evitando sovrapposizioni)
+· Vedi BOX 1 per le modalità attraverso le quali l’insegnamento può declinare le modalità di verifica
+dei comportamenti: autonomia di giudizio, lavorare in gruppo, parlare in pubblico, comunicare a
+pubblici differenti, capacità di apprendimento autonomo, etc.
+
+4.3 Istruzioni specifiche per la compilazione di Altre informazioni
+B.1. Prerequisiti
+Questo campo deve essere utilizzato per indicare in modo esplicito le conoscenze e competenze richieste per affrontare l’insegnamento, in modo da chiarire alla/allo studente le conoscenze e competenze ritenute fondamentali/utili prima che il corso inizi, in modo tale da permettere un’autovalutazione ed eventualmente di colmare eventuali lacune.
+La compilazione di questa voce è fondamentale nel caso in cui ci siano delle propedeuticità vincolanti
+previste dal piano di studi del singolo CdS. In tal caso il riferimento deve esplicitare quali insegnamenti
+dovranno essere conseguiti con successo prima dell’insegnamento in oggetto.
+11
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+Nel caso non sia prevista l’obbligatorietà ma il/la docente reputi fortemente consigliata la frequenza
+di un altro corso prima di quello in oggetto, dovrà essere esplicitato sia il corso di insegnamento
+consigliato sia la sua natura facoltativa.
+Nonostante la dicitura si riferisca alle “conoscenze iniziali”, questa voce può essere utilizzata anche
+per indicare abilità o capacità che lo studente dovrebbe già possedere per affrontare il corso in modo
+proficuo. Per questo il/la docente potrà integrare la compilazione di questo campo inserendo argomenti ritenuti utili/necessari. In modo del tutto opzionale si potrebbero consigliare anche alcuni riferimenti bibliografici utili all’introduzione dei temi più importanti del corso.
+In breve:
+· Conoscenze/capacità/comportamenti necessari per la comprensione e la piena fruibilità del corso
+sin dalla prima lezione. Si può fare riferimento agli insegnamenti che hanno preceduto il corso
+(specialmente se esistono propedeuticità), ma si consiglia comunque di esplicitare quali sono i
+Blocchi Tematici (vedi A.1) che si ritiene necessario che la/o studente padroneggi: non limitarsi a
+dire che il corso AAAA parte 1 è un prerequisito per il corso AAAA parte 2, ma indicare a grandi
+linee gli argomenti che è necessario conoscere per AAAA/2. Questo è utile, ad esempio, per gli/le
+studenti che provengono da altri CdS.
+· È utile spiegare le motivazioni.
+B.2. Co-requisiti
+Utilizzare il campo per indicare se sia necessario o consigliato seguire altri insegnamenti in parallelo.
+Come per il caso dei prerequisiti l’indicazione dovrebbe arricchirsi di un adeguata giustificazione in
+termini di competenze, conoscenze o abilità, in modo tale da far comprendere allo studente la potenzialità della proposta.
+
+In breve:
+· È necessario o consigliato seguire altri insegnamenti in parallelo? In che modo tali co-requisiti
+completano/arricchiscono/integrano le conoscenze/capacità/comportamenti propri del corso?
+B.3. Prerequisiti per studi successivi
+Il campo consente di fornire alla/allo studente ulteriori informazioni per programmare il proprio
+piano di studi specificando quali delle conoscenze/abilità acquisite durante l’insegnamento in oggetto
+saranno utili alla frequenza futura di altri insegnamenti.
+La logica è speculare alla voce prerequisiti. La compilazione di questo campo è fondamentale nel caso
+in cui ci siano delle propedeuticità vincolanti previste dal piano di studi del singolo CdS. In tal caso la
+compilazione deve esplicitare quali corsi verranno “svincolati” una volta conseguito con successo l’insegnamento in oggetto. Nel caso non sia prevista l’obbligatorietà dovrà essere esplicitato sia il percorso consigliato che la sua natura facoltativa.
+Questa voce può essere utilizzata per indicare non solo conoscenze, ma anche abilità o capacità acquisibili durante il corso, utili per studi successivi.
+In breve:
+12
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+· Completare il quadro di concatenamento tra gli insegnamenti nel percorso formativo in un’ottica
+speculare a B.1.
+B.4. Indicazioni metodologiche
+Campo dedicato ad ospitare informazioni relative all’organizzazione delle attività didattiche. Le indicazioni fornite dovranno essere piuttosto dettagliate, specificando, ad esempio la distribuzione delle
+ore tra lezioni frontali, esercitazioni, laboratorio, etc.; la presenza di seminari o di altre attività (ad
+esempio, analisi di casi giurisprudenziali e di impresa; relazioni, elaborati o ricerche individuali svolte
+dagli studenti; lavori di gruppo; esperienze didattiche sul campo, prove di autovalutazione in itinere;
+etc.).
+È importante assicurare la coerenza tra obiettivi di apprendimento e metodi didattici del singolo insegnamento. Ad esempio, se gli obiettivi formativi sono legati esclusivamente all’acquisizione di conoscenze, ci si può limitare alla didattica frontale come metodo d’insegnamento principale. Diversamente, se tra gli obiettivi formativi si include la capacità di applicare la conoscenza sarà opportuno
+prevedere lo svolgimento di esercizi, lavori di gruppo o studi di caso tra i metodi didattici.
+Laddove non chiaramente stabilito dalla natura del corso di insegnamento, si invitano i/le docenti ad
+utilizzare il presente campo per specificare la lingua in cui si terrà il corso e l’eventuale ricorso a lingue
+differenti.
+In breve:
+· Distribuzione del tempo tra: lezioni frontali/esercitazioni/laboratorio/attività pratiche/seminari
+etc.
+· Modalità delle lezioni frontali (esposizione orale, uso di audiovisivi, alla lavagna, su tablet, etc.),
+delle esercitazioni/laboratori, etc.
+· Lingua del corso.
+· Come deve essere organizzato il lavoro individuale/di gruppo.
+· Se sono previsti seminari a tema, quali argomenti saranno oggetto di approfondimento.
+· Organizzazione di esercitazioni/discussioni/laboratori etc.
+· Sono previste verifiche supervisionate non valutative (cfr. BOX 1)? Come sono articolate?
+
+B.5. Programma
+Il campo è dedicato ad ospitare una descrizione chiara e strutturata degli argomenti trattati e delle
+attività che verranno svolte durante l’insegnamento, senza rinviare a generiche indicazioni in aula.
+La compilazione del campo in oggetto può essere articolata secondo varie modalità. A seconda delle
+specificità del corso il/la docente potrà adottare un approccio più narrativo oppure più schematico,
+in funzione di una restituzione più chiara possibile dei contenuti. A seconda della strutturazione del
+corso, se lo si ritiene opportuno e in via del tutto facoltativa, è possibile indicare le ore dedicate a
+ciascun argomento.
+Nel caso l’insegnamento preveda più moduli o fasi, si raccomanda di evidenziare opportunamente la
+loro suddivisione per facilitare la lettura della/dello studente.
+Nel caso in cui l’insegnamento sia mutuato è possibile prevedere programmi distinti in relazione ai
+Corsi di Studio di riferimento.
+
+13
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+Si ricorda la necessità di evidenziare la relazione esistente tra programma del corso e conoscenze,
+capacità e comportamenti attesi.
+In breve:
+· A partire dai Blocchi Tematici esposti in A.1, entrare nel dettaglio delle attività che verranno svolte
+durante l’insegnamento (se i Blocchi erano i capitoli di un ideale testo, esplicitarne i contenuti e/o
+i paragrafi). Scegliere liberamente tra un’esposizione narrativa o per punti e se specificare o meno
+le ore dedicate a ciascun argomento. Mettere in relazione gli argomenti del Programma con Conoscenze (A.1), Capacità (A.3), e Comportamenti (A.5).
+· Nel caso di corsi mutuati o modulari è possibile prevedere programmi distinti in relazione ai Corsi
+di Studio/Indirizzi di riferimento.
+B.6. Bibliografia e materiale didattico
+Il campo deve contenere indicazioni chiare relativamente ai testi adottati e al materiale didattico
+disponibile, con modalità di accesso e reperibilità.
+I testi di riferimento possono diversificarsi tra obbligatori e consigliati; oppure possono essere previste delle formulazioni ibride, come una rosa di fonti tra le quali scegliere il testo obbligatorio necessario per il superamento dell’esame. Date le possibili diverse composizioni che la compilazione può
+assumere, è necessario che le indicazioni sulla bibliografia di riferimento siano chiare, specificando la
+loro obbligatorietà o meno ai fini dell’esame finale, oppure il loro ruolo rispetto ai contenuti del corso
+in generale (testi suggeriti, facoltativi, fortemente consigliati, etc.).
+Sarebbe inoltre auspicabile una restituzione completa delle informazioni inerenti ai testi, onde evitare fraintendimenti su quali siano i contenuti da sottoporre a verifica, e in modo tale da rendere più
+semplice il loro reperimento. Per esempio, se il docente lo ritiene utile può specificare l’anno di edizione del testo che ritiene più opportuno per preparare l’esame, chiarendo se le altre edizioni possano o meno essere fruibili ai fini dello studio; se venisse incluso un articolo scaricabile da portali
+associati con le credenziali d’ateneo indicare il link dove poterlo reperire; etc.
+Nel caso in cui l’insegnamento sia mutuato e nel campo programma si siano indicati programmi parzialmente distinti le informazioni richieste dovranno essere fornite distinguendo chiaramente il Corso
+di Studio a cui si riferiscono. Indicazioni bibliografiche distinte per corso possono essere fornite anche
+per quegli insegnamenti che non abbiamo esplicitamente previsto programmi distinti per corso ma
+per i quali il/la docente ritenga opportuno indicare testi differenti.
+In breve:
+· Indicare in modo completo i testi e le fonti di riferimento suddividendoli chiaramente tra obbligatori e consigliati/facoltativi. Se utile, entrare nel dettaglio delle parti dei testi stessi e specificare
+l’edizione. Ove disponibili, indicare i link alle fonti web (sia ad accesso libero sia ristretto).
+· In caso di insegnamento mutuato e di programmi distinti (vedi B.5) dare indicazioni separate per i
+vari gruppi di studenti.
+
+14
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+B.7. Stage e tirocini
+Il campo deve esplicitare la presenza di stage, tirocini o collaborazioni con terzi durante lo svolgimento del corso. Deve essere chiarito il carattere obbligatorio o facoltativo di ciascuna opportunità
+proposta.
+Nel caso sia facoltativo è bene indicare oltre alle possibilità formative che l’attività può fornire, anche
+l’eventuale titolo che la partecipazione fornisce (es. crediti facoltativi, attestato di partecipazione,
+formazione professionale, possibilità di approfondimento per la tesi, etc.) oppure esplicitare il contrario nel caso lo si ritenga utile (es. la partecipazione allo stage non fornisce nessun credito formativo
+inseribile nel piano didattico).
+
+In breve:
+· Quando; dove; per quanto tempo; in cosa consiste l’attività; se è obbligatoria/consigliata; se vi
+sono oneri; quali sono le finalità formative; se danno origine a crediti/titoli aggiuntivi; se vi sono
+prerequisiti; il tipo di impegno (tempo pieno/parziale) etc. Essere espliciti anche in caso negativo
+(ad esempio, la partecipazione allo stage non fornisce nessun credito formativo inseribile nel piano
+didattico)
+B.8. Modalità d’esame
+Il campo è destinato ad esplicitare le modalità operative con cui è organizzato e si svolge l’esame,
+indicando la composizione della commissione effettiva e supplente. Non è sufficiente limitarsi a compilare il campo in oggetto con diciture come “prova scritta e/o orale” ma è necessario restituire un
+quadro completo delle modalità d’esame in modo tale da fornire alla/allo studente gli strumenti per
+un’adeguata preparazione.
+Il campo si considera compilato in modo completo quando contiene informazioni chiare ed esaustive
+relative ai 3 aspetti fondamentali:
+a) le modalità con cui viene accertata l’effettiva acquisizione da parte degli studenti dei risultati
+di apprendimento attesi, indicando scritto o orale, eventuali laboratori, lavori di gruppo, presentazione di report, prove intermedie/in itinere valutative. Si ricorda qui la necessità che le
+modalità di esame permettano l’accertamento della effettiva acquisizione da parte della/dello
+studente degli obiettivi formativi dichiarati come “Obiettivi di apprendimento”.
+Forniamo, di seguito, un piccolo schema che – senza pretesa di esaustività – intende evidenziare la corrispondenza tra tipologie di prova e tipi di apprendimenti (tra le tipologie non si
+indica il colloquio orale in quanto può essere modulato per consentire la verifica di diversi tipi
+di apprendimento).
+Tipi di apprendimento
+
+Tipi di prova
+
+Accertamento di “conoscenze e comprensione”.
+Prove strutturate, per esempio:
+Si vogliono accertare prevalentemente la padro- − vero/falso
+nanza di conoscenze di tipo dichiarativo e la capacità − a scelta multipla
+di comprensione di concetti, situazioni, rappresenta- − ecc.
+zioni ecc.
+Accertamento di “capacità di comprensione appli- Prove semi strutturate, per esempio:
+cate”.
+− esercizi/esercitazioni
+15
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+Si vogliono accertare prevalentemente conoscenze − compiti prestazionali aperti legati all’apdi tipo procedurale, legate all’applicazione, anche riplicazione di conoscenze procedurali
+produttiva, di conoscenze all’interno di modelli di − ecc.
+codificati.
+Accertamento di “competenze di carattere trasver- Prove non strutturate, per esempio:
+sale”.
+− saggio breve
+Si vogliono accertare traguardi di competenza intesa − presentazioni
+come capacità di coordinare conoscenze e abilità per − problem-solving
+affrontare situazioni complesse o problemi inediti.
+− elaborato scritto con domande aperte
+− ecc.
+
+Ogni indicazione relativa al/i tipo/i di prova deve essere accompagnata da informazioni relative alla tipologia e agli ambiti delle domande, e ai motivi della scelta di determinate modalità
+di valutazione con riferimento ai risultati di apprendimento attesi;
+Ad esempio:
+“La valutazione della/dello studente prevede una prova (specificare il tipo di prova) in cui vengono proposti (specificare la tipologia e gli ambiti delle domande). La/Lo studente dovrà dimostrare (fare un collegamento ai risultati di apprendimento attesi definiti nella sezione obiettivi di apprendimento)”;
+b) le regole con cui viene formulata la valutazione finale (voto d’esame): l’unità di misura utilizzata (es. voti in trentesimi); il peso rispetto al totale delle singole prove comprese quelle in
+itinere/intermedie (es. scritto fino a un max di 15/30, orale fino a un max di 15/30, etc.); se
+previsto, le operazioni aritmetiche che permettono di arrivare al voto finale (es. media dei
+voti, somma dei voti, etc.);
+Ad esempio:
+“Il punteggio della prova d'esame è attribuito mediante un voto espresso in trentesimi (oppure
+tramite un giudizio di idoneità). (Specificare il peso sul voto finale delle prove e di altri fattori
+valutati, ad esempio, l'attiva partecipazione degli studenti alle lezioni, alle esercitazioni e al
+lavoro svolto individualmente sotto forma di esercizi e relazioni assegnate durante lo svolgimento del corso)”;
+c) le modalità con le quali si formula il giudizio/valutazione finale (voto d'esame) (tassonomia o
+"ranking" della valutazione): a partire dal voto di 18/30, conferito quando le conoscenze/competenze della materia sono almeno elementari, fino al voto di 30/30 con eventuale lode,
+quanto le conoscenze sono eccellenti.
+Se si opta per una prova di tipo strutturato (vero/falso; risposta multipla ecc.) si può stabilire
+una corrispondenza tra numero di risposte corrette e punteggio conseguito; se invece si opta
+per una prova semi-strutturata (come l’esecuzione di esercizi) si può stabilire una corrispondenza tra punteggi/giudizi in corrispondenza di un repertorio di corretti comportamenti esecutivi; se infine si opta per un colloquio orale si può stabilire una corrispondenza tra giudizi e
+livello delle capacità dimostrate nei diversi ambiti di apprendimento (ad es. padronanza di
+conoscenze, capacità di applicazione delle conoscenze, di elaborazione di idee, di spiegazione,
+di argomentazione, etc.).
+Esempio n.1:
+16
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+“Nella valutazione dell'esame la determinazione del voto finale tiene conto dei seguenti elementi:
+1. ……………….
+2. ……………….
+3. ……………….
+4. ……………….
+Alcuni esempi di elementi: la logica seguita dalla/dallo studente nella risoluzione del quesito;
+la correttezza della procedura individuata per la soluzione del quesito; l'adeguatezza della soluzione proposta in relazione alle competenze che lo studente si presuppone abbia acquisito
+alla fine del corso; l'impiego di un adeguato linguaggio.
+Il soddisfacimento degli aspetti n.1 e 2 è condizione necessaria per il raggiungimento di una
+valutazione pari a 18. I voti superiori a 25 verranno attribuiti agli studenti le cui prove soddisfano tutti e quattro gli aspetti sopra elencati”.
+Esempio n.2:
+“Per superare l'esame, riportando un voto non inferiore a 18/30, la/lo studente deve dimostrare di aver acquisito una conoscenza sufficiente degli argomenti (elencare), una conoscenza
+base degli argomenti (elencare) e di essere in grado di (specificare). Per conseguire un punteggio pari a 30/30 e lode, la/lo studente deve invece dimostrare di aver acquisito una conoscenza
+eccellente di tutti gli argomenti trattati durante il corso”.
+Si precisa inoltre che, in caso di prove in itinere riservate agli/alle studenti frequentanti sarà necessario fornire indicazioni relative ai requisiti necessari per poter essere considerati tali (es. frequenza
+pari o superiore al tetto stabilito dal docente).
+In breve:
+Fornire informazioni chiare ed esaustive su:
+· Come sono organizzate le prove di esame in itinere e finale (scritto e/o orale; dissertazione/breve
+saggio; soluzione di n esercizi, specificandone il tipo; in aula/laboratorio…; durata delle prove).
+Evidenziare come vengono valutati Conoscenze (A.2), Capacità (A.4), Comportamenti (A.6). Si rimanda alla scheda allegata.
+· Come è suddivisa la valutazione tra le varie parti della verifica di Conoscenze, Capacità, Comportamenti e tra le varie parti dell’esame (scritto/orale/prove in itinere).
+· Come viene valutato ogni singolo elemento della prova (ad esempio qual è il punteggio massimo
+per ogni esercizio/breve saggio) e quindi come si compone la valutazione finale.
+B.9. Indicazioni per non frequentanti
+Il presente campo è di necessaria compilazione per gli insegnamenti inseriti in corsi di studio i cui
+regolamenti didattici non prevedono la frequenza obbligatoria. Per i corsi di laurea che non hanno la
+frequenza obbligatoria le informazioni possono coincidere o meno con quelle degli studenti frequentanti, a seconda dei vari casi e dell’organizzazione dell’attività didattica del/della docente.
+
+17
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+In questo campo devono essere esplicitate eventuali differenziazioni nei contenuti, nelle attività o
+nelle modalità di verifica riservate a studenti non frequentanti. Nel modulare le informazioni comprese nel campo è opportuno ricordare che il CFU approssima la misurazione delle ore di impegno
+dedicato dallo/dalla studente all’attività formativa (25 ore per CFU): se entro le 25 ore non sono incluse le ore di frequenza a lezioni e laboratori, bisogna indicare secondo quali modalità di studio
+individuale la/lo studente può coprire lo stesso carico di lavoro. Nel caso in cui l’insegnamento offra
+attività pratiche o modalità di didattica partecipata, si dovrebbero indicare tipologie di lavoro alternativo per offrire agli/alle studenti non frequentanti le medesime opportunità formative.
+In breve:
+· Esplicitare le differenziazioni nei contenuti, nelle attività o nelle modalità di verifica riservate a
+studenti non frequentanti. Nel caso siano previste attività pratiche, esercitazioni o altre forme di
+didattica partecipata non obbligatorie, è utile suggerire tipologie di lavoro alternativo, laddove
+possibili.
+B.10. Pagina web del corso
+In questa voce può essere indicata la principale pagina web del corso di insegnamento. Può essere
+allegato il link al sito web del/della Docente o della pagina Moodle, o ad altri spazi virtuali che il/la
+docente utilizzi per condividere contenuti e informazioni relative al corso. Se il Docente lo ritiene utile
+può indicare insieme al link diretto anche i contenuti che prevede di inserire, oppure può fornire delle
+informazioni pratiche per l’accesso alla pagina.
+In breve:
+· Se il materiale del corso è disponibile in rete, in tutto o in parte, darne notizia qui e fornire i link
+necessari o le informazioni per l’accesso. Si può trattare ad esempio della pagina web del/la docente, o indicare che esiste o sarà predisposta una pagina Moodle o Teams del corso
+B.11. Altri riferimenti web
+In questo campo possono essere indicati i riferimenti alle pagine web secondarie, ad esempio fonti
+che verranno spesso utilizzate come risorsa durante l’insegnamento. Se il/la docente lo ritiene utile
+può indicare insieme al link diretto anche i contenuti che prevede di inserire, oppure può fornire delle
+informazioni pratiche per l’accesso alle pagine.
+B.12. Note
+Il/La docente potrà utilizzare questo spazio per specificare le modalità di interazione docente-studenti, le modalità di ricevimento ed eventuali strumenti di comunicazione e tutoring. Si può specificare in questa sede se l’insegnamento è condiviso/mutuato con altri CdS; se il possesso di certificazioni esonera lo studente da una parte del programma; informazioni per studenti Erasmus; etc. Se
+non si fosse inserita nel campo B.8, indicare qui la composizione della commissione d’esame.
+
+18
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+B.13. Obiettivi Agenda 2030 per lo sviluppo sostenibile
+Esplicitare, in questo campo, a quale/i degli Obiettivi di sostenibilità (Agenda 2030) contribuisce, in
+modo specifico, l’insegnamento. Si ricorda che gli obiettivi cui concorre l’insegnamento devono essere selezionati all’interno del menù a tendina proposto dal Course Catalogue e che per ogni insegnamento possono essere selezionali al massimo 3 obiettivi.
+Si fornisce di seguito un elenco completo degli SDG, reperibili al sito https://sdgs.un.org/goals:
+1. Sconfiggere la povertà. Porre fine ad ogni forma di povertà nel mondo.
+2. Sconfiggere la fame. Porre fine alla fame, raggiungere la sicurezza alimentare, migliorare la
+nutrizione e promuovere un’agricoltura sostenibile.
+3. Salute e benessere. Assicurare la salute e il benessere per tutti e per tutte le età.
+4. Istruzione di qualità. Fornire un’educazione di qualità, equa ed inclusiva, e opportunità di apprendimento permanente per tutti.
+5. Parità di genere. Raggiungere la parità di genere e l’autodeterminazione di tutte le donne e
+ragazze.
+6. Acqua pulita e servizi igienico-sanitari. Garantire a tutti la disponibilità e la gestione sostenibile
+dell’acqua e delle strutture igienico-sanitarie.
+7. Energia pulita e accessibile. Assicurare a tutti l’accesso a sistemi di energia economici, affidabili, sostenibili e moderni.
+8. Lavoro dignitoso e crescita economica. Promuovere una crescita economica duratura, inclusiva e sostenibile, la piena occupazione e un lavoro dignitoso per tutti.
+9. Imprese, innovazione e infrastrutture. Costruire infrastrutture resilienti, promuovere l’industrializzazione inclusiva e sostenibile e sostenere l’innovazione.
+10. Ridurre le disuguaglianze. Ridurre le disuguaglianze all’interno e fra le Nazioni.
+11. Città e comunità sostenibili. Rendere le città e gli insediamenti umani inclusivi, sicuri, duraturi
+e sostenibili.
+12. Consumo e produzione responsabili. Garantire modelli sostenibili di produzione e di consumo.
+13. Lotta contro il cambiamento climatico. Adottare misure urgenti per combattere il cambiamento climatico e le sue conseguenze.
+14. Vita sott’acqua. Conservare e utilizzare in modo sostenibile gli oceani, i mari e le risorse marine.
+15. Vita sulla terra. Proteggere, ripristinare e favorire un uso sostenibile dell’ecosistema terrestre.
+16. Pace, giustizia e istituzioni solide. Promuovere società pacifiche e inclusive, garantire l’accesso
+alla giustizia e costruire istituzioni responsabili ed efficaci.
+17. Partnership per gli obiettivi. Rafforzare i mezzi di attuazione e rinnovare il partenariato globale
+per lo sviluppo sostenibile.
+
+19
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+ALLEGATO – I descrittori di Dublino
+I Descrittori di Dublino sono formulazioni di carattere generale, che cercano di tipizzare i risultati
+conseguiti in termini di apprendimento dagli studenti che ottengono un titolo dopo aver completato
+con successo un ciclo di studio. Sono stati introdotti a seguito della conferenza ministeriale di Praga
+(2001) e sviluppati a partire dai tre cicli del Processo di Bologna, da un gruppo di esperti di diversi
+paesi.
+Nell’ambito della definizione dei profili in uscita dei CdS i Descrittori di Dublino sono utilizzati per
+descrivere quanto dovrebbe conoscere, comprendere ed essere in grado di fare chi giunge al termine
+di un processo di apprendimento in termini di conoscenze, abilità e comportamenti. I due descrittori
+“Conoscenza e comprensione” e “Capacità di applicare conoscenza e comprensione” si riferiscono a
+conoscenze e competenze prettamente disciplinari (hard skills); gli altri tre (“autonomia di giudizio”;
+“Abilità comunicative” e “Capacità di apprendimento”), invece, fanno riferimento a competenze trasversali (soft skills). Nell’ambito della progettazione dei CdS gli obiettivi di apprendimento legati alle
+hard skills, quindi a conoscenze e capacità disciplinari specifiche del corso di studi che ogni studente
+del corso deve possedere nel momento in cui consegue il titolo, sono descritte all’interno della SUA
+Quadro A4.b. (1 e 2); gli obiettivi di apprendimento trasversali, relativi a competenze trasversali non
+correlate a singole discipline (soft skills) sono invece descritte all’interno della SUA Quadro A4.c. Si
+ricorda che, in entrambi i casi, i relativi quadri della SUA indicano anche il collegamento tra obiettivi,
+attività formative o discipline (per esempio, insegnamenti di ambiti disciplinari, o discipline, presenti
+nella tabella delle attività formative, seminari, tirocini, prova finale, ecc.) e relative modalità di verifica.
+Nell’ambito della definizione dei contenuti di ciascun Syllabus, i Descrittori di Dublino sono utili per:
+−
+−
+−
+−
+
+definire chiaramente gli obiettivi formativi dell’insegnamento,
+allineare l’insegnamento con gli standard europei,
+facilitare la comparabilità tra insegnamenti di diverse università,
+identificare chiaramente in che modo l’insegnamento concorre al raggiungimento degli obiettivi formativi del CdS,
+− aiutare gli studenti a comprendere cosa ci si aspetta da loro.
+
+La tabella che segue intende fornire una interpretazione univoca della corrispondenza tra i Descrittori
+di Dublino e i sottocampi in cui è articolata la sezione “Obiettivi di apprendimento” (di obbligatoria
+compilazione), fornendo per ciascuno una breve definizione e un esempio concreto.
+TABELLA 1: Tabella di corrispondenza tra sottocampi in cui sono articolati gli obiettivi di apprendimento e i Descrittori
+di Dublino
+
+Sottocampo
+Conoscenze
+
+Descrittore di Dublino
+Conoscenza e comprensione
+
+Capacità
+
+Capacità di applicare conoscenza e comprensione
+Autonomia di giudizio
+
+Comportamenti
+
+Esempio
+“Al termine dell’insegnamento, la/lo studente conoscerà i principali modelli teorici relativi a …”.
+“La/Lo studente sarà in grado di applicare i metodi
+appresi per …”.
+“La/Lo studente svilupperà la capacità di valutare criticamente le fonti e interpretare …”.
+20
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+Abilità comunicative
+Capacità di apprendimento
+
+“La/Lo studente sarà in grado di presentare efficacemente (i risultati delle ricerche/ della propria ricerca)
+sia oralmente che per iscritto”.
+“La/Lo studente acquisirà metodi di studio e ricerca
+che gli permetteranno di approfondire autonomamente la materia”.
+
+L’articolazione dei descrittori di Dublino per ciascun livello/ciclo di studio permette di identificare gli
+obiettivi, distinguendo tra primo ciclo (laurea triennale) e secondo ciclo (laurea magistrale o a ciclo
+unico).
+I titoli finali di istruzione superiore dei Corsi di Laurea (primo ciclo/laurea triennale) possono essere
+conferiti a studenti che:
+(hard skills)
+− conoscenze e comprensione: abbiano dimostrato conoscenze e capacità di comprensione in
+un campo di studi di livello post secondario e siano a un livello che, caratterizzato dall’uso di
+libri di testo avanzati, include anche la conoscenza di alcuni temi d’avanguardia nel proprio
+campo di studi;
+− capacità: siano capaci di applicare le loro conoscenze e capacità di comprensione in maniera
+da dimostrare un approccio professionale al loro lavoro, e possiedano competenze adeguate
+sia per ideare e sostenere argomentazioni che per risolvere problemi nel proprio campo di
+studi;
+(soft skills)
+− comportamenti:
+· abbiano la capacità di raccogliere e interpretare i dati (normalmente nel proprio campo di
+studio) ritenuti utili a determinare giudizi autonomi, inclusa la riflessione su temi sociali,
+scientifici o etici ad essi connessi;
+· sappiano comunicare informazioni, idee, problemi e soluzioni a interlocutori specialisti e
+non specialisti;
+· abbiano sviluppato quelle capacità di apprendimento che sono loro necessarie per intraprendere studi successivi con un alto grado di autonomia.
+
+I titoli finali di Corso di Laurea Magistrale (secondo ciclo o a ciclo unico) possono essere conferiti a
+studenti che:
+
+(hard skills)
+− conoscenze e comprensione: abbiano dimostrato conoscenze e capacità di comprensione che
+estendono e/o rafforzano quelle tipicamente associate al primo ciclo e consentono di elaborare e/o applicare idee originali, spesso in un contesto di ricerca;
+− capacità: siano capaci di applicare le loro conoscenze, capacità di comprensione e abilità nel
+risolvere problemi a tematiche nuove o non familiari, inserite in contesti più ampi (o interdisciplinari) connessi al proprio settore di studio;
+(soft skills)
+− comportamenti:
+21
+
+LINEE GUIDA
+per la compilazione e
+revisione del
+SYLLABUS
+
+· abbiano la capacità di integrare le conoscenze e gestire la complessità, nonché di formulare
+giudizi sulla base di informazioni limitate o incomplete, includendo la riflessione sulle responsabilità sociali ed etiche collegate all’applicazione delle loro conoscenze e giudizi;
+· sappiano comunicare in modo chiaro e privo di ambiguità le loro conclusioni, nonché le
+conoscenze e la ratio ad esse sottese, a interlocutori specialisti e non specialisti;
+· abbiano sviluppato quelle capacità di apprendimento che consentano loro di continuare a
+studiare per lo più in modo auto-diretto o autonomo.
+
+22
+
+
