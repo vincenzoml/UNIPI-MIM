@@ -62,3 +62,4 @@ The exam consists of a written/practical exam, and possibly an oral test, with t
 Some basic knowledge of propositional logics and programming. 
 
 
+https://unipi.gda.cineca.it/syllabus/compilazione/insegnamento/AFE/1194689
