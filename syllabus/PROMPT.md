@@ -1,3 +1,0 @@
-In questa directory ci sono tanti documenti relativi al syllabus.  Questi documenti contengono informazioni importanti sui corsi, gli obiettivi di apprendimento, le modalità di verifica e altro ancora. Per favore converti i pdf in testo (chiamali .pdf.txt con lo stesso nome dei pdf). Poi leggi tutto tutto, compreso l'esempio. Poi leggi il programma PROGRAM.md nella directory radice del repository. Infine completa SYLLABUS.md mettendoci le sezioni present in FORM.md (quelle da compilare). Fammi domande per capire ciò che non è ancora specificato. 
-
-Ispirati all'esempio.md

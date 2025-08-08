@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIPI-MIM - Syllabus</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #fafbfc;
+            color: #222;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+            padding: 2.5em 2em 2em 2em;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: 400;
+            margin-top: 1.5em;
+        }
+
+        .lang-switch {
+            float: right;
+            margin-top: 1em;
+        }
+
+        .lang-switch button {
+            background: #eaeaea;
+            border: none;
+            border-radius: 5px;
+            padding: 0.4em 1em;
+            margin-left: 0.5em;
+            cursor: pointer;
+            font-size: 1em;
+            color: #333;
+            transition: background 0.2s;
+        }
+
+        .lang-switch button.active,
+        .lang-switch button:hover {
+            background: #222;
+            color: #fff;
+        }
+
+        .docente {
+            margin-bottom: 2em;
+            font-size: 1.1em;
+            color: #444;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1em;
+            }
+
+            .lang-switch {
+                float: none;
+                display: block;
+                text-align: right;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="lang-switch">
+            <button id="it-btn">IT</button>
+            <button id="en-btn">EN</button>
+        </div>
+        <h1 id="title">Syllabus</h1>
+        <div class="docente" id="docente"></div>
+        <div id="syllabus-it" style="display:none">
+            <!-- Syllabus italiano inserito qui -->
+        </div>
+        <div id="syllabus-en" style="display:none">
+            <!-- Syllabus inglese inserito qui -->
+        </div>
+    </div>
+    <script>
+        // Syllabus content (estratto da SYLLABUS.md)
+        const docente = {
+            it: 'Docente principale: Vincenzo Ciancia (<a href="mailto:vincenzo.ciancia@isti.cnr.it">vincenzo.ciancia@isti.cnr.it</a>)',
+            en: 'Main instructor: Vincenzo Ciancia (<a href="mailto:vincenzo.ciancia@isti.cnr.it">vincenzo.ciancia@isti.cnr.it</a>)'
+        };
+        document.getElementById('docente').innerHTML = docente.it;
+        document.getElementById('syllabus-it').innerHTML = `
+      <h2>Obiettivi di apprendimento</h2>
+      <h3>Conoscenze</h3>
+      Lo studente acquisirà conoscenze sulle metodologie simboliche, subsimboliche e ibride per l’analisi dei dati, e sui principi dell’imaging medico, sulle principali modalità di acquisizione delle immagini (MRI, TAC, Ultrasuoni), sui fondamenti dell’analisi e del trattamento delle immagini, con approfondimenti su vari argomenti correlati.
+      <h3>Modalità di verifica delle conoscenze</h3>
+      Verifica mediante realizzazione di progetti pratici e discussione pubblica (presentazione orale) dei risultati ottenuti, con valutazione della comprensione teorica e pratica degli argomenti trattati nel corso, partendo dalla presentazione.
+      <h3>Capacità</h3>
+      Lo studente sarà in grado di applicare tecniche di elaborazione e analisi di immagini mediche, utilizzare librerie software dedicate (ITK/SimpleITK, OpenCV), progettare semplici pipeline di analisi, e utilizzare strumenti formali, dichiarativi, subsimbolici e ibridi per l’analisi di immagini biomediche.
+      <h3>Modalità di verifica delle capacità</h3>
+      Verifica mediante esercizi di programmazione svolti al computer e sviluppo di un progetto individuale o di gruppo con discussione finale individuale.
+      <h3>Comportamenti</h3>
+      Lo studente svilupperà autonomia nella gestione di progetti di analisi di immagini, progettazione di pipelines di imaging medico, e capacità critica nei confronti dell'applicazione "cieca" di tecniche di machine learning, senza una opportuna integrazione "nel loop" dell'esperienza umana e della conoscenza pregressa.
+      <h3>Modalità di verifica dei comportamenti</h3>
+      Valutazione individuale del progetto, con discussione orale legata ai principi insegnati nel corso.
+      <h2>Altre informazioni</h2>
+      <h3>Prerequisiti (conoscenze iniziali)</h3>
+      Conoscenze di base di programmazione (preferibilmente Python), elementi di base di logica insiemistica e machine learning.
+      <h3>Co-requisiti</h3>
+      Non sono previsti co-requisiti obbligatori.
+      <h3>Prerequisiti per studi successivi</h3>
+      Il corso fornisce le basi per discipline avanzate di analisi di immagini, machine learning e data science in ambito biomedico.
+      <h3>Indicazioni metodologiche</h3>
+      Le lezioni si svolgono in presenza e prevedono spiegazioni teoriche supportate da presentazioni ed esempi pratici. Sono previste esercitazioni in laboratorio con utilizzo di software specifico.
+      <h3>Programma (contenuti dell'insegnamento)</h3>
+      <ul>
+        <li>Introduzione ai metodi simbolici, formali, subsimbolici e ibridi</li>
+        <li>Ciclo di vita dell’analisi dei dati: dataset, preprocessing, processing, postprocessing</li>
+        <li>Principi fisici dell’imaging medico e principali modalità (MRI, TAC, Ultrasuoni)</li>
+        <li>Principi di image processing: convoluzione, edge detection, morfologia digitale, feature extraction, radiomica</li>
+        <li>Programmazione per l’imaging medico: formati, librerie ITK/SimpleITK, OpenCV, esercizi in Python</li>
+        <li>Analisi dichiarativa delle immagini: modelli formali, logiche spaziali, model checking, VoxLogicA</li>
+        <li>Machine learning e radiomica: aspetti generali, etica, NNUNet, casi di studio su tumori</li>
+        <li>Metodi ibridi: segmentazione tumori cerebrali, interpretabilità delle reti neurali</li>
+        <li>Limiti delle reti neurali relativamente alle caratteristiche morfologiche e strutturali delle immagini</li>
+      </ul>
+      <h3>Bibliografia e materiale didattico</h3>
+      Riportata nella pagina web del corso.
+      <h3>Stage e tirocini</h3>
+      Non sono previsti stage obbligatori. È possibile svolgere tirocini presso ISTI-CNR.
+      <h3>Modalità d'esame</h3>
+      Progetto individuale o di gruppo e prova orale individuale con discussione del progetto e domande sul programma del corso.
+      <h3>Indicazioni per non frequentanti</h3>
+      Gli studenti non frequentanti possono accedere a tutto il materiale didattico online e sono invitati a contattare il docente per chiarimenti e supporto.
+      <h3>Obiettivi Agenda 2030 per lo sviluppo sostenibile</h3>
+      Il corso contribuisce agli Obiettivi di Sviluppo Sostenibile promuovendo l’innovazione tecnologica in ambito sanitario, la formazione su strumenti per la salute e il benessere, e l’uso responsabile delle risorse digitali e dei dati.
+    `;
+        document.getElementById('syllabus-en').innerHTML = `
+      <h2>Learning objectives</h2>
+      <h3>Knowledge</h3>
+      The student will acquire knowledge about symbolic, subsymbolic, and hybrid methodologies for data analysis, the principles of medical imaging, the main image acquisition modalities (MRI, CT, Ultrasound), the fundamentals of image analysis and processing, with insights into various related topics.
+      <h3>Assessment of knowledge</h3>
+      Assessment through practical projects and public discussion (oral presentation) of the results obtained, with evaluation of the theoretical and practical understanding of the topics covered in the course, starting from the presentation.
+      <h3>Skills</h3>
+      The student will be able to apply techniques for processing and analyzing medical images, use dedicated software libraries (ITK/SimpleITK, OpenCV), design simple analysis pipelines, and use formal, declarative, subsymbolic, and hybrid tools for biomedical image analysis.
+      <h3>Assessment of skills</h3>
+      Assessment through programming exercises carried out on the computer and the development of an individual or group project with a final individual discussion.
+      <h3>Behaviors</h3>
+      The student will develop autonomy in managing image analysis projects, designing medical imaging pipelines, and critical skills towards the "blind" application of machine learning techniques, without proper "in the loop" integration of human experience and prior knowledge.
+      <h3>Assessment of behaviors</h3>
+      Individual evaluation of the project, with an oral discussion related to the principles taught in the course.
+      <h2>Additional information</h2>
+      <h3>Prerequisites (initial knowledge)</h3>
+      Basic programming knowledge (preferably Python), basic set logic and machine learning elements.
+      <h3>Co-requisites</h3>
+      No mandatory co-requisites are required.
+      <h3>Prerequisites for further studies</h3>
+      The course provides the basis for advanced disciplines in image analysis, machine learning, and data science in the biomedical field.
+      <h3>Methodological indications</h3>
+      Lessons are held in person and include theoretical explanations supported by presentations and practical examples. Laboratory exercises with specific software are planned.
+      <h3>Course program (contents)</h3>
+      <ul>
+        <li>Introduction to symbolic, formal, subsymbolic, and hybrid methods</li>
+        <li>Data analysis lifecycle: dataset, preprocessing, processing, postprocessing</li>
+        <li>Physical principles of medical imaging and main modalities (MRI, CT, Ultrasound)</li>
+        <li>Principles of image processing: convolution, edge detection, digital morphology, feature extraction, radiomics</li>
+        <li>Programming for medical imaging: formats, ITK/SimpleITK libraries, OpenCV, exercises in Python</li>
+        <li>Declarative image analysis: formal models, spatial logics, model checking, VoxLogicA</li>
+        <li>Machine learning and radiomics: general aspects, ethics, NNUNet, case studies on tumors</li>
+        <li>Hybrid methods: brain tumor segmentation, neural network interpretability</li>
+        <li>Limits of neural networks regarding the morphological and structural characteristics of images</li>
+      </ul>
+      <h3>Bibliography and teaching material</h3>
+      Reported on the course web page.
+      <h3>Internships</h3>
+      No mandatory internships are required. It is possible to carry out internships at ISTI-CNR.
+      <h3>Exam methods</h3>
+      Individual or group project and individual oral exam with discussion of the project and questions on the course program.
+      <h3>Information for non-attending students</h3>
+      Non-attending students can access all teaching materials online and are invited to contact the instructor for clarifications and support.
+      <h3>Sustainable Development Goals (Agenda 2030)</h3>
+      The course contributes to the Sustainable Development Goals by promoting technological innovation in healthcare, training on tools for health and well-being, and the responsible use of digital resources and data.
+    `;
+        // Language switch logic
+        function setLang(lang) {
+            document.getElementById('syllabus-it').style.display = lang === 'it' ? '' : 'none';
+            document.getElementById('syllabus-en').style.display = lang === 'en' ? '' : 'none';
+            document.getElementById('docente').innerHTML = docente[lang];
+            document.getElementById('title').textContent = lang === 'it' ? 'Syllabus' : 'Syllabus';
+            document.getElementById('it-btn').classList.toggle('active', lang === 'it');
+            document.getElementById('en-btn').classList.toggle('active', lang === 'en');
+        }
+        document.getElementById('it-btn').onclick = () => setLang('it');
+        document.getElementById('en-btn').onclick = () => setLang('en');
+        // Auto-detect browser language
+        const userLang = navigator.language.startsWith('it') ? 'it' : 'en';
+        setLang(userLang);
+    </script>
+</body>
+
+</html>
