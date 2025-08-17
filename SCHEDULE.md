@@ -27,20 +27,20 @@ Constraint check
     — Datasets, preparation and curation (harmonization, metadata)
     — Preprocessing, processing, postprocessing; dataset management workflows (Sara)
 
-## Week 2 — Programming for Medical Imaging
-- Mon 14:00 
-    — Programming for Medical Imaging: environments, file formats, toolchain overview (Vincenzo)
-    — ITK/SimpleITK and OpenCV APIs; image IO and formats; pipelines (Vincenzo)
-- Wed 14:00 
-    — Practical: programming exercises for medical imaging in Python (Vincenzo)
+## Week 2 — Principles of Medical Imaging
+- Mon 14:00 — Imaging modalities (MRI, CT/CAT, Ultrasound), where images come from (Manuela)
+- Wed 14:00 — Practical: Reconstruction basics and modality characteristics.
 
 ## Week 3 — Principles of Image Processing
 - Mon 14:00 — Convolution, edge detection, digital morphology; features, descriptors, radiomics (Danila)
 - Wed 14:00 — Practical: image processing tools in Python with OpenCV and SimpleITK (Danila)
 
-## Week 4 — Principles of Medical Imaging
-- Mon 14:00 — Imaging modalities (MRI, CT/CAT, Ultrasound), where images come from (Manuela)
-- Wed 14:00 — Practical: Reconstruction basics and modality characteristics.
+## Week 4 — Programming for Medical Imaging
+- Mon 14:00 
+    — Programming for Medical Imaging: environments, file formats, toolchain overview (Vincenzo)
+    — ITK/SimpleITK and OpenCV APIs; image IO and formats; pipelines (Vincenzo)
+- Wed 14:00 
+    — Practical: programming exercises for medical imaging in Python (Vincenzo)
 
 ## Week 5 - Principles of Declarative Image Analysis
 - Mon 14:00 — Formal methods and model checking; spatial logics; VoxLogicA (Vincenzo / Mieke)
