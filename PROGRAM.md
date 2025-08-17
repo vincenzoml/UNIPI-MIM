@@ -3,7 +3,7 @@
 
 # Introduction
 
-- Symbolic, formal, subsymbolic, hybrid methods
+- Introduction to the course: Symbolic, formal, subsymbolic, hybrid methods
 
 - Physics (principles of medical imaging)
   - Where do images come from?
