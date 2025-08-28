@@ -19,60 +19,84 @@ Constraint check
 
 ---
 
-## Week 1 - Basics
-- Mon 14:00 
-    — Course introduction: symbolic, formal, subsymbolic, hybrid methods (Vincenzo)
 
-- Wed 14:00 
-    — Datasets, preparation and curation (harmonization, metadata)
-    — Preprocessing, processing, postprocessing; dataset management workflows (Sara)
 
-## Week 2 — Principles of Medical Imaging
-- Mon 14:00 — Imaging modalities (MRI, CT/CAT, Ultrasound), where images come from (Manuela)
-- Wed 14:00 — Practical: Reconstruction basics and modality characteristics.
+## Basics: Course Contents (week 1: September 15, 17)
+- Mon 14:00 [Vincenzo]
+    — Course introduction: symbolic, formal, subsymbolic, hybrid methods
+    - Ethics in AI: the human-centric point of view
 
-## Week 3 — Principles of Image Processing
-- Mon 14:00 — Convolution, edge detection, digital morphology; features, descriptors, radiomics (Danila)
-- Wed 14:00 — Practical: image processing tools in Python with OpenCV and SimpleITK (Danila)
+- Wed 14:00 [Sara?]
+    — All about dataset: preparation, curation (harmonization, metadata)
+    — Dataset management workflows: preprocessing, processing, postprocessing
+    - Ethics in AI: the dataset-centric point of view
 
-## Week 4 — Programming for Medical Imaging
-- Mon 14:00 
-    — Programming for Medical Imaging: environments, file formats, toolchain overview (Vincenzo)
-    — ITK/SimpleITK and OpenCV APIs; image IO and formats; pipelines (Vincenzo)
-- Wed 14:00 
-    — Practical: programming exercises for medical imaging in Python (Vincenzo)
+## Principles of Image Processing
+- Mon 14:00 [Danila]
+    — Convolution, edge detection, digital morphology; features, descriptors, radiomics
+- Wed 14:00 [Danila]    
+    — Practical: image processing tools in Python with OpenCV and SimpleITK
 
-## Week 5 - Principles of Declarative Image Analysis
-- Mon 14:00 — Formal methods and model checking; spatial logics; VoxLogicA (Vincenzo / Mieke)
-- Wed 14:00 — Practical: declarative image analysis with VoxLogicA (Vincenzo / Mieke)
+## Programming for Medical Imaging
+- Mon 14:00 [Vincenzo]
+    — Programming for Medical Imaging: environments, file formats, toolchain overview
+    — ITK/SimpleITK and OpenCV APIs; image IO and formats; pipelines
+- Wed 14:00 [Vincenzo]
+    — Practical: programming exercises for medical imaging in Python
 
-## Week 6 — Mid-term review and exam
-- Mon 14:00 — Review + Q&A (whole group)
-- Wed 14:00 — Mid-term assessment (written/practical)
+## Principles of Medical Imaging
+- Mon 14:00 [Manuela]
+    — Imaging modalities (MRI, CT/CAT, Ultrasound), where images come from (Manuela)
+- Wed 14:00 [Manuela]
+    — Practical: Reconstruction basics and modality characteristics in Python
 
-## Week 7 — Declarative image analysis with VoxLogicA
-- Mon 14:00 — Advanced topics in declarative image analysis; case studies (Vincenzo / Mieke)
-- Wed 14:00 — Practical: advanced declarative image analysis with VoxLogicA (Vincenzo / Mieke)
+## Principles of Declarative Image Analysis
+- Mon 14:00 [Vincenzo/Mieke]
+    — Formal methods and model checking; spatial logics; VoxLogicA
+- Wed 14:00 [Vincenzo/Mieke]
+    — Practical: declarative image analysis with VoxLogicA
 
-## Week 8 — Machine learning and radiomics
-- Mon 14:00 — General aspects, ethics and professional considerations; model cards (Danila)
-- Wed 14:00 — NNUNet for image segmentation; pipelines and evaluation (Danila)
+## Mid-term review and exam
+- Mon 14:00 [Vincenzo]
+    — Review + Q&A (whole group)
+- Wed 14:00 [Vincenzo]
+    — Mid-term assessment (written/practical)
 
-## Week 9 — Hybrid methods and case studies (1)
-- Mon 14:00 — Hybrid workflows: combining spatial logic (VoxLogicA) with neural models; interpretability (Vincenzo)
-- Wed 14:00 — Case studies: brain lesion segmentation; brain tissue identification (Mieke)
+## Declarative image analysis with VoxLogicA
+- Mon 14:00 [Vincenzo/Mieke]
+    — Advanced topics in declarative image analysis; case studies
+- Wed 14:00 [Vincenzo/Mieke]
+    — Practical: advanced declarative image analysis with VoxLogicA
 
-## Week 10 — Case studies (2) and practical hybrid session
-- Mon 14:00 — Case studies: skin lesion segmentation; prostate/breast tumours (Mieke)
-- Wed 14:00 — Practical: hybrid workflows on provided datasets (Vincenzo + Mieke)
+## Machine learning and radiomics
+- Mon 14:00 [Danila]
+    — General aspects, ethics and professional considerations; model cards
+- Wed 14:00 [Danila]
+    — Radiomics; pipelines and evaluation
 
-## Week 11 — Projects and preparation
-- Mon 14:00 — Project clinic: dataset selection, metrics, reproducibility and documentation (Lead: Vincenzo; with Sara)
-- Wed 14:00 — Exam preparation: guidelines, demos, Q&A (Vincenzo)
+## Hybrid methods and case studies (1)
+- Mon 14:00 [Vincenzo]
+    — Hybrid workflows: combining spatial logic (VoxLogicA) with neural models; interpretability
+- Wed 14:00 [Mieke]
+    — Case studies: brain lesion segmentation; brain tissue identification
 
-## Week 12 — Final review and exam
-- Mon 14:00 — Final review and project presentations / practical exam
-- Wed 14:00 — Final oral/written exam and wrap-up
+## Case studies (2) and practical hybrid session
+- Mon 14:00 [Mieke]
+    — Case studies: skin lesion segmentation
+- Wed 14:00 [Vincenzo/Mieke]
+    — Practical: hybrid workflows on provided datasets
+
+## Projects and preparation
+- Mon 14:00 [Vincenzo]
+    — Project clinic: dataset selection, metrics, reproducibility and documentation
+- Wed 14:00 [Vincenzo]
+    — Exam preparation: guidelines, demos, Q&A
+
+## Final review and exam
+- Mon 14:00 [Vincenzo]
+    — Final review and project presentations / practical exam
+- Wed 14:00 [Vincenzo]
+    — Final oral/written exam and wrap-up
 
 ---
 
