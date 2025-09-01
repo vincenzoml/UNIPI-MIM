@@ -31,72 +31,74 @@ Constraint check
     — Dataset management workflows: preprocessing, processing, postprocessing
     - Ethics in AI: the dataset-centric point of view
 
-## Principles of Image Processing
+## Principles of Image Processing (week 2: September 22, 24)
 - Mon 14:00 [Danila]
-    — Convolution, edge detection, digital morphology; features, descriptors, radiomics
+    — Convolution, edge detection, digital morphology; features, descriptors, hints on radiomics
 - Wed 14:00 [Danila]    
-    — Practical: image processing tools in Python with OpenCV and SimpleITK
-
-## Programming for Medical Imaging
-- Mon 14:00 [Vincenzo]
     — Programming for Medical Imaging: environments, file formats, toolchain overview
-    — ITK/SimpleITK and OpenCV APIs; image IO and formats; pipelines
-- Wed 14:00 [Vincenzo]
-    — Practical: programming exercises for medical imaging in Python
+    — OpenCV API. SimpleITK API. Image IO and formats
 
-## Principles of Medical Imaging
+## Programming for Medical Imaging (week 3: September 29, October 1)
+- Mon 14:00 [Danila/Vincenzo]
+    — Practical, brain tumour, 2D png files: finding connected components to remove background in Python, find hyperintense areas, find very intense areas connected to the hyperintense ones.
+  
+- Wed 14:00 [Danila]
+    - Practical: combining radiomics with imaging primitives
+
+## Principles of Medical Imaging (week 4: October 6, 8)
 - Mon 14:00 [Manuela]
     — Imaging modalities (MRI, CT/CAT, Ultrasound), where images come from (Manuela)
 - Wed 14:00 [Manuela]
-    — Practical: Reconstruction basics and modality characteristics in Python
+    — Practical: Q-Matrix, NIFTI FILE FORMAT, Reconstruction basics and modality characteristics in Python
 
-## Principles of Declarative Image Analysis
+## Principles of Declarative Image Analysis (week 5: October 13, 15)
 - Mon 14:00 [Vincenzo/Mieke]
     — Formal methods and model checking; spatial logics; VoxLogicA
 - Wed 14:00 [Vincenzo/Mieke]
     — Practical: declarative image analysis with VoxLogicA
 
-## Mid-term review and exam
+## Mid-term review and exam (week 6: October 20, 22)
 - Mon 14:00 [Vincenzo]
     — Review + Q&A (whole group)
 - Wed 14:00 [Vincenzo]
     — Mid-term assessment (written/practical)
 
-## Declarative image analysis with VoxLogicA
+## BREAK (Week 7: October 27, 29)
+
+## Declarative image analysis with VoxLogicA (week 8: November 3, 5)
 - Mon 14:00 [Vincenzo/Mieke]
     — Advanced topics in declarative image analysis; case studies
 - Wed 14:00 [Vincenzo/Mieke]
     — Practical: advanced declarative image analysis with VoxLogicA
 
-## Machine learning and radiomics
+## Machine learning and radiomics (week 9: November 10, 12)
 - Mon 14:00 [Danila]
     — General aspects, ethics and professional considerations; model cards
 - Wed 14:00 [Danila]
     — Radiomics; pipelines and evaluation
 
-## Hybrid methods and case studies (1)
+## Hybrid methods and case studies (1) (week 10: November 17, 19)
 - Mon 14:00 [Vincenzo]
     — Hybrid workflows: combining spatial logic (VoxLogicA) with neural models; interpretability
 - Wed 14:00 [Mieke]
     — Case studies: brain lesion segmentation; brain tissue identification
 
-## Case studies (2) and practical hybrid session
+## Case studies (2) and practical hybrid session (week 11: November 24, 26)
 - Mon 14:00 [Mieke]
     — Case studies: skin lesion segmentation
-- Wed 14:00 [Vincenzo/Mieke]
+- Wed 14:00 [Mieke]
     — Practical: hybrid workflows on provided datasets
 
-## Projects and preparation
+## Projects and preparation (week 12: December 1, 3)
 - Mon 14:00 [Vincenzo]
-    — Project clinic: dataset selection, metrics, reproducibility and documentation
+    — Dataset selection, metrics, reproducibility and documentation
 - Wed 14:00 [Vincenzo]
     — Exam preparation: guidelines, demos, Q&A
 
-## Final review and exam
-- Mon 14:00 [Vincenzo]
-    — Final review and project presentations / practical exam
-- Wed 14:00 [Vincenzo]
-    — Final oral/written exam and wrap-up
+## Final review and exam (week 13: December 10)
+ - Mon 14:00 HOLIDAY     
+ - Wed 14:00 [Vincenzo]
+     — Final wrap-up, final project presentation
 
 ---
 
