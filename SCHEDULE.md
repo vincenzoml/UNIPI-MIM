@@ -1,26 +1,5 @@
 # Course Schedule — Formal and Hybrid Methods for Medical Imaging (MIM)
 
-- Duration: 12 weeks
-- Classes: Mondays and Wednesdays at 14:00 (2h each)
-- Organization: Week 6 (mid-term) and Week 12 (final) are reserved for review + exam, leaving 10 teaching weeks.
-- Practical sessions: dedicated hands-on classes (2h) are scheduled for programming and image analysis tools.
-
-Teachers and subjects
-- Vincenzo Ciancia — Programming for Medical Imaging; Declarative Image Analysis; Hybrid methods; Intro to symbolic/formal/subsymbolic/hybrid methods
-- Mieke Massink — Case studies
-- Sara Colantonio — The lifecycle of data analysis
-- Manuela Imbriani — Physics (principles of medical imaging)
-- Danila Germanese — Principles of image processing; Machine learning and radiomics
-
-Constraint check
-- Physics lasts one week (Week 2): OK
-- Practical sessions occupy one full class: OK (Weeks 4W, 5W, 7W, 10W)
-- Vincenzo + Mieke + Manuela teach ≥ 6 teaching weeks: OK (Vincenzo W1,5,7,9,10,11 = 6; Mieke W9,10 = 2; Manuela W2 = 1)
-
----
-
-
-
 ## Basics: Course Contents (week 1: September 15, 17)
 - Mon 14:00 [Vincenzo]
     — Course introduction: symbolic, formal, subsymbolic, hybrid methods
@@ -30,6 +9,13 @@ Constraint check
     — All about dataset: preparation, curation (harmonization, metadata)
     — Dataset management workflows: preprocessing, processing, postprocessing
     - Ethics in AI: the dataset-centric point of view
+
+
+## Principles of Medical Imaging (week 4: October 6, 8)
+- Mon 14:00 [Manuela]
+    — Imaging modalities (MRI, CT/CAT, [ULTRASOUND]), where images come from (Manuela) 
+- Wed 14:00 [Manuela]
+    — Practical: DICOM, NIFTI FILE FORMATS, Reconstruction basics and modality characteristics in Python
 
 ## Principles of Image Processing (week 2: September 22, 24)
 - Mon 14:00 [Danila]
@@ -44,12 +30,6 @@ Constraint check
   
 - Wed 14:00 [Danila]
     - Practical: combining radiomics with imaging primitives
-
-## Principles of Medical Imaging (week 4: October 6, 8)
-- Mon 14:00 [Manuela]
-    — Imaging modalities (MRI, CT/CAT, Ultrasound), where images come from (Manuela)
-- Wed 14:00 [Manuela]
-    — Practical: Q-Matrix, NIFTI FILE FORMAT, Reconstruction basics and modality characteristics in Python
 
 ## Principles of Declarative Image Analysis (week 5: October 13, 15)
 - Mon 14:00 [Vincenzo/Mieke]
@@ -99,21 +79,3 @@ Constraint check
  - Mon 14:00 HOLIDAY     
  - Wed 14:00 [Vincenzo]
      — Final wrap-up, final project presentation
-
----
-
-Coverage map to PROGRAM.md
-- Introduction; symbolic/formal/subsymbolic/hybrid — Week 1 (Vincenzo)
-- Physics — Week 2 (Manuela)
-- Data lifecycle — Week 3 (Sara)
-- Principles of image processing — Week 4 (Danila)
-- Programming for MI — Week 5 (Vincenzo)
-- Declarative image analysis — Week 7 (Vincenzo)
-- Machine learning and radiomics — Week 8 (Danila)
-- Hybrid methods — Weeks 9–10 (Vincenzo + Mieke)
-- Case studies — Weeks 9–10 (Mieke)
-
-Notes
-- All classes start at 14:00 and last 2 hours.
-- Practical sessions are full-class hands-on labs.
-- The exact datasets and material will be announced ahead of each practical session.
