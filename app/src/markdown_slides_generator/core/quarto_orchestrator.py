@@ -21,6 +21,7 @@ from ..utils.logger import get_logger
 from ..utils.exceptions import handle_exception, OutputError
 from ..themes.theme_manager import ThemeManager, AcademicTheme
 from ..themes.template_manager import TemplateManager, TemplateConfig, TemplateType, OutputFormat as TemplateOutputFormat
+from ..latex import MathRenderer, OutputFormat as MathOutputFormat
 
 logger = get_logger(__name__)
 
@@ -638,6 +639,9 @@ class QuartoOrchestrator:
         # Initialize theme and template managers
         self.theme_manager = ThemeManager()
         self.template_manager = TemplateManager()
+        
+        # Initialize math renderer for perfect math rendering
+        self.math_renderer = MathRenderer()
     
     @handle_exception
     def generate_slides(
@@ -848,6 +852,221 @@ class QuartoOrchestrator:
             return self.generate_slides(
                 input_file, format, output_file, theme_name, theme_options
             )
+    
+    @handle_exception
+    def generate_slides_with_math_optimization(
+        self,
+        input_file: str,
+        format: str = "revealjs",
+        output_file: Optional[str] = None,
+        theme: str = "white",
+        custom_options: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """
+        Generate slides with optimized math rendering.
+        
+        Args:
+            input_file: Path to .qmd file
+            format: Output format (revealjs, beamer, pptx)
+            output_file: Optional output file path
+            theme: Presentation theme
+            custom_options: Optional custom configuration
+            
+        Returns:
+            Path to generated slides file with optimized math rendering
+            
+        Raises:
+            OutputError: If slide generation fails
+        """
+        logger.info(f"Generating {format} slides with math optimization from {input_file}")
+        
+        # Read input content
+        input_path = Path(input_file)
+        if not input_path.exists():
+            raise OutputError(f"Input file not found: {input_file}")
+        
+        content = input_path.read_text(encoding='utf-8')
+        
+        # Map format to math output format
+        format_mapping = {
+            'revealjs': MathOutputFormat.REVEALJS,
+            'html': MathOutputFormat.HTML,
+            'pdf': MathOutputFormat.PDF,
+            'beamer': MathOutputFormat.BEAMER,
+            'pptx': MathOutputFormat.PPTX
+        }
+        
+        math_format = format_mapping.get(format.lower(), MathOutputFormat.REVEALJS)
+        
+        # Optimize math rendering
+        optimization_result = self.math_renderer.optimize_math_rendering(
+            content, math_format
+        )
+        
+        # Create temporary optimized file
+        temp_file = input_path.parent / f"temp_optimized_{input_path.name}"
+        temp_file.write_text(optimization_result.optimized_content, encoding='utf-8')
+        
+        try:
+            # Generate Quarto config with math optimization
+            math_config = self.math_renderer.optimizer.generate_quarto_config(
+                optimization_result.rendering_config
+            )
+            
+            # Merge with custom options
+            merged_options = custom_options or {}
+            if math_config:
+                # Deep merge the configurations
+                for key, value in math_config.items():
+                    if key in merged_options:
+                        if isinstance(merged_options[key], dict) and isinstance(value, dict):
+                            merged_options[key].update(value)
+                        else:
+                            merged_options[key] = value
+                    else:
+                        merged_options[key] = value
+            
+            # Generate slides with optimized content and config
+            result_file = self.generate_slides(
+                str(temp_file), format, output_file, theme, merged_options
+            )
+            
+            # Log optimization results
+            if optimization_result.warnings:
+                logger.warning(f"Math rendering warnings: {len(optimization_result.warnings)}")
+            
+            if optimization_result.compatibility_issues:
+                logger.warning(f"Math compatibility issues: {len(optimization_result.compatibility_issues)}")
+                for issue in optimization_result.compatibility_issues:
+                    logger.warning(f"  - {issue}")
+            
+            return result_file
+            
+        finally:
+            # Clean up temporary file
+            if temp_file.exists():
+                temp_file.unlink()
+    
+    @handle_exception
+    def generate_notes_with_math_optimization(
+        self,
+        input_file: str,
+        format: str = "pdf",
+        output_file: Optional[str] = None,
+        academic_style: bool = True,
+        custom_options: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """
+        Generate notes with optimized math rendering.
+        
+        Args:
+            input_file: Path to .qmd file
+            format: Output format (pdf, html)
+            output_file: Optional output file path
+            academic_style: Whether to use academic formatting
+            custom_options: Optional custom configuration
+            
+        Returns:
+            Path to generated notes file with optimized math rendering
+            
+        Raises:
+            OutputError: If notes generation fails
+        """
+        logger.info(f"Generating {format} notes with math optimization from {input_file}")
+        
+        # Read input content
+        input_path = Path(input_file)
+        if not input_path.exists():
+            raise OutputError(f"Input file not found: {input_file}")
+        
+        content = input_path.read_text(encoding='utf-8')
+        
+        # Map format to math output format
+        format_mapping = {
+            'pdf': MathOutputFormat.PDF,
+            'html': MathOutputFormat.HTML,
+            'beamer': MathOutputFormat.BEAMER
+        }
+        
+        math_format = format_mapping.get(format.lower(), MathOutputFormat.PDF)
+        
+        # Optimize math rendering
+        optimization_result = self.math_renderer.optimize_math_rendering(
+            content, math_format
+        )
+        
+        # Create temporary optimized file
+        temp_file = input_path.parent / f"temp_optimized_{input_path.name}"
+        temp_file.write_text(optimization_result.optimized_content, encoding='utf-8')
+        
+        try:
+            # Generate Quarto config with math optimization
+            math_config = self.math_renderer.optimizer.generate_quarto_config(
+                optimization_result.rendering_config
+            )
+            
+            # Merge with custom options
+            merged_options = custom_options or {}
+            if math_config:
+                # Deep merge the configurations
+                for key, value in math_config.items():
+                    if key in merged_options:
+                        if isinstance(merged_options[key], dict) and isinstance(value, dict):
+                            merged_options[key].update(value)
+                        else:
+                            merged_options[key] = value
+                    else:
+                        merged_options[key] = value
+            
+            # Generate notes with optimized content and config
+            result_file = self.generate_notes(
+                str(temp_file), format, output_file, academic_style, merged_options
+            )
+            
+            # Log optimization results
+            if optimization_result.warnings:
+                logger.warning(f"Math rendering warnings: {len(optimization_result.warnings)}")
+            
+            if optimization_result.compatibility_issues:
+                logger.warning(f"Math compatibility issues: {len(optimization_result.compatibility_issues)}")
+                for issue in optimization_result.compatibility_issues:
+                    logger.warning(f"  - {issue}")
+            
+            return result_file
+            
+        finally:
+            # Clean up temporary file
+            if temp_file.exists():
+                temp_file.unlink()
+    
+    def validate_math_compatibility(self, input_file: str) -> Dict[str, List[str]]:
+        """
+        Validate math expressions for compatibility across all output formats.
+        
+        Args:
+            input_file: Path to .qmd file
+            
+        Returns:
+            Dictionary mapping format names to lists of compatibility issues
+        """
+        logger.info(f"Validating math compatibility for {input_file}")
+        
+        input_path = Path(input_file)
+        if not input_path.exists():
+            raise OutputError(f"Input file not found: {input_file}")
+        
+        content = input_path.read_text(encoding='utf-8')
+        
+        # Get compatibility results
+        compatibility_results = self.math_renderer.validate_math_across_formats(content)
+        
+        # Convert to string keys for easier use
+        string_results = {
+            format_type.value: issues 
+            for format_type, issues in compatibility_results.items()
+        }
+        
+        return string_results
     
     @handle_exception
     def generate_templated_notes(

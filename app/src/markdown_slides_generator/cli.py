@@ -6,16 +6,20 @@ Professional CLI using Click framework with comprehensive help text and options.
 
 import click
 import sys
+import os
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
+import yaml
 
 from .utils.logger import get_logger, setup_logging
-from .utils.exceptions import MarkdownSlidesError, InputError
+from .utils.exceptions import MarkdownSlidesError, InputError, ConfigurationError
 from .core.content_splitter import ContentSplitter
 from .core.quarto_orchestrator import QuartoOrchestrator
+from .config import ConfigManager, Config
 
 
 logger = get_logger(__name__)
+config_manager = ConfigManager()
 
 
 @click.group()
@@ -87,24 +91,21 @@ def cli(ctx, verbose: bool, quiet: bool):
 @click.option(
     '--format', '-f',
     multiple=True,
-    default=['html'],
     type=click.Choice(['html', 'pdf', 'pptx', 'beamer'], case_sensitive=False),
-    help="Output format(s). Can be specified multiple times. Default: html"
+    help="Output format(s). Can be specified multiple times. Default from config or html"
 )
 @click.option(
     '--output-dir', '-o',
     type=click.Path(path_type=Path),
-    default=Path('./output'),
-    help="Output directory for generated files. Default: ./output"
+    help="Output directory for generated files. Default from config or ./output"
 )
 @click.option(
     '--theme', '-t',
-    default='academic-minimal',
-    help="Theme for slides (e.g., academic-minimal, academic-modern, academic-technical). Default: academic-minimal"
+    help="Theme for slides. Default from config or academic-minimal"
 )
 @click.option(
     '--template',
-    help="Template to use for generation (e.g., academic-slides-revealjs, academic-notes-pdf)"
+    help="Template to use for generation"
 )
 @click.option(
     '--author',
@@ -138,17 +139,32 @@ def cli(ctx, verbose: bool, quiet: bool):
     help="Path to YAML configuration file"
 )
 @click.option(
+    '--save-config',
+    type=click.Path(path_type=Path),
+    help="Save current options as configuration file"
+)
+@click.option(
     '--dry-run',
     is_flag=True,
     help="Show what would be generated without actually creating files"
+)
+@click.option(
+    '--overwrite',
+    is_flag=True,
+    help="Overwrite existing output files"
+)
+@click.option(
+    '--progress/--no-progress',
+    default=True,
+    help="Show progress indicators"
 )
 @click.pass_context
 def generate(
     ctx,
     input_file: Path,
     format: List[str],
-    output_dir: Path,
-    theme: str,
+    output_dir: Optional[Path],
+    theme: Optional[str],
     template: Optional[str],
     author: Optional[str],
     title: Optional[str],
@@ -157,7 +173,10 @@ def generate(
     slides_only: bool,
     notes_only: bool,
     config: Optional[Path],
-    dry_run: bool
+    save_config: Optional[Path],
+    dry_run: bool,
+    overwrite: bool,
+    progress: bool
 ):
     """
     Generate slides and notes from a markdown file.
@@ -183,24 +202,97 @@ def generate(
         markdown-slides generate lecture01.md -f html -f pdf -f pptx
         
         # Custom output directory and theme
-        markdown-slides generate lecture01.md -o presentations/ -t league
+        markdown-slides generate lecture01.md -o presentations/ -t academic-modern
         
-        # Generate only slides
-        markdown-slides generate lecture01.md --slides-only
+        # Generate only slides with custom config
+        markdown-slides generate lecture01.md --slides-only -c my-config.yaml
+        
+        # Save current options as config for reuse
+        markdown-slides generate lecture01.md -f html -f pdf --save-config my-settings.yaml
     """
     try:
         if slides_only and notes_only:
             raise click.ClickException("Cannot specify both --slides-only and --notes-only")
         
+        # Load configuration
+        try:
+            base_config = config_manager.load_config(config)
+        except ConfigurationError as e:
+            raise click.ClickException(f"Configuration error: {e}")
+        
+        # Merge CLI options with configuration
+        cli_options = {
+            'format': format if format else None,
+            'output_dir': str(output_dir) if output_dir else None,
+            'theme': theme,
+            'template': template,
+            'author': author,
+            'title': title,
+            'date': date,
+            'institute': institute,
+            'verbose': ctx.obj.get('verbose', False),
+            'quiet': ctx.obj.get('quiet', False),
+        }
+        
+        # Remove None values
+        cli_options = {k: v for k, v in cli_options.items() if v is not None}
+        
+        # Merge configurations
+        final_config = config_manager.merge_cli_options(base_config, cli_options)
+        
+        # Apply defaults if not set
+        if not final_config.output.formats:
+            final_config.output.formats = ['html']
+        if not output_dir:
+            output_dir = Path(final_config.output.directory)
+        if not theme:
+            theme = final_config.slides.theme
+        
+        # Save configuration if requested
+        if save_config:
+            try:
+                config_manager.save_config(final_config, save_config)
+                click.echo(f"✓ Configuration saved to: {save_config}")
+            except ConfigurationError as e:
+                click.echo(f"Warning: Could not save configuration: {e}", err=True)
+        
+        # Setup logging based on final config
+        setup_logging(final_config.logging.level)
+        
         logger.info(f"Processing file: {input_file}")
-        logger.info(f"Output formats: {', '.join(format)}")
+        logger.info(f"Output formats: {', '.join(final_config.output.formats)}")
         logger.info(f"Output directory: {output_dir}")
+        logger.info(f"Theme: {theme}")
         
         if dry_run:
-            click.echo(f"[DRY RUN] Would process: {input_file}")
-            click.echo(f"[DRY RUN] Would generate formats: {', '.join(format)}")
-            click.echo(f"[DRY RUN] Would output to: {output_dir}")
+            click.echo(f"[DRY RUN] Configuration:")
+            click.echo(f"  Input file: {input_file}")
+            click.echo(f"  Output formats: {', '.join(final_config.output.formats)}")
+            click.echo(f"  Output directory: {output_dir}")
+            click.echo(f"  Theme: {theme}")
+            click.echo(f"  Template: {template or 'default'}")
+            click.echo(f"  Slides only: {slides_only}")
+            click.echo(f"  Notes only: {notes_only}")
+            click.echo(f"  Overwrite: {overwrite}")
             return
+        
+        # Check for existing files if not overwriting
+        if not overwrite and not final_config.output.overwrite:
+            existing_files = []
+            for fmt in final_config.output.formats:
+                potential_files = [
+                    output_dir / f"{input_file.stem}_slides.{fmt}",
+                    output_dir / f"{input_file.stem}_notes.{fmt}",
+                ]
+                existing_files.extend([f for f in potential_files if f.exists()])
+            
+            if existing_files:
+                click.echo("Warning: The following files already exist:")
+                for f in existing_files:
+                    click.echo(f"  • {f}")
+                if not click.confirm("Overwrite existing files?"):
+                    click.echo("Operation cancelled.")
+                    return
         
         # Create output directory if it doesn't exist
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -208,6 +300,10 @@ def generate(
         # Initialize components
         content_splitter = ContentSplitter()
         quarto_orchestrator = QuartoOrchestrator()
+        
+        # Show progress if enabled
+        if progress and not ctx.obj.get('quiet', False):
+            click.echo("📝 Processing markdown content...")
         
         # Process the markdown file
         slides_content, notes_content = content_splitter.split_content(str(input_file))
@@ -221,8 +317,8 @@ def generate(
         with open(notes_file_path, 'w', encoding='utf-8') as f:
             f.write(notes_content)
         
-        # Prepare template variables
-        variables = {}
+        # Prepare template variables from config and CLI
+        variables = dict(final_config.variables)
         if title:
             variables['title'] = title
         if author:
@@ -232,35 +328,51 @@ def generate(
         if institute:
             variables['institute'] = institute
         
+        generated_files = []
+        
         # Generate outputs based on options
         if not notes_only:
-            logger.info("Generating slides...")
-            for fmt in format:
-                if template:
-                    # Use themed slides with template
-                    output_file = quarto_orchestrator.generate_themed_slides(
-                        str(slides_file), theme, template, fmt, None, variables
-                    )
-                else:
-                    # Use standard generation
-                    output_file = quarto_orchestrator.generate_slides(
-                        str(slides_file), fmt, None, theme
-                    )
-                click.echo(f"✓ Generated slides: {output_file}")
+            if progress and not ctx.obj.get('quiet', False):
+                click.echo("🎨 Generating slides...")
+            
+            for fmt in final_config.output.formats:
+                try:
+                    if template:
+                        # Use themed slides with template
+                        output_file = quarto_orchestrator.generate_themed_slides(
+                            str(slides_file), theme, template, fmt, None, variables
+                        )
+                    else:
+                        # Use standard generation
+                        output_file = quarto_orchestrator.generate_slides(
+                            str(slides_file), fmt, None, theme
+                        )
+                    generated_files.append(output_file)
+                    click.echo(f"✓ Generated slides ({fmt}): {Path(output_file).name}")
+                except Exception as e:
+                    logger.error(f"Error generating {fmt} slides: {e}")
+                    click.echo(f"✗ Failed to generate {fmt} slides: {e}", err=True)
         
         if not slides_only:
-            logger.info("Generating notes...")
-            if template and 'notes' in template:
-                # Use templated notes
-                notes_output = quarto_orchestrator.generate_templated_notes(
-                    str(notes_file_path), template, 'pdf', None, variables
-                )
-            else:
-                # Use standard notes generation
-                notes_output = quarto_orchestrator.generate_notes(
-                    str(notes_file_path), 'pdf'
-                )
-            click.echo(f"✓ Generated notes: {notes_output}")
+            if progress and not ctx.obj.get('quiet', False):
+                click.echo("📚 Generating notes...")
+            
+            try:
+                if template and 'notes' in template:
+                    # Use templated notes
+                    notes_output = quarto_orchestrator.generate_templated_notes(
+                        str(notes_file_path), template, 'pdf', None, variables
+                    )
+                else:
+                    # Use standard notes generation
+                    notes_output = quarto_orchestrator.generate_notes(
+                        str(notes_file_path), 'pdf'
+                    )
+                generated_files.append(notes_output)
+                click.echo(f"✓ Generated notes: {Path(notes_output).name}")
+            except Exception as e:
+                logger.error(f"Error generating notes: {e}")
+                click.echo(f"✗ Failed to generate notes: {e}", err=True)
         
         # Clean up temporary files
         if slides_file.exists():
@@ -268,8 +380,17 @@ def generate(
         if notes_file_path.exists():
             notes_file_path.unlink()
         
-        click.echo(f"\n🎉 Successfully processed {input_file.name}")
+        # Summary
+        if generated_files:
+            click.echo(f"\n🎉 Successfully processed {input_file.name}")
+            click.echo(f"📁 Output directory: {output_dir}")
+            click.echo(f"📄 Generated {len(generated_files)} file(s)")
+        else:
+            click.echo(f"\n⚠️  No files were generated for {input_file.name}")
         
+    except ConfigurationError as e:
+        logger.error(f"Configuration error: {e}")
+        raise click.ClickException(str(e))
     except MarkdownSlidesError as e:
         logger.error(f"Processing error: {e}")
         raise click.ClickException(str(e))
@@ -287,13 +408,11 @@ def generate(
 @click.option(
     '--output-dir', '-o',
     type=click.Path(path_type=Path),
-    default=Path('./output'),
-    help="Output directory for generated files. Default: ./output"
+    help="Output directory for generated files. Default from config or ./output"
 )
 @click.option(
     '--pattern', '-p',
-    default='*.md',
-    help="File pattern to match. Default: *.md"
+    help="File pattern to match. Default from config or *.md"
 )
 @click.option(
     '--recursive', '-r',
@@ -303,30 +422,64 @@ def generate(
 @click.option(
     '--format', '-f',
     multiple=True,
-    default=['html'],
     type=click.Choice(['html', 'pdf', 'pptx', 'beamer'], case_sensitive=False),
-    help="Output format(s). Default: html"
+    help="Output format(s). Default from config or html"
 )
 @click.option(
     '--theme', '-t',
-    default='white',
-    help="Theme for slides. Default: white"
+    help="Theme for slides. Default from config"
+)
+@click.option(
+    '--config', '-c',
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Path to YAML configuration file"
+)
+@click.option(
+    '--parallel/--no-parallel',
+    default=None,
+    help="Enable parallel processing"
+)
+@click.option(
+    '--max-workers',
+    type=int,
+    help="Maximum number of parallel workers"
+)
+@click.option(
+    '--continue-on-error',
+    is_flag=True,
+    help="Continue processing other files if one fails"
+)
+@click.option(
+    '--overwrite',
+    is_flag=True,
+    help="Overwrite existing output files"
 )
 @click.option(
     '--dry-run',
     is_flag=True,
     help="Show what would be processed without generating files"
 )
+@click.option(
+    '--progress/--no-progress',
+    default=True,
+    help="Show progress indicators"
+)
 @click.pass_context
 def batch(
     ctx,
     input_dir: Path,
-    output_dir: Path,
-    pattern: str,
+    output_dir: Optional[Path],
+    pattern: Optional[str],
     recursive: bool,
     format: List[str],
-    theme: str,
-    dry_run: bool
+    theme: Optional[str],
+    config: Optional[Path],
+    parallel: Optional[bool],
+    max_workers: Optional[int],
+    continue_on_error: bool,
+    overwrite: bool,
+    dry_run: bool,
+    progress: bool
 ):
     """
     Batch process multiple markdown files in a directory.
@@ -334,68 +487,156 @@ def batch(
     INPUT_DIR: Directory containing markdown files to process.
     
     This command processes all matching markdown files in the specified directory,
-    maintaining the directory structure in the output.
+    maintaining the directory structure in the output. Supports parallel processing
+    and intelligent error handling.
     
     Examples:
     
         # Process all .md files in lectures directory
         markdown-slides batch lectures/
         
-        # Process recursively with custom pattern
-        markdown-slides batch content/ -r -p "lecture*.md"
+        # Process recursively with custom pattern and config
+        markdown-slides batch content/ -r -p "lecture*.md" -c my-config.yaml
         
-        # Generate multiple formats for all files
-        markdown-slides batch lectures/ -f html -f pdf -o presentations/
+        # Generate multiple formats with parallel processing
+        markdown-slides batch lectures/ -f html -f pdf --parallel --max-workers 4
+        
+        # Continue processing even if some files fail
+        markdown-slides batch lectures/ --continue-on-error
     """
     try:
+        # Load configuration
+        try:
+            base_config = config_manager.load_config(config)
+        except ConfigurationError as e:
+            raise click.ClickException(f"Configuration error: {e}")
+        
+        # Merge CLI options with configuration
+        cli_options = {
+            'format': format if format else None,
+            'output_dir': str(output_dir) if output_dir else None,
+            'theme': theme,
+            'verbose': ctx.obj.get('verbose', False),
+            'quiet': ctx.obj.get('quiet', False),
+        }
+        
+        # Remove None values
+        cli_options = {k: v for k, v in cli_options.items() if v is not None}
+        
+        # Merge configurations
+        final_config = config_manager.merge_cli_options(base_config, cli_options)
+        
+        # Apply batch-specific overrides
+        if pattern is not None:
+            final_config.batch.pattern = pattern
+        if recursive:
+            final_config.batch.recursive = True
+        if parallel is not None:
+            final_config.batch.parallel = parallel
+        if max_workers is not None:
+            final_config.batch.max_workers = max_workers
+        if continue_on_error:
+            final_config.batch.error_handling = 'continue'
+        if overwrite:
+            final_config.output.overwrite = True
+        
+        # Apply defaults
+        if not final_config.output.formats:
+            final_config.output.formats = ['html']
+        if not output_dir:
+            output_dir = Path(final_config.output.directory)
+        
+        # Setup logging
+        setup_logging(final_config.logging.level)
+        
         logger.info(f"Batch processing directory: {input_dir}")
+        logger.info(f"Pattern: {final_config.batch.pattern}")
+        logger.info(f"Recursive: {final_config.batch.recursive}")
+        logger.info(f"Parallel: {final_config.batch.parallel}")
         
         # Find matching files
-        if recursive:
-            files = list(input_dir.rglob(pattern))
+        if final_config.batch.recursive:
+            files = list(input_dir.rglob(final_config.batch.pattern))
         else:
-            files = list(input_dir.glob(pattern))
+            files = list(input_dir.glob(final_config.batch.pattern))
+        
+        # Apply exclude patterns
+        if final_config.batch.exclude_patterns:
+            original_count = len(files)
+            for exclude_pattern in final_config.batch.exclude_patterns:
+                files = [f for f in files if not f.match(exclude_pattern)]
+            excluded_count = original_count - len(files)
+            if excluded_count > 0:
+                logger.info(f"Excluded {excluded_count} files based on exclude patterns")
         
         if not files:
-            click.echo(f"No files matching '{pattern}' found in {input_dir}")
+            click.echo(f"No files matching '{final_config.batch.pattern}' found in {input_dir}")
             return
         
-        click.echo(f"Found {len(files)} file(s) to process:")
-        for file in files:
-            click.echo(f"  • {file.relative_to(input_dir)}")
+        if progress and not ctx.obj.get('quiet', False):
+            click.echo(f"📁 Found {len(files)} file(s) to process:")
+            for file in files[:10]:  # Show first 10 files
+                click.echo(f"  • {file.relative_to(input_dir)}")
+            if len(files) > 10:
+                click.echo(f"  ... and {len(files) - 10} more files")
+            click.echo()
         
         if dry_run:
-            click.echo(f"\n[DRY RUN] Would process {len(files)} files")
-            click.echo(f"[DRY RUN] Would generate formats: {', '.join(format)}")
-            click.echo(f"[DRY RUN] Would output to: {output_dir}")
+            click.echo(f"[DRY RUN] Batch processing configuration:")
+            click.echo(f"  Input directory: {input_dir}")
+            click.echo(f"  Pattern: {final_config.batch.pattern}")
+            click.echo(f"  Recursive: {final_config.batch.recursive}")
+            click.echo(f"  Files found: {len(files)}")
+            click.echo(f"  Output formats: {', '.join(final_config.output.formats)}")
+            click.echo(f"  Output directory: {output_dir}")
+            click.echo(f"  Parallel processing: {final_config.batch.parallel}")
+            if final_config.batch.parallel:
+                click.echo(f"  Max workers: {final_config.batch.max_workers}")
+            click.echo(f"  Error handling: {final_config.batch.error_handling}")
             return
         
-        # Process each file
-        success_count = 0
-        error_count = 0
+        # Initialize batch processor
+        from .batch import BatchProcessor
         
-        with click.progressbar(files, label="Processing files") as file_list:
-            for file in file_list:
-                try:
-                    # Calculate relative output directory
-                    rel_path = file.relative_to(input_dir).parent
-                    file_output_dir = output_dir / rel_path
-                    file_output_dir.mkdir(parents=True, exist_ok=True)
-                    
-                    # Process file (simplified for now)
-                    logger.info(f"Processing: {file}")
-                    success_count += 1
-                    
-                except Exception as e:
-                    logger.error(f"Error processing {file}: {e}")
-                    error_count += 1
+        batch_processor = BatchProcessor(final_config)
         
-        # Summary
-        click.echo(f"\n📊 Batch processing complete:")
-        click.echo(f"  ✓ Successfully processed: {success_count}")
-        if error_count > 0:
-            click.echo(f"  ✗ Errors: {error_count}")
+        # Process files using batch processor
+        try:
+            batch_result = batch_processor.process_directory(
+                input_dir=input_dir,
+                output_dir=output_dir,
+                dry_run=dry_run
+            )
+            
+            # Summary
+            click.echo(f"\n📊 Batch processing complete:")
+            click.echo(f"  📁 Input directory: {input_dir}")
+            click.echo(f"  📤 Output directory: {output_dir}")
+            click.echo(f"  ✓ Successfully processed: {batch_result.successful_files}")
+            if batch_result.skipped_files > 0:
+                click.echo(f"  ⏭️  Skipped: {batch_result.skipped_files}")
+            if batch_result.failed_files > 0:
+                click.echo(f"  ✗ Errors: {batch_result.failed_files}")
+            click.echo(f"  📄 Total files generated: {len(batch_result.generated_outputs)}")
+            click.echo(f"  ⏱️  Processing time: {batch_result.processing_time:.2f}s")
+            click.echo(f"  📈 Success rate: {batch_result.success_rate:.1f}%")
+            
+            # Show recent errors if any
+            if batch_result.errors:
+                click.echo(f"\n⚠️  Recent errors:")
+                for error in batch_result.errors[-3:]:
+                    click.echo(f"  • {Path(error['file']).name}: {error['error']}")
+            
+            if batch_result.failed_files > 0 and final_config.batch.error_handling == 'stop':
+                sys.exit(1)
+                
+        except Exception as e:
+            logger.error(f"Batch processing failed: {e}")
+            raise click.ClickException(f"Batch processing failed: {e}")
         
+    except ConfigurationError as e:
+        logger.error(f"Configuration error: {e}")
+        raise click.ClickException(str(e))
     except Exception as e:
         logger.error(f"Batch processing error: {e}")
         raise click.ClickException(str(e))
@@ -602,6 +843,332 @@ def create_template(name, template_type, output_format, base_template, descripti
 
 
 @cli.command()
+@click.option(
+    '--output', '-o',
+    type=click.Path(path_type=Path),
+    help="Output path for configuration file"
+)
+@click.option(
+    '--template-type',
+    type=click.Choice(['minimal', 'standard', 'advanced']),
+    default='standard',
+    help="Type of configuration template to generate"
+)
+def init_config(output: Optional[Path], template_type: str):
+    """
+    Initialize a new configuration file with default settings.
+    
+    Creates a YAML configuration file with sensible defaults that can be
+    customized for your specific needs.
+    
+    Examples:
+    
+        # Create default config in current directory
+        markdown-slides init-config
+        
+        # Create config with specific name
+        markdown-slides init-config -o my-lectures.yaml
+        
+        # Create advanced config with all options
+        markdown-slides init-config --template-type advanced
+    """
+    try:
+        if not output:
+            output = Path('markdown-slides-config.yaml')
+        
+        if output.exists():
+            if not click.confirm(f"Configuration file {output} already exists. Overwrite?"):
+                click.echo("Operation cancelled.")
+                return
+        
+        # Create configuration based on template type
+        if template_type == 'minimal':
+            config = Config()
+            config.name = 'minimal-config'
+            config.description = 'Minimal configuration for basic usage'
+        elif template_type == 'advanced':
+            config = Config()
+            config.name = 'advanced-config'
+            config.description = 'Advanced configuration with all options'
+            # Add advanced settings
+            config.slides.auto_split = True
+            config.slides.max_content_length = 800
+            config.notes.include_toc = True
+            config.notes.cross_references = True
+            config.processing.syntax_highlighting = True
+            config.processing.math_renderer = 'mathjax'
+            config.batch.parallel = True
+            config.batch.progress_reporting = True
+            config.variables = {
+                'author': 'Your Name',
+                'institute': 'Your Institution',
+                'course': 'Course Name'
+            }
+        else:  # standard
+            config = Config()
+            config.name = 'standard-config'
+            config.description = 'Standard configuration for typical usage'
+            config.variables = {
+                'author': 'Your Name',
+                'institute': 'Your Institution'
+            }
+        
+        # Save configuration
+        config_manager.save_config(config, output)
+        
+        click.echo(f"✓ Created {template_type} configuration: {output}")
+        click.echo(f"📝 Edit the file to customize settings for your needs")
+        click.echo(f"🚀 Use with: markdown-slides generate file.md -c {output}")
+        
+    except Exception as e:
+        logger.error(f"Error creating configuration: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+@click.argument(
+    'config_file',
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True
+)
+def validate_config(config_file: Path):
+    """
+    Validate a configuration file for errors and warnings.
+    
+    CONFIG_FILE: Path to the YAML configuration file to validate.
+    
+    Checks the configuration file for syntax errors, invalid values,
+    and provides suggestions for improvements.
+    
+    Examples:
+    
+        # Validate configuration file
+        markdown-slides validate-config my-config.yaml
+    """
+    try:
+        click.echo(f"🔍 Validating configuration: {config_file}")
+        
+        # Load and validate configuration
+        config = config_manager.load_config(config_file)
+        
+        click.echo("✓ Configuration is valid")
+        click.echo(f"📋 Configuration summary:")
+        click.echo(f"  Name: {config.name}")
+        click.echo(f"  Description: {config.description}")
+        click.echo(f"  Output formats: {', '.join(config.output.formats)}")
+        click.echo(f"  Slides theme: {config.slides.theme}")
+        click.echo(f"  Notes style: {config.notes.style}")
+        
+        if config.variables:
+            click.echo(f"  Variables: {len(config.variables)} defined")
+        
+    except ConfigurationError as e:
+        click.echo(f"✗ Configuration validation failed:")
+        click.echo(str(e))
+        sys.exit(1)
+    except Exception as e:
+        logger.error(f"Error validating configuration: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+@click.argument(
+    'config_file',
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True
+)
+def show_config(config_file: Path):
+    """
+    Display the contents of a configuration file in a readable format.
+    
+    CONFIG_FILE: Path to the YAML configuration file to display.
+    
+    Shows the configuration in a formatted, easy-to-read manner with
+    explanations of each section.
+    
+    Examples:
+    
+        # Show configuration contents
+        markdown-slides show-config my-config.yaml
+    """
+    try:
+        config = config_manager.load_config(config_file)
+        
+        click.echo(f"📄 Configuration: {config_file}")
+        click.echo(f"{'=' * 50}")
+        click.echo()
+        
+        click.echo(f"🏷️  Metadata:")
+        click.echo(f"   Name: {config.name}")
+        click.echo(f"   Description: {config.description}")
+        click.echo(f"   Version: {config.version}")
+        click.echo()
+        
+        click.echo(f"📤 Output Settings:")
+        click.echo(f"   Formats: {', '.join(config.output.formats)}")
+        click.echo(f"   Directory: {config.output.directory}")
+        click.echo(f"   Preserve structure: {config.output.preserve_structure}")
+        click.echo(f"   Overwrite: {config.output.overwrite}")
+        click.echo()
+        
+        click.echo(f"🎨 Slides Settings:")
+        click.echo(f"   Theme: {config.slides.theme}")
+        click.echo(f"   Template: {config.slides.template or 'default'}")
+        click.echo(f"   Auto split: {config.slides.auto_split}")
+        click.echo(f"   Max content length: {config.slides.max_content_length}")
+        click.echo(f"   Transition: {config.slides.transition}")
+        click.echo()
+        
+        click.echo(f"📚 Notes Settings:")
+        click.echo(f"   Style: {config.notes.style}")
+        click.echo(f"   Template: {config.notes.template or 'default'}")
+        click.echo(f"   Include TOC: {config.notes.include_toc}")
+        click.echo(f"   Page numbers: {config.notes.page_numbers}")
+        click.echo(f"   Cross references: {config.notes.cross_references}")
+        click.echo()
+        
+        click.echo(f"⚙️  Processing Settings:")
+        click.echo(f"   Math renderer: {config.processing.math_renderer}")
+        click.echo(f"   Syntax highlighting: {config.processing.syntax_highlighting}")
+        click.echo(f"   Intelligent splitting: {config.processing.intelligent_splitting}")
+        click.echo()
+        
+        if config.variables:
+            click.echo(f"🔧 Variables:")
+            for key, value in config.variables.items():
+                click.echo(f"   {key}: {value}")
+            click.echo()
+        
+        click.echo(f"📦 Batch Processing:")
+        click.echo(f"   Pattern: {config.batch.pattern}")
+        click.echo(f"   Recursive: {config.batch.recursive}")
+        click.echo(f"   Parallel: {config.batch.parallel}")
+        click.echo(f"   Max workers: {config.batch.max_workers}")
+        
+    except Exception as e:
+        logger.error(f"Error displaying configuration: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+@click.argument(
+    'input_dir',
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=True
+)
+@click.option(
+    '--config', '-c',
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Path to YAML configuration file"
+)
+@click.option(
+    '--pattern', '-p',
+    help="File pattern to match. Default from config or *.md"
+)
+@click.option(
+    '--recursive', '-r',
+    is_flag=True,
+    help="Process subdirectories recursively"
+)
+@click.pass_context
+def estimate(ctx, input_dir: Path, config: Optional[Path], pattern: Optional[str], recursive: bool):
+    """
+    Estimate processing time and resources for batch processing.
+    
+    INPUT_DIR: Directory containing markdown files to analyze.
+    
+    Provides detailed estimates of processing time, output files, and resource
+    requirements before running actual batch processing.
+    
+    Examples:
+    
+        # Get processing estimate for directory
+        markdown-slides estimate lectures/
+        
+        # Estimate with custom configuration
+        markdown-slides estimate lectures/ -c my-config.yaml
+        
+        # Estimate recursive processing
+        markdown-slides estimate content/ -r
+    """
+    try:
+        # Load configuration
+        try:
+            base_config = config_manager.load_config(config)
+        except ConfigurationError as e:
+            raise click.ClickException(f"Configuration error: {e}")
+        
+        # Apply CLI overrides
+        if pattern is not None:
+            base_config.batch.pattern = pattern
+        if recursive:
+            base_config.batch.recursive = True
+        
+        # Initialize batch processor
+        from .batch import BatchProcessor
+        
+        batch_processor = BatchProcessor(base_config)
+        
+        # Get processing estimate
+        estimate_data = batch_processor.get_processing_estimate(input_dir)
+        
+        if 'error' in estimate_data:
+            click.echo(f"✗ Error calculating estimate: {estimate_data['error']}")
+            return
+        
+        # Display estimate
+        click.echo(f"📊 Processing Estimate for {input_dir}")
+        click.echo(f"{'=' * 50}")
+        click.echo()
+        
+        click.echo(f"📁 Files:")
+        click.echo(f"   Total files found: {estimate_data['total_files']}")
+        click.echo(f"   Pattern: {base_config.batch.pattern}")
+        click.echo(f"   Recursive: {base_config.batch.recursive}")
+        click.echo()
+        
+        if estimate_data['total_files'] > 0:
+            click.echo(f"⏱️  Time Estimate:")
+            click.echo(f"   Estimated processing time: {estimate_data['estimated_time_human']}")
+            if estimate_data['parallel_processing']:
+                parallel_time = estimate_data['estimated_time_seconds'] / estimate_data['max_workers']
+                click.echo(f"   With parallel processing ({estimate_data['max_workers']} workers): {parallel_time/60:.1f} minutes")
+            click.echo()
+            
+            click.echo(f"📤 Output:")
+            click.echo(f"   Output formats: {', '.join(estimate_data['output_formats'])}")
+            click.echo(f"   Estimated output files: {estimate_data['estimated_outputs']}")
+            click.echo()
+            
+            click.echo(f"💾 Storage:")
+            click.echo(f"   Total input size: {estimate_data['total_size_human']}")
+            estimated_output_size = estimate_data['total_size_bytes'] * len(estimate_data['output_formats']) * 2
+            click.echo(f"   Estimated output size: {batch_processor.file_scanner._format_file_size(estimated_output_size)}")
+            click.echo()
+            
+            click.echo(f"⚙️  Processing:")
+            click.echo(f"   Parallel processing: {estimate_data['parallel_processing']}")
+            if estimate_data['parallel_processing']:
+                click.echo(f"   Max workers: {estimate_data['max_workers']}")
+            click.echo()
+            
+            # Recommendations
+            click.echo(f"💡 Recommendations:")
+            if estimate_data['total_files'] > 50 and not estimate_data['parallel_processing']:
+                click.echo(f"   • Consider enabling parallel processing for faster execution")
+            if estimate_data['estimated_time_seconds'] > 300:  # 5 minutes
+                click.echo(f"   • Large batch - consider processing in smaller chunks")
+            if estimated_output_size > 1024**3:  # 1GB
+                click.echo(f"   • Large output expected - ensure sufficient disk space")
+        else:
+            click.echo("ℹ️  No files found matching the specified criteria")
+        
+    except Exception as e:
+        logger.error(f"Error calculating estimate: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
 def check():
     """
     Check system dependencies and configuration.
@@ -612,8 +1179,43 @@ def check():
     try:
         click.echo("🔍 Checking system dependencies...")
         
-        # This will be implemented when we create the QuartoOrchestrator
-        click.echo("✓ All dependencies are properly installed")
+        # Check Python version
+        import sys
+        python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        click.echo(f"✓ Python {python_version}")
+        
+        # Check for Quarto
+        import subprocess
+        try:
+            result = subprocess.run(['quarto', '--version'], 
+                                  capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                quarto_version = result.stdout.strip()
+                click.echo(f"✓ Quarto {quarto_version}")
+            else:
+                click.echo("✗ Quarto not found or not working")
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            click.echo("✗ Quarto not found in PATH")
+        
+        # Check for LaTeX (optional but recommended)
+        try:
+            result = subprocess.run(['pdflatex', '--version'], 
+                                  capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                click.echo("✓ LaTeX (pdflatex) available")
+            else:
+                click.echo("⚠️  LaTeX not found (PDF generation may not work)")
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            click.echo("⚠️  LaTeX not found (PDF generation may not work)")
+        
+        # Check configuration directory
+        config_dir = Path.home() / '.markdown-slides'
+        if config_dir.exists():
+            click.echo(f"✓ Configuration directory: {config_dir}")
+        else:
+            click.echo(f"ℹ️  Configuration directory not found: {config_dir}")
+        
+        click.echo("\n🎉 System check complete!")
         
     except Exception as e:
         logger.error(f"Dependency check failed: {e}")

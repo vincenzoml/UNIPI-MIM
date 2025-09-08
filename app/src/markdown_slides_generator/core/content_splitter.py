@@ -14,6 +14,7 @@ import yaml
 
 from ..utils.logger import get_logger
 from ..utils.exceptions import handle_exception, InputError
+from ..latex import LaTeXProcessor
 
 logger = get_logger(__name__)
 
@@ -280,8 +281,10 @@ class ContentSplitter:
     
     def __init__(self):
         self.parser = MarkdownDirectiveParser()
+        self.latex_processor = LaTeXProcessor()
         self.slide_boundaries = []
         self.validation_warnings = []
+        self.latex_validation_result = None
     
     @handle_exception
     def split_content(self, filepath: str) -> Tuple[str, str]:
@@ -345,6 +348,21 @@ class ContentSplitter:
         content_blocks = self.parser.process_content_blocks(content, directives)
         logger.debug(f"Created {len(content_blocks)} content blocks")
         
+        # Validate LaTeX expressions in the content
+        self.latex_validation_result = self.latex_processor.process_content(content)
+        if not self.latex_validation_result.is_valid:
+            logger.warning(f"Found {len(self.latex_validation_result.errors)} LaTeX errors")
+            for error in self.latex_validation_result.errors:
+                logger.error(f"LaTeX Error: {error}")
+        
+        if self.latex_validation_result.warnings:
+            for warning in self.latex_validation_result.warnings:
+                logger.warning(f"LaTeX Warning: {warning}")
+        
+        # Log LaTeX package requirements
+        if self.latex_validation_result.packages_required:
+            logger.info(f"Required LaTeX packages: {', '.join(sorted(self.latex_validation_result.packages_required))}")
+        
         # Split content based on modes
         slides_blocks = []
         notes_blocks = []
@@ -380,6 +398,21 @@ class ContentSplitter:
     def get_validation_warnings(self) -> List[str]:
         """Get validation warnings from the last processing."""
         return self.validation_warnings.copy()
+    
+    def get_latex_validation_result(self):
+        """Get the LaTeX validation result from the last processing."""
+        return self.latex_validation_result
+    
+    def get_required_latex_packages(self) -> List[str]:
+        """Get the list of required LaTeX packages."""
+        if self.latex_validation_result:
+            return list(self.latex_validation_result.packages_required)
+        return []
+    
+    def has_latex_errors(self) -> bool:
+        """Check if there are any LaTeX validation errors."""
+        return (self.latex_validation_result and 
+                not self.latex_validation_result.is_valid)
     
     def generate_quarto_files(self, filepath: str, output_dir: str = "output") -> Tuple[str, str]:
         """
@@ -525,7 +558,7 @@ class ContentSplitter:
                     # Analyze content characteristics
                     if '```' in line:
                         current_section.has_code = True
-                    if '$' in line and ('$' in line[line.index('$')+1:] if '$' in line else False):
+                    if '$' in line:
                         current_section.has_math = True
                 else:
                     # Content before first header - create intro section
