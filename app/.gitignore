@@ -151,3 +151,26 @@ generated/
 # Log files
 *.log
 logs/
+
+# Demo and example files
+demo_*.py
+demo_*.qmd
+demo_*.html
+*_demo.*
+*_example.*
+sample_*.md
+*_preview.html
+*-theme.css
+academic-*.css
+
+# Custom theme exports
+custom_themes.json
+custom_templates.json
+
+# Quarto output
+*.html
+*.pdf
+*.pptx
+_site/
+_book/
+.quarto/

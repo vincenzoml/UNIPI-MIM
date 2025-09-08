@@ -1,0 +1,34 @@
+{
+  "name": "academic-handouts-pdf",
+  "display_name": "Academic Handouts (PDF)",
+  "template_type": "TemplateType.HANDOUTS",
+  "output_format": "OutputFormat.PDF",
+  "description": "Print-friendly handouts template",
+  "parent_template": null,
+  "main_template": "---\n{{ yaml_frontmatter }}\n---\n\n{{ content }}",
+  "css_template": null,
+  "yaml_frontmatter": "title: \"{{ title }} - Handouts\"\n{% if author %}author: \"{{ author }}\"{% endif %}\n{% if date %}date: \"{{ date }}\"{% endif %}\nformat:\n  pdf:\n    documentclass: {{ documentclass }}\n    geometry: {{ geometry }}\n    fontsize: {{ fontsize }}\n    columns: {{ columns }}\n    toc: false\n    number-sections: false\n    colorlinks: true\n    pdf-engine: xelatex\n    include-in-header:\n      - text: |\n          \\usepackage{multicol}\n          \\usepackage{fancyhdr}\n          \\pagestyle{fancy}\n          \\fancyhf{}\n          \\fancyhead[C]{{ '{' }}{{ title }} - Handouts{{ '}' }}\n          \\fancyfoot[C]{\\thepage}\n          \\renewcommand{\\headrulewidth}{0.4pt}\n          \\renewcommand{\\footrulewidth}{0.4pt}",
+  "customizable_fields": [
+    "title",
+    "author",
+    "date",
+    "course",
+    "columns",
+    "fontsize",
+    "geometry",
+    "header",
+    "footer"
+  ],
+  "default_values": {
+    "columns": 2,
+    "fontsize": "10pt",
+    "geometry": "margin=0.5in",
+    "documentclass": "article"
+  },
+  "required_fields": [],
+  "field_types": {},
+  "author": null,
+  "version": "1.0.0",
+  "created_date": null,
+  "modified_date": null
+}

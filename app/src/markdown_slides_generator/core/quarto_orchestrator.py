@@ -19,6 +19,8 @@ import yaml
 
 from ..utils.logger import get_logger
 from ..utils.exceptions import handle_exception, OutputError
+from ..themes.theme_manager import ThemeManager, AcademicTheme
+from ..themes.template_manager import TemplateManager, TemplateConfig, TemplateType, OutputFormat as TemplateOutputFormat
 
 logger = get_logger(__name__)
 
@@ -632,6 +634,10 @@ class QuartoOrchestrator:
         self.command_builder = QuartoCommandBuilder()
         self.executor = QuartoExecutor()
         self.last_results: Dict[str, QuartoResult] = {}
+        
+        # Initialize theme and template managers
+        self.theme_manager = ThemeManager()
+        self.template_manager = TemplateManager()
     
     @handle_exception
     def generate_slides(
@@ -746,6 +752,241 @@ class QuartoOrchestrator:
         
         logger.info(f"Successfully generated {format} notes: {result.output_file}")
         return result.output_file
+    
+    @handle_exception
+    def generate_themed_slides(
+        self,
+        input_file: str,
+        theme_name: str = "academic-minimal",
+        template_name: Optional[str] = None,
+        format: str = "revealjs",
+        output_file: Optional[str] = None,
+        variables: Optional[Dict[str, Any]] = None,
+        custom_options: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """
+        Generate slides with custom theme and template.
+        
+        Args:
+            input_file: Path to .qmd file
+            theme_name: Name of theme to use
+            template_name: Optional template name
+            format: Output format (revealjs, beamer, pptx)
+            output_file: Optional output file path
+            variables: Template variables
+            custom_options: Optional custom configuration
+            
+        Returns:
+            Path to generated slides file
+            
+        Raises:
+            OutputError: If generation fails
+        """
+        logger.info(f"Generating themed slides with theme '{theme_name}' from {input_file}")
+        
+        # Get theme
+        theme = self.theme_manager.get_theme(theme_name)
+        
+        # Prepare theme-specific options
+        theme_options = {
+            'theme': theme_name,
+            'transition': theme.transition,
+            'background-transition': theme.background_transition,
+            'slide-number': theme.show_slide_numbers,
+            'progress': theme.show_progress,
+            'chalkboard': theme.enable_chalkboard,
+            'menu': theme.enable_menu,
+            'overview': theme.enable_overview
+        }
+        
+        # Merge with custom options
+        if custom_options:
+            theme_options.update(custom_options)
+        
+        # Generate theme CSS if needed
+        if theme_name.startswith('academic-'):
+            css_content = self.theme_manager.generate_reveal_css(theme)
+            css_file = Path(input_file).parent / f"{theme_name}.css"
+            with open(css_file, 'w', encoding='utf-8') as f:
+                f.write(css_content)
+            theme_options['theme'] = str(css_file)
+        
+        # Use template if specified
+        if template_name:
+            template_config = self.template_manager.get_template(template_name)
+            
+            # Prepare template variables
+            template_vars = variables or {}
+            template_vars.update({
+                'title': template_vars.get('title', 'Presentation'),
+                'theme': theme_name
+            })
+            
+            # Render template
+            rendered_content = self.template_manager.render_template(
+                template_name, input_file, template_vars
+            )
+            
+            # Write rendered content to temporary file
+            input_path = Path(input_file)
+            temp_file = input_path.parent / f"temp_{input_path.stem}.qmd"
+            with open(temp_file, 'w', encoding='utf-8') as f:
+                f.write(rendered_content)
+            
+            try:
+                # Generate slides from templated content
+                result_file = self.generate_slides(
+                    str(temp_file), format, output_file, theme_name, theme_options
+                )
+                return result_file
+            finally:
+                # Clean up temporary file
+                if temp_file.exists():
+                    temp_file.unlink()
+        else:
+            # Generate slides without template
+            return self.generate_slides(
+                input_file, format, output_file, theme_name, theme_options
+            )
+    
+    @handle_exception
+    def generate_templated_notes(
+        self,
+        input_file: str,
+        template_name: Optional[str] = None,
+        format: str = "pdf",
+        output_file: Optional[str] = None,
+        variables: Optional[Dict[str, Any]] = None,
+        academic_style: bool = True,
+        custom_options: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """
+        Generate notes with custom template.
+        
+        Args:
+            input_file: Path to .qmd file
+            template_name: Optional template name
+            format: Output format (pdf, html)
+            output_file: Optional output file path
+            variables: Template variables
+            academic_style: Whether to use academic formatting
+            custom_options: Optional custom configuration
+            
+        Returns:
+            Path to generated notes file
+            
+        Raises:
+            OutputError: If generation fails
+        """
+        logger.info(f"Generating templated notes from {input_file}")
+        
+        # Use template if specified
+        if template_name:
+            template_config = self.template_manager.get_template(template_name)
+            
+            # Read original content
+            with open(input_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Prepare template variables
+            template_vars = variables or {}
+            template_vars.update({
+                'title': template_vars.get('title', 'Lecture Notes')
+            })
+            
+            # Render template
+            rendered_content = self.template_manager.render_template(
+                template_name, content, template_vars, include_title_slide=False
+            )
+            
+            # Write rendered content to temporary file
+            temp_file = Path(input_file).parent / f"temp_{Path(input_file).name}"
+            with open(temp_file, 'w', encoding='utf-8') as f:
+                f.write(rendered_content)
+            
+            try:
+                # Generate notes from templated content
+                result_file = self.generate_notes(
+                    str(temp_file), format, output_file, academic_style, custom_options
+                )
+                return result_file
+            finally:
+                # Clean up temporary file
+                if temp_file.exists():
+                    temp_file.unlink()
+        else:
+            # Generate notes without template
+            return self.generate_notes(
+                input_file, format, output_file, academic_style, custom_options
+            )
+    
+    def list_available_themes(self) -> Dict[str, Dict[str, str]]:
+        """
+        List all available themes.
+        
+        Returns:
+            Dictionary with theme information
+        """
+        return self.theme_manager.list_themes()
+    
+    def list_available_templates(self) -> Dict[str, Dict[str, Any]]:
+        """
+        List all available templates.
+        
+        Returns:
+            Dictionary with template information
+        """
+        return self.template_manager.list_templates()
+    
+    @handle_exception
+    def create_custom_theme(
+        self,
+        name: str,
+        base_theme: str = "academic-minimal",
+        customizations: Optional[Dict[str, Any]] = None
+    ) -> AcademicTheme:
+        """
+        Create a custom theme.
+        
+        Args:
+            name: Name for the new theme
+            base_theme: Base theme to customize
+            customizations: Dictionary of customizations
+            
+        Returns:
+            New AcademicTheme object
+        """
+        return self.theme_manager.create_custom_theme(name, base_theme, customizations)
+    
+    @handle_exception
+    def create_custom_template(
+        self,
+        name: str,
+        template_type: str,
+        output_format: str,
+        base_template: Optional[str] = None,
+        customizations: Optional[Dict[str, Any]] = None
+    ) -> TemplateConfig:
+        """
+        Create a custom template.
+        
+        Args:
+            name: Name for the new template
+            template_type: Type of template (slides, notes, handouts)
+            output_format: Output format (revealjs, pdf, html, etc.)
+            base_template: Optional base template to inherit from
+            customizations: Optional customizations
+            
+        Returns:
+            New TemplateConfig object
+        """
+        # Convert string enums
+        template_type_enum = TemplateType(template_type.lower())
+        output_format_enum = TemplateOutputFormat(output_format.lower())
+        
+        return self.template_manager.create_custom_template(
+            name, template_type_enum, output_format_enum, base_template, customizations
+        )
     
     def get_supported_formats(self) -> Dict[str, List[str]]:
         """
@@ -874,14 +1115,23 @@ class QuartoOrchestrator:
         config_manager = QuartoConfigurationManager(project_dir)
         return config_manager.create_project_structure(project_name)
     
-    def get_theme_manager(self) -> 'QuartoThemeManager':
+    def get_theme_manager(self) -> ThemeManager:
         """
         Get the theme manager instance.
         
         Returns:
-            QuartoThemeManager instance
+            ThemeManager instance
         """
-        return QuartoThemeManager()
+        return self.theme_manager
+    
+    def get_template_manager(self) -> TemplateManager:
+        """
+        Get the template manager instance.
+        
+        Returns:
+            TemplateManager instance
+        """
+        return self.template_manager
     
     def get_configuration_manager(self, project_dir: Optional[str] = None) -> 'QuartoConfigurationManager':
         """

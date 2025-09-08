@@ -1,0 +1,41 @@
+title: "{{ title }}"
+{% if author %}author: "{{ author }}"{% endif %}
+{% if date %}date: "{{ date }}"{% endif %}
+{% if institute %}institute: "{{ institute }}"{% endif %}
+format:
+  revealjs:
+    theme: {{ theme }}
+    transition: {{ transition }}
+    slide-number: {{ slide_number }}
+    show-slide-number: all
+    hash: {{ hash }}
+    history: false
+    controls: {{ controls }}
+    progress: {{ progress }}
+    center: {{ center }}
+    touch: true
+    loop: false
+    rtl: false
+    navigation-mode: default
+    keyboard: true
+    overview: true
+    help: true
+    show-notes: false
+    auto-animate: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 3
+      chalkboard-width: 7
+      buttons: false
+    menu:
+      side: left
+      width: normal
+      numbers: false
+      markers: true
+      custom: false
+      themes: false
+      transitions: false
+      openButton: true
+      keyboard: true
+      sticky: false
+      autoOpen: false

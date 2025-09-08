@@ -1,0 +1,16 @@
+title: "{{ title }}"
+{% if author %}author: "{{ author }}"{% endif %}
+{% if date %}date: "{{ date }}"{% endif %}
+{% if institute %}institute: "{{ institute }}"{% endif %}
+format:
+  beamer:
+    theme: {{ theme }}
+    colortheme: {{ colortheme }}
+    fonttheme: {{ fonttheme }}
+    aspectratio: {{ aspectratio }}
+    navigation: horizontal
+    pdf-engine: xelatex
+    cite-method: biblatex
+    slide-level: 2
+    section-titles: true
+    incremental: false

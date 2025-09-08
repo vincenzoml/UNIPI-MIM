@@ -1,0 +1,33 @@
+{
+  "name": "academic-slides-beamer",
+  "display_name": "Academic Slides (Beamer)",
+  "template_type": "TemplateType.SLIDES",
+  "output_format": "OutputFormat.BEAMER",
+  "description": "LaTeX Beamer slides template for academic presentations",
+  "parent_template": null,
+  "main_template": "---\n{{ yaml_frontmatter }}\n---\n\n{{ content }}",
+  "css_template": null,
+  "yaml_frontmatter": "title: \"{{ title }}\"\n{% if author %}author: \"{{ author }}\"{% endif %}\n{% if date %}date: \"{{ date }}\"{% endif %}\n{% if institute %}institute: \"{{ institute }}\"{% endif %}\nformat:\n  beamer:\n    theme: {{ theme }}\n    colortheme: {{ colortheme }}\n    fonttheme: {{ fonttheme }}\n    aspectratio: {{ aspectratio }}\n    navigation: horizontal\n    pdf-engine: xelatex\n    cite-method: biblatex\n    slide-level: 2\n    section-titles: true\n    incremental: false",
+  "customizable_fields": [
+    "title",
+    "author",
+    "date",
+    "institute",
+    "theme",
+    "colortheme",
+    "fonttheme",
+    "aspectratio"
+  ],
+  "default_values": {
+    "theme": "Madrid",
+    "colortheme": "default",
+    "fonttheme": "default",
+    "aspectratio": "169"
+  },
+  "required_fields": [],
+  "field_types": {},
+  "author": null,
+  "version": "1.0.0",
+  "created_date": null,
+  "modified_date": null
+}

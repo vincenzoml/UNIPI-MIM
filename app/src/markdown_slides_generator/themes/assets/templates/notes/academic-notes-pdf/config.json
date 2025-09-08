@@ -1,0 +1,44 @@
+{
+  "name": "academic-notes-pdf",
+  "display_name": "Academic Notes (PDF)",
+  "template_type": "TemplateType.NOTES",
+  "output_format": "OutputFormat.PDF",
+  "description": "Comprehensive academic notes template for PDF output",
+  "parent_template": null,
+  "main_template": "---\n{{ yaml_frontmatter }}\n---\n\n{% if abstract %}\n## Abstract\n\n{{ abstract }}\n{% endif %}\n\n{{ content }}\n\n{% if references %}\n## References\n\n{{ references }}\n{% endif %}",
+  "css_template": null,
+  "yaml_frontmatter": "title: \"{{ title }}\"\n{% if author %}author: \"{{ author }}\"{% endif %}\n{% if date %}date: \"{{ date }}\"{% endif %}\n{% if course %}subtitle: \"{{ course }}\"{% endif %}\nformat:\n  pdf:\n    documentclass: {{ documentclass }}\n    geometry: {{ geometry }}\n    fontsize: {{ fontsize }}\n    linestretch: {{ linestretch }}\n    toc: {{ toc }}\n    toc-depth: 3\n    number-sections: {{ number_sections }}\n    colorlinks: true\n    cite-method: biblatex\n    keep-tex: false\n    pdf-engine: xelatex\n    include-in-header:\n      - text: |\n          \\usepackage{fancyhdr}\n          \\pagestyle{fancy}\n          \\fancyhf{}\n          \\fancyhead[L]{{ '{' }}{{ title }}{{ '}' }}\n          \\fancyhead[R]{\\thepage}\n          \\renewcommand{\\headrulewidth}{0.4pt}",
+  "customizable_fields": [
+    "title",
+    "author",
+    "date",
+    "course",
+    "institution",
+    "toc",
+    "number_sections",
+    "geometry",
+    "fontsize"
+  ],
+  "default_values": {
+    "toc": true,
+    "number_sections": true,
+    "geometry": "margin=1in",
+    "fontsize": "11pt",
+    "documentclass": "article",
+    "linestretch": 1.2
+  },
+  "required_fields": [
+    "title"
+  ],
+  "field_types": {
+    "title": "string",
+    "author": "string",
+    "date": "string",
+    "toc": "boolean",
+    "number_sections": "boolean"
+  },
+  "author": null,
+  "version": "1.0.0",
+  "created_date": null,
+  "modified_date": null
+}

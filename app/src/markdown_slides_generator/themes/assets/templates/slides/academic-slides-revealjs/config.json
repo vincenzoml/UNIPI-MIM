@@ -1,0 +1,48 @@
+{
+  "name": "academic-slides-revealjs",
+  "display_name": "Academic Slides (Reveal.js)",
+  "template_type": "TemplateType.SLIDES",
+  "output_format": "OutputFormat.REVEALJS",
+  "description": "Professional academic slides template for Reveal.js",
+  "parent_template": null,
+  "main_template": "---\n{{ yaml_frontmatter }}\n---\n\n{% if title_slide %}\n# {{ title }}\n\n{% if author %}**{{ author }}**{% endif %}\n{% if institute %}*{{ institute }}*{% endif %}\n{% if date %}{{ date }}{% endif %}\n\n---\n{% endif %}\n\n{{ content }}",
+  "css_template": null,
+  "yaml_frontmatter": "title: \"{{ title }}\"\n{% if author %}author: \"{{ author }}\"{% endif %}\n{% if date %}date: \"{{ date }}\"{% endif %}\n{% if institute %}institute: \"{{ institute }}\"{% endif %}\nformat:\n  revealjs:\n    theme: {{ theme }}\n    transition: {{ transition }}\n    slide-number: {{ slide_number }}\n    show-slide-number: all\n    hash: {{ hash }}\n    history: false\n    controls: {{ controls }}\n    progress: {{ progress }}\n    center: {{ center }}\n    touch: true\n    loop: false\n    rtl: false\n    navigation-mode: default\n    keyboard: true\n    overview: true\n    help: true\n    show-notes: false\n    auto-animate: true\n    chalkboard:\n      theme: whiteboard\n      boardmarker-width: 3\n      chalkboard-width: 7\n      buttons: false\n    menu:\n      side: left\n      width: normal\n      numbers: false\n      markers: true\n      custom: false\n      themes: false\n      transitions: false\n      openButton: true\n      keyboard: true\n      sticky: false\n      autoOpen: false",
+  "customizable_fields": [
+    "title",
+    "author",
+    "date",
+    "institute",
+    "theme",
+    "transition",
+    "slide_number",
+    "progress",
+    "controls"
+  ],
+  "default_values": {
+    "theme": "academic-minimal",
+    "transition": "slide",
+    "slide_number": true,
+    "progress": true,
+    "controls": true,
+    "center": false,
+    "hash": true
+  },
+  "required_fields": [
+    "title"
+  ],
+  "field_types": {
+    "title": "string",
+    "author": "string",
+    "date": "string",
+    "institute": "string",
+    "theme": "string",
+    "slide_number": "boolean",
+    "progress": "boolean",
+    "controls": "boolean"
+  },
+  "author": null,
+  "version": "1.0.0",
+  "created_date": null,
+  "modified_date": null
+}

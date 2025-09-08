@@ -1,0 +1,23 @@
+title: "{{ title }} - Handouts"
+{% if author %}author: "{{ author }}"{% endif %}
+{% if date %}date: "{{ date }}"{% endif %}
+format:
+  pdf:
+    documentclass: {{ documentclass }}
+    geometry: {{ geometry }}
+    fontsize: {{ fontsize }}
+    columns: {{ columns }}
+    toc: false
+    number-sections: false
+    colorlinks: true
+    pdf-engine: xelatex
+    include-in-header:
+      - text: |
+          \usepackage{multicol}
+          \usepackage{fancyhdr}
+          \pagestyle{fancy}
+          \fancyhf{}
+          \fancyhead[C]{{ '{' }}{{ title }} - Handouts{{ '}' }}
+          \fancyfoot[C]{\thepage}
+          \renewcommand{\headrulewidth}{0.4pt}
+          \renewcommand{\footrulewidth}{0.4pt}

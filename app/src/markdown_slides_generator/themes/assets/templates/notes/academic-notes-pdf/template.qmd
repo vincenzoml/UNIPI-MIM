@@ -1,0 +1,17 @@
+---
+{{ yaml_frontmatter }}
+---
+
+{% if abstract %}
+## Abstract
+
+{{ abstract }}
+{% endif %}
+
+{{ content }}
+
+{% if references %}
+## References
+
+{{ references }}
+{% endif %}

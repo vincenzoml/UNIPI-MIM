@@ -99,8 +99,28 @@ def cli(ctx, verbose: bool, quiet: bool):
 )
 @click.option(
     '--theme', '-t',
-    default='white',
-    help="Theme for slides (e.g., white, black, league, sky). Default: white"
+    default='academic-minimal',
+    help="Theme for slides (e.g., academic-minimal, academic-modern, academic-technical). Default: academic-minimal"
+)
+@click.option(
+    '--template',
+    help="Template to use for generation (e.g., academic-slides-revealjs, academic-notes-pdf)"
+)
+@click.option(
+    '--author',
+    help="Author name for the presentation/document"
+)
+@click.option(
+    '--title',
+    help="Title for the presentation/document (overrides markdown title)"
+)
+@click.option(
+    '--date',
+    help="Date for the presentation/document"
+)
+@click.option(
+    '--institute',
+    help="Institution name"
 )
 @click.option(
     '--slides-only',
@@ -129,6 +149,11 @@ def generate(
     format: List[str],
     output_dir: Path,
     theme: str,
+    template: Optional[str],
+    author: Optional[str],
+    title: Optional[str],
+    date: Optional[str],
+    institute: Optional[str],
     slides_only: bool,
     notes_only: bool,
     config: Optional[Path],
@@ -187,21 +212,61 @@ def generate(
         # Process the markdown file
         slides_content, notes_content = content_splitter.split_content(str(input_file))
         
+        # Create temporary files for slides and notes content
+        slides_file = output_dir / f"{input_file.stem}_slides.qmd"
+        notes_file_path = output_dir / f"{input_file.stem}_notes.qmd"
+        
+        with open(slides_file, 'w', encoding='utf-8') as f:
+            f.write(slides_content)
+        with open(notes_file_path, 'w', encoding='utf-8') as f:
+            f.write(notes_content)
+        
+        # Prepare template variables
+        variables = {}
+        if title:
+            variables['title'] = title
+        if author:
+            variables['author'] = author
+        if date:
+            variables['date'] = date
+        if institute:
+            variables['institute'] = institute
+        
         # Generate outputs based on options
         if not notes_only:
             logger.info("Generating slides...")
             for fmt in format:
-                output_file = quarto_orchestrator.generate_slides(
-                    slides_content, fmt, output_dir, theme
-                )
+                if template:
+                    # Use themed slides with template
+                    output_file = quarto_orchestrator.generate_themed_slides(
+                        str(slides_file), theme, template, fmt, None, variables
+                    )
+                else:
+                    # Use standard generation
+                    output_file = quarto_orchestrator.generate_slides(
+                        str(slides_file), fmt, None, theme
+                    )
                 click.echo(f"✓ Generated slides: {output_file}")
         
         if not slides_only:
             logger.info("Generating notes...")
-            notes_file = quarto_orchestrator.generate_notes(
-                notes_content, 'pdf', output_dir
-            )
-            click.echo(f"✓ Generated notes: {notes_file}")
+            if template and 'notes' in template:
+                # Use templated notes
+                notes_output = quarto_orchestrator.generate_templated_notes(
+                    str(notes_file_path), template, 'pdf', None, variables
+                )
+            else:
+                # Use standard notes generation
+                notes_output = quarto_orchestrator.generate_notes(
+                    str(notes_file_path), 'pdf'
+                )
+            click.echo(f"✓ Generated notes: {notes_output}")
+        
+        # Clean up temporary files
+        if slides_file.exists():
+            slides_file.unlink()
+        if notes_file_path.exists():
+            notes_file_path.unlink()
         
         click.echo(f"\n🎉 Successfully processed {input_file.name}")
         
@@ -333,6 +398,206 @@ def batch(
         
     except Exception as e:
         logger.error(f"Batch processing error: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+def themes():
+    """
+    List available themes and their information.
+    
+    Shows all built-in and custom themes with descriptions and style information.
+    """
+    try:
+        orchestrator = QuartoOrchestrator()
+        theme_manager = orchestrator.get_theme_manager()
+        
+        themes = theme_manager.list_themes()
+        
+        click.echo("🎨 Available Themes:\n")
+        
+        # Group by type
+        builtin_themes = {k: v for k, v in themes.items() if v['type'] == 'built-in'}
+        custom_themes = {k: v for k, v in themes.items() if v['type'] == 'custom'}
+        
+        if builtin_themes:
+            click.echo("Built-in Themes:")
+            for name, info in builtin_themes.items():
+                click.echo(f"  • {name}")
+                click.echo(f"    {info['display_name']} - {info['description']}")
+                click.echo(f"    Style: {info['style']}, Color: {info['color_scheme']}")
+                click.echo()
+        
+        if custom_themes:
+            click.echo("Custom Themes:")
+            for name, info in custom_themes.items():
+                click.echo(f"  • {name}")
+                click.echo(f"    {info['display_name']} - {info['description']}")
+                click.echo(f"    Style: {info['style']}, Color: {info['color_scheme']}")
+                click.echo()
+        
+        if not custom_themes:
+            click.echo("No custom themes found. Create one with 'create-theme' command.")
+        
+    except Exception as e:
+        logger.error(f"Error listing themes: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+def templates():
+    """
+    List available templates and their information.
+    
+    Shows all built-in and custom templates with descriptions and format information.
+    """
+    try:
+        orchestrator = QuartoOrchestrator()
+        template_manager = orchestrator.get_template_manager()
+        
+        templates = template_manager.list_templates()
+        
+        click.echo("📄 Available Templates:\n")
+        
+        # Group by type
+        builtin_templates = {k: v for k, v in templates.items() if v['type'] == 'built-in'}
+        custom_templates = {k: v for k, v in templates.items() if v['type'] == 'custom'}
+        
+        if builtin_templates:
+            click.echo("Built-in Templates:")
+            for name, info in builtin_templates.items():
+                click.echo(f"  • {name}")
+                click.echo(f"    {info['display_name']} - {info['description']}")
+                click.echo(f"    Type: {info['template_type']}, Format: {info['output_format']}")
+                click.echo(f"    Required fields: {', '.join(info['required_fields']) if info['required_fields'] else 'None'}")
+                click.echo()
+        
+        if custom_templates:
+            click.echo("Custom Templates:")
+            for name, info in custom_templates.items():
+                click.echo(f"  • {name}")
+                click.echo(f"    {info['display_name']} - {info['description']}")
+                click.echo(f"    Type: {info['template_type']}, Format: {info['output_format']}")
+                click.echo()
+        
+        if not custom_templates:
+            click.echo("No custom templates found. Create one with 'create-template' command.")
+        
+    except Exception as e:
+        logger.error(f"Error listing templates: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+@click.argument('name')
+@click.option('--base-theme', default='academic-minimal', help='Base theme to customize')
+@click.option('--background-color', help='Background color (hex)')
+@click.option('--text-color', help='Text color (hex)')
+@click.option('--accent-color', help='Accent color (hex)')
+@click.option('--heading-font', help='Heading font family')
+@click.option('--body-font', help='Body font family')
+@click.option('--description', help='Theme description')
+def create_theme(name, base_theme, background_color, text_color, accent_color, heading_font, body_font, description):
+    """
+    Create a custom theme based on an existing theme.
+    
+    NAME: Name for the new custom theme.
+    
+    Examples:
+    
+        # Create theme with custom colors
+        markdown-slides create-theme my-theme --accent-color "#ff6b6b" --background-color "#f8f9fa"
+        
+        # Create theme with custom fonts
+        markdown-slides create-theme academic-serif --heading-font "Crimson Text" --body-font "Source Serif Pro"
+    """
+    try:
+        orchestrator = QuartoOrchestrator()
+        theme_manager = orchestrator.get_theme_manager()
+        
+        # Prepare customizations
+        customizations = {}
+        if background_color:
+            customizations['background_color'] = background_color
+        if text_color:
+            customizations['text_color'] = text_color
+        if accent_color:
+            customizations['accent_color'] = accent_color
+        if description:
+            customizations['description'] = description
+        
+        # Typography customizations
+        if heading_font or body_font:
+            typography = {}
+            if heading_font:
+                typography['heading_font'] = heading_font
+            if body_font:
+                typography['body_font'] = body_font
+            customizations['typography'] = typography
+        
+        # Create the theme
+        custom_theme = theme_manager.create_custom_theme(name, base_theme, customizations)
+        
+        click.echo(f"✓ Created custom theme: {custom_theme.display_name}")
+        click.echo(f"  Based on: {base_theme}")
+        click.echo(f"  Description: {custom_theme.description}")
+        
+        # Export CSS for preview
+        css_file = Path(f"{name}.css")
+        theme_manager.export_theme_css(name, str(css_file))
+        click.echo(f"  CSS exported to: {css_file}")
+        
+    except Exception as e:
+        logger.error(f"Error creating theme: {e}")
+        raise click.ClickException(str(e))
+
+
+@cli.command()
+@click.argument('name')
+@click.option('--type', 'template_type', required=True, 
+              type=click.Choice(['slides', 'notes', 'handouts']),
+              help='Type of template')
+@click.option('--format', 'output_format', required=True,
+              type=click.Choice(['revealjs', 'beamer', 'pptx', 'pdf', 'html']),
+              help='Output format')
+@click.option('--base-template', help='Base template to customize')
+@click.option('--description', help='Template description')
+def create_template(name, template_type, output_format, base_template, description):
+    """
+    Create a custom template.
+    
+    NAME: Name for the new custom template.
+    
+    Examples:
+    
+        # Create custom slides template
+        markdown-slides create-template my-slides --type slides --format revealjs
+        
+        # Create custom notes template based on existing one
+        markdown-slides create-template my-notes --type notes --format pdf --base-template academic-notes-pdf
+    """
+    try:
+        orchestrator = QuartoOrchestrator()
+        
+        # Prepare customizations
+        customizations = {}
+        if description:
+            customizations['description'] = description
+        
+        # Create the template
+        custom_template = orchestrator.create_custom_template(
+            name, template_type, output_format, base_template, customizations
+        )
+        
+        click.echo(f"✓ Created custom template: {custom_template.display_name}")
+        click.echo(f"  Type: {template_type}")
+        click.echo(f"  Format: {output_format}")
+        if base_template:
+            click.echo(f"  Based on: {base_template}")
+        click.echo(f"  Description: {custom_template.description}")
+        
+    except Exception as e:
+        logger.error(f"Error creating template: {e}")
         raise click.ClickException(str(e))
 
 

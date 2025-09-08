@@ -1,0 +1,15 @@
+---
+{{ yaml_frontmatter }}
+---
+
+{% if title_slide %}
+# {{ title }}
+
+{% if author %}**{{ author }}**{% endif %}
+{% if institute %}*{{ institute }}*{% endif %}
+{% if date %}{{ date }}{% endif %}
+
+---
+{% endif %}
+
+{{ content }}
