@@ -1,0 +1,31 @@
+# Include important files in the package distribution
+include README.md
+include LICENSE
+include CHANGELOG.md
+include requirements.txt
+include pyproject.toml
+
+# Include configuration files
+recursive-include src/markdown_slides_generator *.py
+recursive-include src/markdown_slides_generator *.yaml
+recursive-include src/markdown_slides_generator *.yml
+recursive-include src/markdown_slides_generator *.json
+
+# Include templates and themes
+recursive-include src/markdown_slides_generator/templates *
+recursive-include src/markdown_slides_generator/themes *
+
+# Exclude development and build files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude Makefile
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.orig
+recursive-exclude * *.rej
+recursive-exclude * .DS_Store
+recursive-exclude tests *
+recursive-exclude docs *
+exclude .coverage
+exclude .pytest_cache
