@@ -8,14 +8,14 @@
   - Implement logging system and comprehensive error handling infrastructure
   - _Requirements: 4.1, 4.2, 4.4_
 
-- [ ] 2. Implement sophisticated content splitter for markdown directives
-  - [ ] 2.1 Create robust markdown directive parser
+- [x] 2. Implement sophisticated content splitter for markdown directives
+  - [x] 2.1 Create robust markdown directive parser
     - Write parser to identify all special comments (<!-- SLIDE -->, <!-- NOTES-ONLY -->, <!-- SLIDE-ONLY -->, <!-- ALL -->)
     - Implement state machine to track content modes with proper nesting support
     - Handle edge cases like malformed directives and overlapping sections
     - _Requirements: 5.1, 5.2, 5.3, 5.5_
 
-  - [ ] 2.2 Build intelligent content routing system
+  - [x] 2.2 Build intelligent content routing system
     - Create content splitter that preserves markdown structure and formatting
     - Implement slide boundary detection and intelligent content splitting
     - Handle slide-only and notes-only sections with proper state management
