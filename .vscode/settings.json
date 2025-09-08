@@ -6,5 +6,6 @@
         "titleBar.inactiveBackground": "#6711d799",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#6711d7"
+    "peacock.color": "#6711d7",
+    "kiroAgent.configureMCP": "Enabled"
 }
