@@ -120,6 +120,14 @@ class ConfigValidator:
             directory = output_config['directory']
             if not isinstance(directory, str):
                 self.errors.append("output.directory must be a string")
+            else:
+                # Check if directory path is valid (but don't require it to exist)
+                try:
+                    path = Path(directory)
+                    if path.is_absolute() and not path.parent.exists():
+                        self.errors.append(f"Output directory parent does not exist: {directory}")
+                except (OSError, ValueError):
+                    self.errors.append(f"Invalid output directory path: {directory}")
         
         # Validate boolean options
         bool_options = ['preserve_structure', 'overwrite']
@@ -142,6 +150,14 @@ class ConfigValidator:
             theme = slides_config['theme']
             if not isinstance(theme, str):
                 self.errors.append("slides.theme must be a string")
+            else:
+                # Basic theme validation - check against common themes
+                common_themes = {
+                    'academic-minimal', 'white', 'black', 'league', 'beige', 'sky',
+                    'night', 'serif', 'simple', 'solarized', 'blood', 'moon'
+                }
+                if theme not in common_themes and not theme.startswith('custom-'):
+                    self.errors.append(f"Unknown theme '{theme}'. Available themes: {', '.join(sorted(common_themes))}")
         
         # Validate numeric options
         numeric_options = {
@@ -224,6 +240,17 @@ class ConfigValidator:
         for option in string_options:
             if option in notes_config and not isinstance(notes_config[option], str):
                 self.errors.append(f"notes.{option} must be a string")
+        
+        # Validate template path
+        if 'template' in notes_config:
+            template = notes_config['template']
+            if template is not None:
+                if not isinstance(template, str):
+                    self.errors.append("notes.template must be a string")
+                else:
+                    template_path = Path(template)
+                    if template_path.is_absolute() and not template_path.exists():
+                        self.errors.append(f"Notes template file does not exist: {template}")
     
     def _validate_processing_config(self, processing_config: Dict[str, Any]) -> None:
         """Validate processing configuration."""

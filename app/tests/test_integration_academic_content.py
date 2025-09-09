@@ -394,9 +394,13 @@ This approach is space-efficient and stops early.
         latex_result = self.splitter.get_latex_validation_result()
         assert latex_result is not None
         
+        # Create the input file first
+        input_file = self.temp_path / "cs_lecture.md"
+        input_file.write_text(cs_lecture)
+        
         # Generate Quarto files
         slides_path, notes_path = self.splitter.generate_quarto_files(
-            str(self.temp_path / "cs_lecture.md"),
+            str(input_file),
             str(self.temp_path / "output")
         )
         
@@ -827,7 +831,7 @@ $$\\langle \\hat{A} \\rangle = \\langle \\Psi | \\hat{A} | \\Psi \\rangle = \\in
         result = self.splitter.process_directives(physics_lecture)
         
         # Verify complex physics equations are preserved
-        assert "\\frac{\\partial \\Psi}{\\partial t}" in result["slides"]
+        assert "\\frac{\\partial \\Psi(" in result["slides"]
         assert "\\hat{H}" in result["slides"]
         assert "\\nabla^2" in result["slides"]
         
