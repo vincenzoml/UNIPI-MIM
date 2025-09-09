@@ -153,7 +153,8 @@ class ConfigValidator:
             else:
                 # Basic theme validation - check against common themes
                 common_themes = {
-                    'academic-minimal', 'white', 'black', 'league', 'beige', 'sky',
+                    'academic-minimal', 'academic-modern', 'academic-classic', 'academic-technical', 'academic-elegant',
+                    'dark', 'white', 'black', 'league', 'beige', 'sky',
                     'night', 'serif', 'simple', 'solarized', 'blood', 'moon'
                 }
                 if theme not in common_themes and not theme.startswith('custom-'):

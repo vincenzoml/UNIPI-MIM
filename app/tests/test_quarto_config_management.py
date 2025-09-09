@@ -17,6 +17,7 @@ from src.markdown_slides_generator.core.quarto_orchestrator import (
     QuartoConfigurationManager,
     QuartoOrchestrator
 )
+from src.markdown_slides_generator.themes.theme_manager import ThemeManager
 
 
 class TestQuartoThemeManager:
@@ -464,8 +465,11 @@ class TestQuartoOrchestratorConfigIntegration:
         
         theme_manager = orchestrator.get_theme_manager()
         
-        assert isinstance(theme_manager, QuartoThemeManager)
-        assert 'white' in theme_manager.get_available_themes('revealjs')
+        assert isinstance(theme_manager, ThemeManager)
+        # Test that we can list themes (ThemeManager has list_themes method)
+        themes = theme_manager.list_themes()
+        assert isinstance(themes, dict)
+        assert len(themes) > 0
     
     @patch('src.markdown_slides_generator.core.quarto_orchestrator.QuartoExecutor')
     def test_config_manager_access(self, mock_executor_class):

@@ -250,8 +250,28 @@ class ThemeManager:
             background_transition="fade"
         )
         
+        # Dark - Simple dark theme
+        themes["dark"] = AcademicTheme(
+            name="dark",
+            display_name="Dark",
+            style=ThemeStyle.MODERN,
+            color_scheme=ColorScheme.DARK,
+            description="Simple dark theme for presentations",
+            background_color="#1a1a1a",
+            text_color="#e2e8f0",
+            heading_color="#ffffff",
+            accent_color="#4fd1c7",
+            secondary_color="#ed8936",
+            typography=TypographyConfig(
+                heading_font="Source Sans Pro",
+                body_font="Source Sans Pro",
+                font_size_base="28px",
+                line_height="1.4"
+            )
+        )
+
         return themes
-    
+
     @handle_exception
     def get_theme(self, theme_name: str) -> AcademicTheme:
         """

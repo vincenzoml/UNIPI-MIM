@@ -16,11 +16,12 @@ from .slide_optimizer import (
     SlideOptimizer,
     OptimizationResult,
     OptimizationSuggestion,
-    OptimizedContentSplitter
+    OptimizedContentSplitter,
+    OptimizationType
 )
 from .link_checker import LinkChecker, LinkValidationResult, check_links_sync
 from .image_validator import ImageValidator, ImageValidationResult
-from .quality_analyzer import QualityAnalyzer, QualityReport
+from .quality_analyzer import QualityAnalyzer, QualityReport, QualityMetric
 
 __all__ = [
     'ContentValidator',
@@ -32,11 +33,13 @@ __all__ = [
     'OptimizationResult',
     'OptimizationSuggestion',
     'OptimizedContentSplitter',
+    'OptimizationType',
     'LinkChecker',
     'LinkValidationResult',
     'check_links_sync',
     'ImageValidator',
     'ImageValidationResult',
     'QualityAnalyzer',
-    'QualityReport'
+    'QualityReport',
+    'QualityMetric'
 ]
