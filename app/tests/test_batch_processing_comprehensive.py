@@ -488,7 +488,7 @@ class TestProgressReporter:
         test_file = Path("test.md")
         
         reporter.report_file_start(test_file)
-        assert reporter.current_file == test_file
+        assert reporter.current_file == str(test_file)
         
         reporter.report_file_success(test_file, 1.0)
         assert reporter.processed_files == 1

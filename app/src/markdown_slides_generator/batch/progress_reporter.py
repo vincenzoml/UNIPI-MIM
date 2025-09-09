@@ -77,6 +77,10 @@ class ProcessingStats:
         if elapsed_minutes == 0:
             return 0.0
         return self.processed_files / elapsed_minutes
+    
+    def get_progress_percentage(self) -> float:
+        """Get completion percentage (method version for compatibility)."""
+        return self.completion_percentage
 
 
 class ProgressReporter:
@@ -191,6 +195,30 @@ class ProgressReporter:
         """Get current processing statistics."""
         with self._lock:
             return self.stats
+    
+    @property
+    def total_files(self) -> int:
+        """Get total number of files."""
+        return self.stats.total_files
+    
+    @property
+    def processed_files(self) -> int:
+        """Get number of processed files."""
+        return self.stats.processed_files
+    
+    @property
+    def current_file(self) -> Optional[str]:
+        """Get currently processing file."""
+        return self.stats.current_file
+    
+    def get_progress_percentage(self) -> float:
+        """Get completion percentage."""
+        return self.stats.get_progress_percentage()
+    
+    @property
+    def errors(self) -> List[Dict[str, Any]]:
+        """Get list of errors."""
+        return self.stats.errors
     
     def get_summary(self) -> Dict[str, Any]:
         """Get a comprehensive summary of processing statistics."""
