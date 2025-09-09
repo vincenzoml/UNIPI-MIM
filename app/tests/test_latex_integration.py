@@ -9,9 +9,9 @@ import pytest
 import tempfile
 from pathlib import Path
 
-from app.src.markdown_slides_generator.core.content_splitter import ContentSplitter
-from app.src.markdown_slides_generator.core.quarto_orchestrator import QuartoOrchestrator
-from app.src.markdown_slides_generator.latex import (
+from markdown_slides_generator.core.content_splitter import ContentSplitter
+from markdown_slides_generator.core.quarto_orchestrator import QuartoOrchestrator
+from markdown_slides_generator.latex import (
     LaTeXProcessor, 
     MathRenderer, 
     OutputFormat

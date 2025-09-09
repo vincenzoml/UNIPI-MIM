@@ -8,7 +8,7 @@ optimizations for reveal.js slides, PDF outputs, and other formats.
 import pytest
 from unittest.mock import patch, MagicMock
 
-from app.src.markdown_slides_generator.latex import (
+from markdown_slides_generator.latex import (
     MathRenderer,
     MathRenderingOptimizer,
     MathCompatibilityChecker,

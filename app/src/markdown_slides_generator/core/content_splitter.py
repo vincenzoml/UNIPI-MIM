@@ -15,6 +15,7 @@ import yaml
 from ..utils.logger import get_logger
 from ..utils.exceptions import handle_exception, InputError
 from ..latex import LaTeXProcessor
+from ..validation import ContentValidator, SlideOptimizer, ValidationResult, OptimizationResult
 
 logger = get_logger(__name__)
 
@@ -367,9 +368,13 @@ class ContentSplitter:
     def __init__(self):
         self.parser = MarkdownDirectiveParser()
         self.latex_processor = LaTeXProcessor()
+        self.content_validator = ContentValidator()
+        self.slide_optimizer = SlideOptimizer()
         self.slide_boundaries = []
         self.validation_warnings = []
         self.latex_validation_result = None
+        self.validation_result = None
+        self.optimization_result = None
     
     @handle_exception
     def split_content(self, filepath: str) -> Tuple[str, str]:
@@ -448,6 +453,29 @@ class ContentSplitter:
         if self.latex_validation_result.packages_required:
             logger.info(f"Required LaTeX packages: {', '.join(sorted(self.latex_validation_result.packages_required))}")
         
+        # Perform comprehensive content validation
+        self.validation_result = self.content_validator.validate_content(content)
+        if not self.validation_result.is_valid:
+            logger.warning(f"Content validation found {len(self.validation_result.errors)} errors")
+            for error in self.validation_result.errors:
+                logger.error(f"Validation Error: {error.message}")
+        
+        if self.validation_result.warnings:
+            logger.info(f"Content validation found {len(self.validation_result.warnings)} warnings")
+        
+        # Perform content optimization
+        self.optimization_result = self.slide_optimizer.optimize_content(content)
+        if self.optimization_result.improvements_made > 0:
+            logger.info(f"Content optimization made {self.optimization_result.improvements_made} improvements")
+            logger.info(f"Estimated slide count: {self.optimization_result.estimated_slide_count_before} → {self.optimization_result.estimated_slide_count_after}")
+            
+            # Use optimized content if significant improvements were made
+            if self.optimization_result.improvements_made >= 3:
+                logger.info("Using optimized content due to significant improvements")
+                content = self.optimization_result.optimized_content
+                # Re-process with optimized content
+                content_blocks = self.parser.process_content_blocks(content, self.parser.parse_directives(content))
+        
         # Split content based on modes
         slides_blocks = []
         notes_blocks = []
@@ -498,6 +526,54 @@ class ContentSplitter:
         """Check if there are any LaTeX validation errors."""
         return (self.latex_validation_result and 
                 not self.latex_validation_result.is_valid)
+    
+    def get_validation_result(self) -> Optional[ValidationResult]:
+        """Get the content validation result from the last processing."""
+        return self.validation_result
+    
+    def get_optimization_result(self) -> Optional[OptimizationResult]:
+        """Get the content optimization result from the last processing."""
+        return self.optimization_result
+    
+    def has_validation_errors(self) -> bool:
+        """Check if there are any content validation errors."""
+        return (self.validation_result and 
+                not self.validation_result.is_valid)
+    
+    def get_validation_summary(self) -> Dict[str, Any]:
+        """Get a summary of all validation results."""
+        summary = {
+            'latex_valid': self.latex_validation_result.is_valid if self.latex_validation_result else True,
+            'content_valid': self.validation_result.is_valid if self.validation_result else True,
+            'optimization_applied': self.optimization_result.improvements_made > 0 if self.optimization_result else False,
+            'total_issues': 0,
+            'suggestions': []
+        }
+        
+        if self.latex_validation_result:
+            summary['total_issues'] += len(self.latex_validation_result.errors) + len(self.latex_validation_result.warnings)
+        
+        if self.validation_result:
+            summary['total_issues'] += len(self.validation_result.errors) + len(self.validation_result.warnings)
+            summary['suggestions'].extend([issue.suggestion for issue in self.validation_result.issues if issue.suggestion])
+        
+        if self.optimization_result:
+            summary['suggestions'].extend([s.description for s in self.optimization_result.suggestions])
+        
+        return summary
+    
+    def split_content_from_string(self, content: str) -> Tuple[str, str]:
+        """
+        Split content from string instead of file.
+        
+        Args:
+            content: Raw markdown content string
+            
+        Returns:
+            Tuple of (slides_content, notes_content)
+        """
+        processed = self.process_directives(content)
+        return processed["slides"], processed["notes"]
     
     def generate_quarto_files(self, filepath: str, output_dir: str = "output") -> Tuple[str, str]:
         """
