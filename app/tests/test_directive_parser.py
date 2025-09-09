@@ -1,8 +1,8 @@
 """
-Tests for the markdown directive parser.
+Comprehensive tests for the markdown directive parser.
 
 Tests the robust parsing of special markdown comments and state machine
-implementation for content mode tracking.
+implementation for content mode tracking with extensive edge cases.
 """
 
 import pytest
@@ -336,6 +336,332 @@ Final thoughts for both."""
         assert "Notes-only Section" in notes
         assert "$E = mc^2$" in notes
         assert "Final thoughts" in notes
+
+
+class TestDirectiveParserEdgeCases:
+    """Test edge cases and error conditions in directive parsing."""
+    
+    def setup_method(self):
+        """Set up test fixtures."""
+        self.parser = MarkdownDirectiveParser()
+    
+    def test_nested_html_comments(self):
+        """Test handling of nested HTML comments."""
+        content = """
+<!-- This is a regular comment -->
+<!-- SLIDE -->
+<!-- Another comment with <!-- nested --> content -->
+<!-- NOTES-ONLY -->
+Content here.
+"""
+        directives = self.parser.parse_directives(content)
+        
+        # Should find SLIDE and NOTES-ONLY directives
+        assert len(directives) == 2
+        assert directives[0].mode == ContentMode.SLIDE_BOUNDARY
+        assert directives[1].mode == ContentMode.NOTES_ONLY
+    
+    def test_directive_in_code_blocks(self):
+        """Test that directives in code blocks are ignored."""
+        content = """
+```html
+<!-- SLIDE -->
+This should not be parsed as a directive
+```
+
+<!-- SLIDE-ONLY -->
+This should be parsed.
+"""
+        directives = self.parser.parse_directives(content)
+        
+        # Should only find the SLIDE-ONLY directive outside code block
+        assert len(directives) == 1
+        assert directives[0].mode == ContentMode.SLIDES_ONLY
+    
+    def test_directive_in_inline_code(self):
+        """Test that directives in inline code are ignored."""
+        content = """
+Here's some code: `<!-- SLIDE -->` that should be ignored.
+
+<!-- NOTES-ONLY -->
+This should be parsed.
+"""
+        directives = self.parser.parse_directives(content)
+        
+        # Should only find the NOTES-ONLY directive
+        assert len(directives) == 1
+        assert directives[0].mode == ContentMode.NOTES_ONLY
+    
+    def test_malformed_directive_suggestions(self):
+        """Test suggestions for malformed directives."""
+        content = """
+<!-- SLDIE -->
+<!-- SLIDE_ONLY -->
+<!-- NOTE-ONLY -->
+<!-- SLIDES-ONLY -->
+"""
+        
+        self.parser.parse_directives(content)
+        
+        # Check malformed directive suggestions
+        assert len(self.parser.malformed_directives) >= 2
+        
+        suggestions = [m['suggestion'] for m in self.parser.malformed_directives]
+        assert '<!-- SLIDE -->' in suggestions
+        assert '<!-- NOTES-ONLY -->' in suggestions
+    
+    def test_unicode_in_directives(self):
+        """Test handling of unicode characters around directives."""
+        content = """
+# Título con acentos
+
+<!-- SLIDE -->
+## Sección con ñ
+
+<!-- NOTES-ONLY -->
+Contenido en español: áéíóú
+"""
+        
+        directives = self.parser.parse_directives(content)
+        blocks = self.parser.process_content_blocks(content, directives)
+        
+        assert len(directives) == 2
+        assert len(blocks) == 3
+        
+        # Check that unicode content is preserved
+        spanish_block = next(b for b in blocks if 'español' in b.content)
+        assert 'áéíóú' in spanish_block.content
+    
+    def test_very_long_content_blocks(self):
+        """Test handling of very long content blocks."""
+        # Create a very long content block
+        long_content = "Word " * 10000  # 10,000 words
+        content = f"""
+<!-- SLIDE-ONLY -->
+{long_content}
+<!-- ALL -->
+Normal content.
+"""
+        
+        directives = self.parser.parse_directives(content)
+        blocks = self.parser.process_content_blocks(content, directives)
+        
+        assert len(blocks) == 2
+        assert len(blocks[0].content.split()) >= 10000
+    
+    def test_empty_directive_blocks(self):
+        """Test handling of empty blocks between directives."""
+        content = """
+<!-- SLIDE-ONLY -->
+
+<!-- NOTES-ONLY -->
+
+<!-- ALL -->
+Some content.
+"""
+        
+        directives = self.parser.parse_directives(content)
+        blocks = self.parser.process_content_blocks(content, directives)
+        
+        # Should filter out empty blocks
+        assert all(block.content.strip() for block in blocks)
+    
+    def test_directive_at_file_boundaries(self):
+        """Test directives at the very start and end of files."""
+        content = """<!-- SLIDE-ONLY -->
+Content at start.
+<!-- NOTES-ONLY -->
+Content in middle.
+<!-- ALL -->
+Content at end."""
+        
+        directives = self.parser.parse_directives(content)
+        blocks = self.parser.process_content_blocks(content, directives)
+        
+        assert len(directives) == 3
+        assert len(blocks) == 3
+        assert blocks[0].mode == ContentMode.SLIDES_ONLY
+        assert blocks[1].mode == ContentMode.NOTES_ONLY
+        assert blocks[2].mode == ContentMode.ALL
+
+
+class TestContentSplitterPerformance:
+    """Test performance characteristics of content splitter."""
+    
+    def setup_method(self):
+        """Set up test fixtures."""
+        self.splitter = ContentSplitter()
+    
+    def test_large_file_processing(self):
+        """Test processing of large markdown files."""
+        import time
+        
+        # Create a large markdown file (simulate 1MB content)
+        sections = []
+        for i in range(1000):
+            sections.append(f"""
+## Section {i}
+
+This is section {i} with some content. Lorem ipsum dolor sit amet, 
+consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore 
+et dolore magna aliqua.
+
+<!-- SLIDE -->
+
+### Subsection {i}.1
+
+More content here with mathematical expressions: $x = y + z_{i}$
+
+<!-- NOTES-ONLY -->
+Detailed explanation for section {i} that only appears in notes.
+This includes additional context and background information.
+
+<!-- ALL -->
+""")
+        
+        large_content = '\n'.join(sections)
+        
+        start_time = time.time()
+        result = self.splitter.process_directives(large_content)
+        processing_time = time.time() - start_time
+        
+        # Should process within reasonable time (< 5 seconds for 1MB)
+        assert processing_time < 5.0
+        
+        # Should produce valid results
+        assert len(result["slides"]) > 0
+        assert len(result["notes"]) > 0
+        assert len(result["blocks"]) > 0
+    
+    def test_many_directives_performance(self):
+        """Test performance with many directives."""
+        import time
+        
+        # Create content with many directives
+        content_parts = ["# Test Document\n"]
+        for i in range(500):  # 500 directive pairs
+            content_parts.extend([
+                f"Content block {i}\n",
+                "<!-- SLIDE-ONLY -->\n",
+                f"Slide content {i}\n",
+                "<!-- NOTES-ONLY -->\n", 
+                f"Notes content {i}\n",
+                "<!-- ALL -->\n"
+            ])
+        
+        content = ''.join(content_parts)
+        
+        start_time = time.time()
+        result = self.splitter.process_directives(content)
+        processing_time = time.time() - start_time
+        
+        # Should handle many directives efficiently
+        assert processing_time < 2.0
+        assert len(result["directives"]) == 1500  # 3 directives per iteration
+
+
+class TestContentSplitterIntegration:
+    """Integration tests for content splitter with other components."""
+    
+    def setup_method(self):
+        """Set up test fixtures."""
+        self.splitter = ContentSplitter()
+    
+    def test_latex_integration(self):
+        """Test integration with LaTeX processor."""
+        content = """
+# Mathematical Content
+
+## Basic Math
+Inline math: $E = mc^2$
+
+Display math:
+$$\\int_0^1 x^2 dx = \\frac{1}{3}$$
+
+<!-- SLIDE-ONLY -->
+## Advanced Math
+Complex equation: $\\sum_{i=1}^n \\frac{1}{i^2} = \\frac{\\pi^2}{6}$
+
+<!-- NOTES-ONLY -->
+## Detailed Derivation
+The proof involves...
+$$\\begin{align}
+\\sum_{i=1}^n \\frac{1}{i^2} &= 1 + \\frac{1}{4} + \\frac{1}{9} + \\cdots \\\\
+&= \\frac{\\pi^2}{6}
+\\end{align}$$
+"""
+        
+        result = self.splitter.process_directives(content)
+        
+        # Check LaTeX validation was performed
+        latex_result = self.splitter.get_latex_validation_result()
+        assert latex_result is not None
+        
+        # Should detect math in both slides and notes
+        assert '$E = mc^2$' in result["slides"]
+        assert '$E = mc^2$' in result["notes"]
+        assert '\\sum_{i=1}^n' in result["slides"]
+        assert '\\begin{align}' in result["notes"]
+        assert '\\begin{align}' not in result["slides"]
+    
+    def test_quarto_file_generation_integration(self):
+        """Test integration with Quarto file generation."""
+        import tempfile
+        import shutil
+        from pathlib import Path
+        
+        content = """---
+title: "Test Lecture"
+author: "Test Author"
+---
+
+# Introduction
+
+This is a test lecture.
+
+<!-- SLIDE -->
+## Main Content
+
+Key points:
+- Point 1
+- Point 2
+
+<!-- NOTES-ONLY -->
+## Additional Details
+
+Extended explanation that only appears in notes.
+"""
+        
+        # Create temporary directory and file
+        temp_dir = tempfile.mkdtemp()
+        try:
+            temp_file = Path(temp_dir) / "test.md"
+            temp_file.write_text(content)
+            
+            # Generate Quarto files
+            slides_path, notes_path = self.splitter.generate_quarto_files(
+                str(temp_file), str(Path(temp_dir) / "output")
+            )
+            
+            # Check files were created
+            assert Path(slides_path).exists()
+            assert Path(notes_path).exists()
+            
+            # Check content
+            slides_content = Path(slides_path).read_text()
+            notes_content = Path(notes_path).read_text()
+            
+            # Should have YAML frontmatter
+            assert slides_content.startswith("---\n")
+            assert notes_content.startswith("---\n")
+            
+            # Should have appropriate content
+            assert "Key points:" in slides_content
+            assert "Extended explanation" in notes_content
+            assert "Extended explanation" not in slides_content
+            
+        finally:
+            shutil.rmtree(temp_dir)
 
 
 if __name__ == "__main__":

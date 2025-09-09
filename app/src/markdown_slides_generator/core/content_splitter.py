@@ -97,25 +97,104 @@ class MarkdownDirectiveParser:
         directives = []
         lines = content.split('\n')
         
+        # Track code block state
+        in_code_block = False
+        code_block_fence = None
+        
         for line_num, line in enumerate(lines, 1):
-            # Find all directive matches in this line
-            for pattern, mode in self.DIRECTIVE_PATTERNS.items():
-                matches = re.finditer(pattern, line, re.IGNORECASE)
-                for match in matches:
-                    directive = DirectiveMatch(
-                        directive=match.group().strip(),
-                        mode=mode,
-                        line_number=line_num,
-                        position=match.start(),
-                        raw_match=match.group()
-                    )
-                    directives.append(directive)
-                    logger.debug(f"Found directive '{directive.directive}' at line {line_num}")
+            # Check for code block boundaries
+            stripped_line = line.strip()
+            
+            # Check for fenced code blocks (``` or ~~~)
+            if stripped_line.startswith('```') or stripped_line.startswith('~~~'):
+                if not in_code_block:
+                    in_code_block = True
+                    code_block_fence = stripped_line[:3]
+                elif stripped_line.startswith(code_block_fence):
+                    in_code_block = False
+                    code_block_fence = None
+                continue
+            
+            # Skip directive parsing if we're inside a code block
+            if in_code_block:
+                continue
+            
+            # Check for inline code and skip directives inside backticks
+            if '`' in line:
+                # Find all directive matches and check if they're inside inline code
+                for pattern, mode in self.DIRECTIVE_PATTERNS.items():
+                    matches = re.finditer(pattern, line, re.IGNORECASE)
+                    for match in matches:
+                        if not self._is_inside_inline_code(line, match.start(), match.end()):
+                            directive = DirectiveMatch(
+                                directive=match.group().strip(),
+                                mode=mode,
+                                line_number=line_num,
+                                position=match.start(),
+                                raw_match=match.group()
+                            )
+                            directives.append(directive)
+                            logger.debug(f"Found directive '{directive.directive}' at line {line_num}")
+            else:
+                # No inline code, process normally
+                for pattern, mode in self.DIRECTIVE_PATTERNS.items():
+                    matches = re.finditer(pattern, line, re.IGNORECASE)
+                    for match in matches:
+                        directive = DirectiveMatch(
+                            directive=match.group().strip(),
+                            mode=mode,
+                            line_number=line_num,
+                            position=match.start(),
+                            raw_match=match.group()
+                        )
+                        directives.append(directive)
+                        logger.debug(f"Found directive '{directive.directive}' at line {line_num}")
         
         # Check for malformed directives (HTML comments that look like directives but don't match)
         self._check_malformed_directives(content, lines)
         
         return sorted(directives, key=lambda d: (d.line_number, d.position))
+    
+    def _is_inside_inline_code(self, line: str, start_pos: int, end_pos: int) -> bool:
+        """Check if a position range is inside inline code (backticks)."""
+        # Find all backtick pairs in the line
+        backticks = []
+        i = 0
+        while i < len(line):
+            if line[i] == '`':
+                # Count consecutive backticks
+                tick_count = 0
+                start_tick = i
+                while i < len(line) and line[i] == '`':
+                    tick_count += 1
+                    i += 1
+                backticks.append((start_tick, i - 1, tick_count))
+            else:
+                i += 1
+        
+        # Match opening and closing backticks
+        code_spans = []
+        i = 0
+        while i < len(backticks):
+            start_tick_pos, start_tick_end, start_tick_count = backticks[i]
+            # Find matching closing backticks
+            for j in range(i + 1, len(backticks)):
+                end_tick_pos, end_tick_end, end_tick_count = backticks[j]
+                if end_tick_count == start_tick_count:
+                    # Found matching pair
+                    code_spans.append((start_tick_end + 1, end_tick_pos))
+                    i = j + 1
+                    break
+            else:
+                # No matching closing backticks found
+                i += 1
+        
+        # Check if the directive position is inside any code span
+        for code_start, code_end in code_spans:
+            if code_start <= start_pos and end_pos <= code_end:
+                return True
+        
+        return False
     
     def _check_malformed_directives(self, content: str, lines: List[str]):
         """Check for malformed directives and log warnings."""
@@ -131,7 +210,7 @@ class MarkdownDirectiveParser:
                              for pattern in self.DIRECTIVE_PATTERNS.keys())
                 
                 if not is_valid and any(keyword in directive_text.upper() 
-                                      for keyword in ['SLIDE', 'NOTE', 'ALL']):
+                                      for keyword in ['SLIDE', 'SLDIE', 'NOTE', 'ALL']):
                     self.malformed_directives.append({
                         'text': directive_text,
                         'line': line_num,
@@ -146,6 +225,12 @@ class MarkdownDirectiveParser:
             return '<!-- SLIDE-ONLY -->'
         elif 'NOTES-ONLY' in upper_text or 'NOTESONLY' in upper_text:
             return '<!-- NOTES-ONLY -->'
+        elif 'NOTE-ONLY' in upper_text or 'NOTEONLY' in upper_text:
+            return '<!-- NOTES-ONLY -->'  # Suggest plural form
+        elif 'SLIDES-ONLY' in upper_text:
+            return '<!-- SLIDE-ONLY -->'  # Correct to singular form
+        elif 'SLDIE' in upper_text:  # Common typo
+            return '<!-- SLIDE -->'
         elif 'SLIDE' in upper_text:
             return '<!-- SLIDE -->'
         elif 'ALL' in upper_text:
