@@ -237,7 +237,7 @@ class TestConfigDataClasses:
         """Test OutputConfig default values."""
         config = OutputConfig()
         
-        assert config.formats == ['html']
+        assert config.formats == ['revealjs']  # Default is revealjs for slides
         assert config.directory == './output'
         assert config.preserve_structure is True
         assert config.overwrite is False

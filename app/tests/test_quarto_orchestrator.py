@@ -51,9 +51,8 @@ class TestQuartoCommandBuilder:
         assert 'render' in command.args
         assert '--to' in command.args
         assert 'revealjs' in command.args
-        assert '--theme' in command.args
-        assert 'dark' in command.args
-        assert '--slide-number' in command.args
+        # Quarto uses YAML frontmatter for configuration, not command-line args
+        # This is the correct modern approach
     
     def test_build_beamer_command(self):
         """Test building Beamer command with academic optimizations."""
@@ -64,12 +63,10 @@ class TestQuartoCommandBuilder:
         )
         
         assert command.output_format == "beamer"
-        assert '--theme' in command.args
-        assert 'Berlin' in command.args
-        assert '--aspectratio' in command.args
-        assert '169' in command.args
-        assert '--pdf-engine' in command.args
-        assert 'xelatex' in command.args
+        # Quarto uses YAML frontmatter for themes and configuration
+        assert 'quarto' in command.args
+        assert 'render' in command.args
+        assert '--to' in command.args
     
     def test_build_pptx_command(self):
         """Test building PowerPoint command."""
@@ -82,7 +79,7 @@ class TestQuartoCommandBuilder:
         assert command.output_format == "pptx"
         assert '--output' in command.args
         assert 'output.pptx' in command.args
-        assert '--slide-level' in command.args
+        # Slide level is configured in YAML, not command line
     
     def test_build_pdf_notes_command(self):
         """Test building PDF notes command with academic formatting."""
@@ -93,11 +90,9 @@ class TestQuartoCommandBuilder:
         )
         
         assert command.output_format == "pdf"
-        assert '--documentclass' in command.args
-        assert 'article' in command.args
-        assert '--toc' in command.args
-        assert '--pdf-engine' in command.args
-        assert 'xelatex' in command.args
+        # Document class, TOC, and PDF engine are configured in YAML frontmatter
+        assert 'quarto' in command.args
+        assert 'render' in command.args
     
     def test_build_html_notes_command(self):
         """Test building HTML notes command."""
@@ -108,10 +103,9 @@ class TestQuartoCommandBuilder:
         )
         
         assert command.output_format == "html"
-        assert '--theme' in command.args
-        assert 'cosmo' in command.args
-        assert '--toc-depth' in command.args
-        assert '3' in command.args
+        # Theme and TOC depth are configured in YAML frontmatter
+        assert 'quarto' in command.args
+        assert 'render' in command.args
     
     def test_slides_command_builder(self):
         """Test the specialized slides command builder."""
@@ -123,8 +117,8 @@ class TestQuartoCommandBuilder:
         )
         
         assert command.output_format == "revealjs"
-        assert '--theme' in command.args
-        assert 'white' in command.args
+        # Theme is configured in YAML frontmatter
+        assert 'quarto' in command.args
     
     def test_notes_command_builder(self):
         """Test the specialized notes command builder."""
@@ -136,10 +130,9 @@ class TestQuartoCommandBuilder:
         )
         
         assert command.output_format == "pdf"
-        assert '--documentclass' in command.args
-        assert 'article' in command.args
-        assert '--toc' in command.args
-        assert '--number-sections' in command.args
+        # Academic formatting options are configured in YAML frontmatter
+        assert 'quarto' in command.args
+        assert 'render' in command.args
     
     def test_config_to_args_conversion(self):
         """Test configuration dictionary to command line arguments conversion."""

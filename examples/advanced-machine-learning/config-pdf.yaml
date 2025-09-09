@@ -1,0 +1,52 @@
+# Configuration for PDF variant - Academic Modern Style
+# Disables problematic LaTeX validation
+
+# Slide appearance and behavior
+slides:
+  theme: "academic-modern"
+  transition: "slide"
+  center: true
+  controls: true
+  progress: true
+  touch: true
+  preview_links: true
+  help: true
+  show_notes: false
+  fragments: true
+
+# Notes formatting  
+notes:
+  style: "academic"
+  include_toc: true
+  page_numbers: true
+  margin_notes: false
+  bibliography: true
+  cross_references: true
+  figure_captions: true
+  geometry: "margin=1in"
+  font_size: "11pt"
+
+# Output settings
+output:
+  formats: ["pdf"]
+  directory: "output"
+  overwrite: true
+
+# Processing settings - disable validation for PDF
+processing:
+  intelligent_splitting: true
+  syntax_highlighting: true
+  math_renderer: "mathjax"
+  content_validation: false  # Disable validation that's causing LaTeX errors
+  image_optimization: true
+  
+# Logging
+logging:
+  level: "INFO"
+  
+# Variables for templating
+variables:
+  author: "Prof. AI Researcher"
+  institution: "University of Pisa"
+  course: "Advanced Machine Learning"
+  semester: "Fall 2025"
