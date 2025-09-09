@@ -6,7 +6,7 @@ Intelligent file discovery and filtering for batch operations.
 
 import fnmatch
 from pathlib import Path
-from typing import List, Set, Optional, Dict, Any
+from typing import List, Set, Optional, Dict, Any, Union, Callable
 import os
 import stat
 from datetime import datetime
@@ -36,7 +36,7 @@ class FileScanner:
         pattern: str = '*.md',
         recursive: bool = False,
         exclude_patterns: Optional[List[str]] = None,
-        file_filters: Optional[List[str]] = None,
+        file_filters: Optional[List[Union[str, Callable[[Path], bool]]]] = None,
         max_files: Optional[int] = None,
         min_size: Optional[int] = None,
         max_size: Optional[int] = None,
@@ -51,7 +51,7 @@ class FileScanner:
             pattern: File pattern to match (glob style)
             recursive: Whether to scan subdirectories
             exclude_patterns: Patterns to exclude
-            file_filters: Additional filter patterns
+            file_filters: Additional filter patterns (strings) or callable functions
             max_files: Maximum number of files to return
             min_size: Minimum file size in bytes
             max_size: Maximum file size in bytes
@@ -131,7 +131,7 @@ class FileScanner:
         self,
         files: List[Path],
         exclude_patterns: List[str],
-        file_filters: List[str],
+        file_filters: List[Union[str, Callable[[Path], bool]]],
         min_size: Optional[int],
         max_size: Optional[int],
         modified_after: Optional[datetime],
@@ -212,15 +212,24 @@ class FileScanner:
         
         return False
     
-    def _matches_file_filters(self, file_path: Path, file_filters: List[str]) -> bool:
-        """Check if file matches any file filter."""
-        for filter_pattern in file_filters:
-            if fnmatch.fnmatch(file_path.name, filter_pattern):
-                return True
-            if fnmatch.fnmatch(str(file_path), filter_pattern):
-                return True
+    def _matches_file_filters(self, file_path: Path, file_filters: List[Union[str, Callable[[Path], bool]]]) -> bool:
+        """Check if file matches all file filters (pattern or callable)."""
+        for file_filter in file_filters:
+            if callable(file_filter):
+                # Handle callable filters
+                try:
+                    if not file_filter(file_path):
+                        return False
+                except Exception as e:
+                    logger.warning(f"Error applying callable filter to {file_path}: {e}")
+                    return False
+            else:
+                # Handle string pattern filters
+                if not (fnmatch.fnmatch(file_path.name, file_filter) or 
+                       fnmatch.fnmatch(str(file_path), file_filter)):
+                    return False
         
-        return False
+        return True
     
     def get_scan_summary(self) -> Dict[str, Any]:
         """Get summary of the last scan operation."""
