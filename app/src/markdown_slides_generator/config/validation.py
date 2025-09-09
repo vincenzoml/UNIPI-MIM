@@ -110,7 +110,8 @@ class ConfigValidator:
             if not isinstance(formats, list):
                 self.errors.append("output.formats must be a list")
             else:
-                valid_formats = {'html', 'pdf', 'pptx', 'beamer'}
+                # Accept Quarto's reveal.js slides identifier as default slides format
+                valid_formats = {'html', 'revealjs', 'pdf', 'pptx', 'beamer'}
                 for fmt in formats:
                     if fmt not in valid_formats:
                         self.errors.append(f"Invalid output format: '{fmt}'. Valid formats: {', '.join(valid_formats)}")
