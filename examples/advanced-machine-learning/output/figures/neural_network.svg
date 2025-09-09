@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Neural Network Architecture Diagram -->
+  <defs>
+    <style>
+      .node { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .hidden-node { fill: #FF9800; stroke: #F57C00; stroke-width: 2; }
+      .output-node { fill: #2196F3; stroke: #1565C0; stroke-width: 2; }
+      .connection { stroke: #666; stroke-width: 1.5; opacity: 0.7; }
+      .layer-label { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+      .node-label { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; fill: white; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" class="layer-label" style="font-size: 18px;">Deep Neural Network Architecture</text>
+  
+  <!-- Input Layer -->
+  <g id="input-layer">
+    <text x="100" y="380" class="layer-label">Input Layer</text>
+    <circle cx="100" cy="100" r="15" class="node"/>
+    <text x="100" y="105" class="node-label">x₁</text>
+    <circle cx="100" cy="150" r="15" class="node"/>
+    <text x="100" y="155" class="node-label">x₂</text>
+    <circle cx="100" cy="200" r="15" class="node"/>
+    <text x="100" y="205" class="node-label">x₃</text>
+    <circle cx="100" cy="250" r="15" class="node"/>
+    <text x="100" y="255" class="node-label">x₄</text>
+    <circle cx="100" cy="300" r="15" class="node"/>
+    <text x="100" y="305" class="node-label">x₅</text>
+  </g>
+  
+  <!-- Hidden Layer 1 -->
+  <g id="hidden-layer-1">
+    <text x="250" y="380" class="layer-label">Hidden Layer 1</text>
+    <circle cx="250" cy="80" r="15" class="hidden-node"/>
+    <text x="250" y="85" class="node-label">h₁₁</text>
+    <circle cx="250" cy="130" r="15" class="hidden-node"/>
+    <text x="250" y="135" class="node-label">h₁₂</text>
+    <circle cx="250" cy="180" r="15" class="hidden-node"/>
+    <text x="250" y="185" class="node-label">h₁₃</text>
+    <circle cx="250" cy="230" r="15" class="hidden-node"/>
+    <text x="250" y="235" class="node-label">h₁₄</text>
+    <circle cx="250" cy="280" r="15" class="hidden-node"/>
+    <text x="250" y="285" class="node-label">h₁₅</text>
+    <circle cx="250" cy="330" r="15" class="hidden-node"/>
+    <text x="250" y="335" class="node-label">h₁₆</text>
+  </g>
+  
+  <!-- Hidden Layer 2 -->
+  <g id="hidden-layer-2">
+    <text x="400" y="380" class="layer-label">Hidden Layer 2</text>
+    <circle cx="400" cy="100" r="15" class="hidden-node"/>
+    <text x="400" y="105" class="node-label">h₂₁</text>
+    <circle cx="400" cy="160" r="15" class="hidden-node"/>
+    <text x="400" y="165" class="node-label">h₂₂</text>
+    <circle cx="400" cy="220" r="15" class="hidden-node"/>
+    <text x="400" y="225" class="node-label">h₂₃</text>
+    <circle cx="400" cy="280" r="15" class="hidden-node"/>
+    <text x="400" y="285" class="node-label">h₂₄</text>
+  </g>
+  
+  <!-- Output Layer -->
+  <g id="output-layer">
+    <text x="550" y="380" class="layer-label">Output Layer</text>
+    <circle cx="550" cy="150" r="15" class="output-node"/>
+    <text x="550" y="155" class="node-label">y₁</text>
+    <circle cx="550" cy="200" r="15" class="output-node"/>
+    <text x="550" y="205" class="node-label">y₂</text>
+    <circle cx="550" cy="250" r="15" class="output-node"/>
+    <text x="550" y="255" class="node-label">y₃</text>
+  </g>
+  
+  <!-- Connections Input to Hidden 1 -->
+  <g id="connections-input-hidden1">
+    <!-- Input node 1 connections -->
+    <line x1="115" y1="100" x2="235" y2="80" class="connection"/>
+    <line x1="115" y1="100" x2="235" y2="130" class="connection"/>
+    <line x1="115" y1="100" x2="235" y2="180" class="connection"/>
+    <line x1="115" y1="100" x2="235" y2="230" class="connection"/>
+    <line x1="115" y1="100" x2="235" y2="280" class="connection"/>
+    <line x1="115" y1="100" x2="235" y2="330" class="connection"/>
+    
+    <!-- Input node 2 connections (sample) -->
+    <line x1="115" y1="150" x2="235" y2="80" class="connection"/>
+    <line x1="115" y1="150" x2="235" y2="130" class="connection"/>
+    <line x1="115" y1="150" x2="235" y2="280" class="connection"/>
+    
+    <!-- More connections implied with dots -->
+    <text x="175" y="200" style="font-size: 20px; text-anchor: middle;">...</text>
+  </g>
+  
+  <!-- Connections Hidden 1 to Hidden 2 -->
+  <g id="connections-hidden1-hidden2">
+    <line x1="265" y1="80" x2="385" y2="100" class="connection"/>
+    <line x1="265" y1="130" x2="385" y2="160" class="connection"/>
+    <line x1="265" y1="180" x2="385" y2="220" class="connection"/>
+    <line x1="265" y1="230" x2="385" y2="280" class="connection"/>
+    
+    <!-- Sample cross connections -->
+    <line x1="265" y1="80" x2="385" y2="160" class="connection"/>
+    <line x1="265" y1="130" x2="385" y2="280" class="connection"/>
+    
+    <text x="325" y="200" style="font-size: 20px; text-anchor: middle;">...</text>
+  </g>
+  
+  <!-- Connections Hidden 2 to Output -->
+  <g id="connections-hidden2-output">
+    <line x1="415" y1="100" x2="535" y2="150" class="connection"/>
+    <line x1="415" y1="160" x2="535" y2="200" class="connection"/>
+    <line x1="415" y1="220" x2="535" y2="250" class="connection"/>
+    
+    <!-- Cross connections -->
+    <line x1="415" y1="100" x2="535" y2="200" class="connection"/>
+    <line x1="415" y1="160" x2="535" y2="250" class="connection"/>
+    <line x1="415" y1="220" x2="535" y2="150" class="connection"/>
+    
+    <text x="475" y="200" style="font-size: 20px; text-anchor: middle;">...</text>
+  </g>
+  
+  <!-- Activation functions -->
+  <g id="activation-labels">
+    <text x="325" y="60" style="font-size: 12px; text-anchor: middle; font-style: italic;">ReLU</text>
+    <text x="475" y="60" style="font-size: 12px; text-anchor: middle; font-style: italic;">ReLU</text>
+    <text x="625" y="200" style="font-size: 12px; text-anchor: middle; font-style: italic;">Softmax</text>
+  </g>
+  
+  <!-- Mathematical notation -->
+  <text x="650" y="100" style="font-size: 12px; font-family: serif;">
+    <tspan x="650" dy="0">Forward Pass:</tspan>
+    <tspan x="650" dy="20">h¹ = ReLU(W¹x + b¹)</tspan>
+    <tspan x="650" dy="20">h² = ReLU(W²h¹ + b²)</tspan>
+    <tspan x="650" dy="20">ŷ = Softmax(W³h² + b³)</tspan>
+  </text>
+</svg>

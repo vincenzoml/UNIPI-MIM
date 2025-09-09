@@ -20,7 +20,7 @@ logger = get_logger(__name__)
 @dataclass
 class OutputConfig:
     """Configuration for output generation."""
-    formats: List[str] = field(default_factory=lambda: ['html'])
+    formats: List[str] = field(default_factory=lambda: ['revealjs'])
     directory: str = './output'
     preserve_structure: bool = True
     overwrite: bool = False

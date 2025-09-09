@@ -1,0 +1,563 @@
+---
+editor: visual
+format:
+  html:
+    number-sections: true
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+  pdf:
+    colorlinks: true
+    documentclass: article
+    geometry: margin=1in
+    number-sections: true
+    toc: true
+title: Lecture - Lecture Notes
+---
+
+# Advanced Machine Learning: Deep Neural Networks
+**Author**: Prof. AI Researcher  
+**Date**: September 2025  
+**Institute**: University of Pisa - Master in AI
+
+## Overview
+
+Today we'll explore the cutting-edge world of deep neural networks, covering:
+
+- Mathematical foundations of deep learning
+- Advanced architectures and their applications
+- Optimization techniques and regularization
+- Practical implementation strategies
+
+This lecture builds on previous knowledge of basic machine learning concepts. Students should be familiar with linear algebra, calculus.
+
+Probability theory. we'll dive deep into the theoretical foundations while maintaining practical relevance through real-world examples.
+
+The lecture is structured to progressively build complexity, starting from fundamental concepts and moving toward state-of-the-art techniques used in modern AI research.
+
+## The Universal Approximation Theorem
+
+Neural networks are **universal function approximators**:
+
+$$f(x) = \sum_{i=1}^{n} w_i \sigma(W_i^T x + b_i)$$
+
+Where:
+- $\sigma$ is the activation function
+- $W_i$ are weight matrices  
+- $b_i$ are bias vectors
+- $n$ is the number of hidden units
+
+
+
+
+
+## The Universal Approximation Theorem (2)
+
+The Universal Approximation Theorem, first proven by Cybenko in 1989, states that a feedforward network with a single hidden layer containing a finite number of neurons can approximate any continuous function on compact subsets of $\mathbb{R}^n$ to arbitrary accuracy.
+
+
+
+
+
+## The Universal Approximation Theorem (3)
+
+This is a profound theoretical result that provides the mathematical foundation for why neural networks work. However, the theorem doesn't tell us:
+1. How many neurons we need
+2. How to find the optimal weights
+3. Whether the approximation generalizes to unseen data
+
+In practice, deeper networks often achieve better performance with fewer parameters than very wide shallow networks.
+
+![Neural Network Architecture](figures/neural_network.svg)
+
+## Deep Learning Mathematics
+
+
+
+
+
+
+
+### Gradient Computation via Backpropagation
+
+The chain rule enables efficient gradient computation:
+
+$$\frac{\partial L}{\partial W^{(l)}} = \frac{\partial L}{\partial z^{(l+1)}} \cdot \frac{\partial z^{(l+1)}}{\partial a^{(l)}} \cdot \frac{\partial a^{(l)}}{\partial W^{(l)}}$$
+
+
+
+
+
+
+
+### Loss Function Landscape
+
+For classification with $C$ classes:
+
+$$L_{CE} = -\sum_{i=1}^{N} \sum_{c=1}^{C} y_{ic} \log(\hat{y}_{ic})$$
+
+Backpropagation is the heart of neural network training. The algorithm efficiently computes gradients by applying the chain rule recursively from the output layer back to the input layer.
+
+Key insights about the gradient computation:
+
+1. **Computational Graph**: We can represent the forward pass as a computational graph where each node represents an operation.
+
+
+
+
+
+### Loss Function Landscape (2)
+
+2. **Dynamic Programming**: Backpropagation is essentially dynamic programming applied to gradient computation, avoiding redundant calculations.
+
+3. **Vanishing Gradients**: In very deep networks, gradients can become exponentially small, making training difficult. This led to innovations like:
+   - Skip connections (ResNet)
+   - Better activation functions (ReLU, Swish)
+   - Normalization techniques (BatchNorm, LayerNorm)
+
+4. **Exploding Gradients**: Conversely, gradients can also explode, leading to unstable training. Gradient clipping is a common solution.
+
+
+
+
+
+### Loss Function Landscape (3)
+
+The cross-entropy loss function is particularly well-suited for classification because:
+- It's convex in the final layer weights
+- It provides strong gradients when predictions are confident but wrong
+- It naturally handles the probabilistic interpretation of softmax outputs
+
+<!-- Transition: Moving to next topic -->
+
+
+
+## Advanced Architectures
+
+
+
+
+
+
+
+### Convolutional Neural Networks (CNNs)
+
+```python
+
+
+<!-- Transition: Moving to next topic -->
+
+
+
+# Modern CNN block with residual connections
+class ResidualBlock(nn.Module):
+    def __init__(self, channels):
+        super().__init__()
+        self.conv1 = nn.Conv2d(channels, channels, 3, padding=1)
+        self.bn1 = nn.BatchNorm2d(channels)
+        self.conv2 = nn.Conv2d(channels, channels, 3, padding=1)
+        self.bn2 = nn.BatchNorm2d(channels)
+        self.relu = nn.ReLU(inplace=True)
+        
+```
+
+### Code (continued)
+
+```python
+    def forward(self, x):
+        identity = x
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        out += identity  # Skip connection
+        return self.relu(out)
+```
+
+### Attention Mechanisms
+
+The attention weight computation:
+
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+
+Where:
+- $Q$ is the query matrix
+- $K$ is the key matrix  
+- $V$ is the value matrix
+- $d_k$ is the key dimension
+
+Attention mechanisms have revolutionized deep learning, particularly in natural language processing and computer vision. The key insight is that not all parts of the input are equally important for making predictions.
+
+
+
+
+
+### Attention Mechanisms (2)
+
+**Self-Attention**: When Q, K, and V all come from the same input sequence, we get self-attention. This allows the model to relate different positions in the sequence to each other.
+
+**Multi-Head Attention**: Instead of using a single attention function, we can use multiple attention "heads":
+
+$$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O$$
+
+where $\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$
+
+This allows the model to attend to information from different representation subspaces at different positions simultaneously.
+
+
+
+
+
+### Attention Mechanisms (3)
+
+**Computational Complexity**: The attention mechanism has $O(n^2)$ complexity with respect to sequence length.
+
+Can be prohibitive for very long sequences. recent innovations like:
+- Sparse attention patterns
+- Linear attention
+- Efficient attention approximations
+
+aim to address this limitation.
+
+<!-- Transition: Moving to next topic -->
+
+
+
+## Training Dynamics & Optimization
+
+
+
+
+
+
+
+### Adaptive Learning Rates
+
+Adam optimizer combines momentum and adaptive learning rates:
+
+$$m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t$$
+$$v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2$$
+$$\hat{m}_t = \frac{m_t}{1-\beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1-\beta_2^t}$$
+$$\theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon}\hat{m}_t$$
+
+![Training Loss Curve](figures/loss_function.png)
+
+### Regularization Techniques
+
+**Dropout**: Randomly zero out neurons during training
+
+**Batch Normalization**: Normalize layer inputs
+
+$$\hat{x} = \frac{x - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$$
+$$y = \gamma \hat{x} + \beta$$
+
+**Weight Decay**: L2 regularization on parameters
+
+$$L_{total} = L_{data} + \lambda \sum_i w_i^2$$
+
+Regularization is crucial for preventing overfitting in deep networks. Let's examine each technique:
+
+
+
+
+
+### Regularization Techniques (2)
+
+**Dropout** (Srivastava et al., 2014):
+- During training, randomly set activations to zero with probability $p$
+- Forces the network to not rely on specific neurons
+- Equivalent to training an ensemble of networks
+- At test time, scale activations by $(1-p)$ or use "inverted dropout"
+
+
+
+
+
+### Regularization Techniques (3)
+
+**Batch Normalization** (Ioffe & Szegedy, 2015):
+- Normalizes inputs to each layer to have zero mean and unit variance
+- Reduces internal covariate shift
+- Allows higher learning rates
+- Acts as a regularizer (slight noise from batch statistics)
+- $\gamma$ and $\beta$ are learnable parameters that allow the network to undo the normalization if needed
+
+
+
+
+
+### Regularization Techniques (4)
+
+**Weight Decay**:
+- Penalizes large weights, encouraging simpler models
+- Equivalent to L2 regularization when using SGD
+- Note: With Adam optimizer, weight decay and L2 regularization are different!
+
+**Other Modern Techniques**:
+- **Layer Normalization**: Normalizes across features instead of batch
+- **Group Normalization**: Compromise between batch and layer norm
+- **Spectral Normalization**: Controls Lipschitz constant of layers
+
+<!-- Transition: Moving to next topic -->
+
+
+
+## Practical Implementation
+
+
+
+
+
+
+
+### Data Pipeline Optimization
+
+```python
+
+
+<!-- Transition: Moving to next topic -->
+
+
+
+# Efficient data loading with PyTorch
+class ImageDataset(Dataset):
+    def __init__(self, image_paths, transforms=None):
+        self.image_paths = image_paths
+        self.transforms = transforms
+        
+    def __getitem__(self, idx):
+        image = Image.open(self.image_paths[idx])
+        if self.transforms:
+            image = self.transforms(image)
+```
+
+### Code (continued)
+
+```python
+        return image
+        
+    def __len__(self):
+        return len(self.image_paths)
+
+
+
+
+
+<!-- Transition: Moving to next topic -->
+
+
+
+# Multi-worker data loading
+dataloader = DataLoader(
+    dataset, 
+```
+
+### Code (continued)
+
+```python
+    batch_size=32, 
+    num_workers=4,
+    pin_memory=True  # Faster GPU transfer
+)
+```
+
+### Model Evaluation Metrics
+
+For classification tasks, we track multiple metrics:
+
+**Accuracy**: $\frac{\text{Correct Predictions}}{\text{Total Predictions}}$
+
+**Precision**: $\frac{TP}{TP + FP}$
+
+**Recall**: $\frac{TP}{TP + FN}$
+
+**F1-Score**: $\frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$
+
+![Confusion Matrix](figures/confusion_matrix.png)
+
+<!-- Transition: Moving to next topic -->
+
+
+
+## Cutting-Edge Research Directions
+
+
+
+
+
+
+
+### Self-Supervised Learning
+
+Learning representations without labels:
+
+- **Contrastive Learning**: SimCLR, MoCo, SwAV
+- **Masked Language Modeling**: BERT, RoBERTa
+- **Autoregressive Generation**: GPT, PaLM
+
+
+
+
+
+
+
+### Neural Architecture Search (NAS)
+
+Automating architecture design:
+
+$$\mathcal{A}^* = \arg\max_{\mathcal{A} \in \mathcal{S}} \text{Accuracy}(\mathcal{A}) - \lambda \cdot \text{Complexity}(\mathcal{A})$$
+
+The field is rapidly evolving with several exciting research directions:
+
+**Self-Supervised Learning**:
+This paradigm aims to learn useful representations from unlabeled data by designing pretext tasks. Key approaches include:
+
+
+
+
+
+### Neural Architecture Search (NAS) (2)
+
+1. **Contrastive Methods**: Learn by pulling similar examples together and pushing dissimilar ones apart
+   - SimCLR: Uses data augmentation to create positive pairs
+   - MoCo: Maintains a queue of negative examples
+   - SwAV: Uses cluster assignments as targets
+
+2. **Generative Methods**: Learn by reconstructing input data
+   - Masked language modeling (BERT)
+   - Autoregressive generation (GPT)
+   - Masked autoencoders (MAE)
+
+
+
+
+
+### Neural Architecture Search (NAS) (3)
+
+**Neural Architecture Search**:
+- **Differentiable NAS**: DARTS makes architecture search differentiable
+- **Efficient Search**: Progressive search, early stopping, weight sharing
+- **Hardware-Aware NAS**: Optimize for specific deployment constraints
+
+**Emerging Paradigms**:
+- **Foundation Models**: Large-scale pre-trained models (GPT, CLIP)
+- **Few-Shot Learning**: Learning from minimal examples
+- **Continual Learning**: Learning new tasks without forgetting old ones
+- **Federated Learning**: Training across distributed devices while preserving privacy
+
+<!-- Transition: Moving to next topic -->
+
+
+
+## Hands-On Exercise
+
+
+
+
+
+
+
+### Building a Modern CNN
+
+```python
+import torch
+import torch.nn as nn
+
+class ModernCNN(nn.Module):
+    def __init__(self, num_classes=10):
+        super().__init__()
+        
+        # Feature extraction
+        self.features = nn.Sequential(
+            # Block 1
+```
+
+### Code (continued)
+
+```python
+            nn.Conv2d(3, 64, 7, stride=2, padding=3),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(3, stride=2, padding=1),
+            
+            # Block 2 - Residual blocks would go here
+            self._make_layer(64, 128, 2),
+            self._make_layer(128, 256, 2),
+            self._make_layer(256, 512, 2),
+        )
+```
+
+### Code (continued)
+
+```python
+        
+        # Classification head
+        self.classifier = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            nn.Flatten(),
+            nn.Dropout(0.5),
+            nn.Linear(512, num_classes)
+        )
+```
+
+As we conclude this advanced lecture on deep neural networks, let's consolidate the key insights:
+
+
+
+
+
+### Practical Guidelines (2)
+
+**Theoretical Foundation**:
+- The universal approximation theorem provides the mathematical foundation for neural networks
+- Backpropagation enables efficient gradient computation through the chain rule
+- Understanding the loss landscape helps us navigate optimization challenges
+
+**Architectural Evolution**:
+- From simple MLPs to complex architectures like ResNets and Transformers
+- Each architectural innovation addresses specific limitations of previous approaches
+- Attention mechanisms have become ubiquitous across domains
+
+
+
+
+
+### Practical Guidelines (3)
+
+**Training Considerations**:
+- Modern optimizers like Adam adapt learning rates automatically
+- Regularization techniques prevent overfitting and improve generalization
+- Proper initialization and normalization are crucial for training stability
+
+**Current Research**:
+- Self-supervised learning reduces dependence on labeled data
+- Neural architecture search automates design decisions
+- Foundation models are changing how we think about AI deployment
+
+
+
+
+
+### Practical Guidelines (4)
+
+**Practical Wisdom**:
+- Start with proven architectures and adapt gradually
+- Invest time in understanding your data and problem domain
+- Monitor training dynamics carefully - they tell you what's happening
+- Don't optimize prematurely - get a working baseline first
+
+The field of deep learning continues to evolve rapidly. Stay curious, experiment boldly.
+
+Always ground your work in solid fundamentals.
+
+<!-- Transition: Moving to next topic -->
+
+
+
+## References & Further Reading
+
+1. Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press.
+2. He, K., et al. (2016). Deep Residual Learning for Image Recognition. CVPR.
+3. Vaswani, A., et al. (2017). Attention is All You Need. NeurIPS.
+4. Kingma, D. P., & Ba, J. (2015). Adam: A Method for Stochastic Optimization. ICLR.
+
+---
+*Next lecture: Advanced Topics in Generative Models*

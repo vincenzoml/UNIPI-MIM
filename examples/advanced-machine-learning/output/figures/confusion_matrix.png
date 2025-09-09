@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
+  <!-- Confusion Matrix Visualization -->
+  <defs>
+    <style>
+      .matrix-cell { stroke: white; stroke-width: 2; }
+      .cell-text { font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; font-weight: bold; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .axis-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="250" y="30" class="title">Confusion Matrix - Classification Results</text>
+  
+  <!-- Matrix 3x3 for 3-class classification -->
+  <!-- Row 1 -->
+  <rect x="150" y="80" width="60" height="60" fill="#1B5E20" class="matrix-cell"/>
+  <text x="180" y="115" class="cell-text" fill="white">847</text>
+  
+  <rect x="210" y="80" width="60" height="60" fill="#FFCDD2" class="matrix-cell"/>
+  <text x="240" y="115" class="cell-text" fill="black">12</text>
+  
+  <rect x="270" y="80" width="60" height="60" fill="#FFCDD2" class="matrix-cell"/>
+  <text x="300" y="115" class="cell-text" fill="black">8</text>
+  
+  <!-- Row 2 -->
+  <rect x="150" y="140" width="60" height="60" fill="#FFCDD2" class="matrix-cell"/>
+  <text x="180" y="175" class="cell-text" fill="black">15</text>
+  
+  <rect x="210" y="140" width="60" height="60" fill="#2E7D32" class="matrix-cell"/>
+  <text x="240" y="175" class="cell-text" fill="white">891</text>
+  
+  <rect x="270" y="140" width="60" height="60" fill="#FFCDD2" class="matrix-cell"/>
+  <text x="300" y="175" class="cell-text" fill="black">22</text>
+  
+  <!-- Row 3 -->
+  <rect x="150" y="200" width="60" height="60" fill="#FFCDD2" class="matrix-cell"/>
+  <text x="180" y="235" class="cell-text" fill="black">7</text>
+  
+  <rect x="210" y="200" width="60" height="60" fill="#FFCDD2" class="matrix-cell"/>
+  <text x="240" y="235" class="cell-text" fill="black">19</text>
+  
+  <rect x="270" y="200" width="60" height="60" fill="#1B5E20" class="matrix-cell"/>
+  <text x="300" y="235" class="cell-text" fill="white">832</text>
+  
+  <!-- Axis labels -->
+  <text x="120" y="115" class="label">Class A</text>
+  <text x="120" y="175" class="label">Class B</text>
+  <text x="120" y="235" class="label">Class C</text>
+  
+  <text x="180" y="70" class="label">Class A</text>
+  <text x="240" y="70" class="label">Class B</text>
+  <text x="300" y="70" class="label">Class C</text>
+  
+  <!-- Axis titles -->
+  <text x="70" y="170" class="axis-title" transform="rotate(-90 70 170)">True Label</text>
+  <text x="240" y="50" class="axis-title">Predicted Label</text>
+  
+  <!-- Performance Metrics -->
+  <g id="metrics">
+    <rect x="50" y="300" width="400" height="80" fill="#f5f5f5" stroke="#ddd"/>
+    <text x="60" y="320" style="font-size: 14px; font-weight: bold;">Performance Metrics:</text>
+    
+    <text x="60" y="340" style="font-size: 12px;">Overall Accuracy: 97.2%</text>
+    <text x="250" y="340" style="font-size: 12px;">Macro F1-Score: 0.971</text>
+    
+    <text x="60" y="355" style="font-size: 12px;">Class A Precision: 98.1%</text>
+    <text x="250" y="355" style="font-size: 12px;">Class B Precision: 96.7%</text>
+    
+    <text x="60" y="370" style="font-size: 12px;">Class A Recall: 97.7%</text>
+    <text x="250" y="370" style="font-size: 12px;">Class C Recall: 97.1%</text>
+  </g>
+  
+  <!-- Color Legend -->
+  <g id="legend">
+    <text x="380" y="100" style="font-size: 12px; font-weight: bold;">Intensity:</text>
+    <rect x="380" y="110" width="15" height="15" fill="#1B5E20"/>
+    <text x="400" y="122" style="font-size: 10px;">High (>800)</text>
+    <rect x="380" y="130" width="15" height="15" fill="#2E7D32"/>
+    <text x="400" y="142" style="font-size: 10px;">Medium (400-800)</text>
+    <rect x="380" y="150" width="15" height="15" fill="#FFCDD2"/>
+    <text x="400" y="162" style="font-size: 10px;">Low (<400)</text>
+  </g>
+</svg>

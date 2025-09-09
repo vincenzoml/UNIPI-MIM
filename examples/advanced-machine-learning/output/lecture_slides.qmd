@@ -1,0 +1,188 @@
+---
+editor: visual
+format:
+  revealjs:
+    chalkboard: true
+    preview-links: auto
+    slide-number: true
+    theme: white
+title: Lecture
+---
+
+# Advanced Machine Learning: Deep Neural Networks
+**Author**: Prof. AI Researcher  
+**Date**: September 2025  
+**Institute**: University of Pisa - Master in AI
+
+---
+
+## Overview
+
+Today we'll explore the cutting-edge world of deep neural networks, covering:
+
+- Mathematical foundations of deep learning
+- Advanced architectures and their applications
+- Optimization techniques and regularization
+- Practical implementation strategies
+
+![Neural Network Architecture](figures/neural_network.svg)
+
+---
+
+## Deep Learning Mathematics
+
+---
+
+### Gradient Computation via Backpropagation
+
+The chain rule enables efficient gradient computation:
+
+$$\frac{\partial L}{\partial W^{(l)}} = \frac{\partial L}{\partial z^{(l+1)}} \cdot \frac{\partial z^{(l+1)}}{\partial a^{(l)}} \cdot \frac{\partial a^{(l)}}{\partial W^{(l)}}$$
+
+::: {.notes}
+This slide covers gradient computation via backpropagation.
+Note the mathematical expressions.
+:::
+
+---
+
+### Loss Function Landscape
+
+For classification with $C$ classes:
+
+$$L_{CE} = -\sum_{i=1}^{N} \sum_{c=1}^{C} y_{ic} \log(\hat{y}_{ic})$$
+
+![Training Loss Curve](figures/loss_function.png)
+
+::: {.notes}
+This slide covers loss function landscape.
+Note the mathematical expressions.
+:::
+
+---
+
+### Regularization Techniques
+
+**Dropout**: Randomly zero out neurons during training
+
+**Batch Normalization**: Normalize layer inputs
+
+$$\hat{x} = \frac{x - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$$
+$$y = \gamma \hat{x} + \beta$$
+
+**Weight Decay**: L2 regularization on parameters
+
+$$L_{total} = L_{data} + \lambda \sum_i w_i^2$$
+
+![Confusion Matrix](figures/confusion_matrix.png)
+
+<!-- Transition: Moving to next topic -->
+
+::: {.notes}
+This slide covers regularization techniques.
+Note the mathematical expressions.
+:::
+
+---
+
+## Cutting-Edge Research Directions
+
+---
+
+### Self-Supervised Learning
+
+Learning representations without labels:
+
+- **Contrastive Learning**: SimCLR, MoCo, SwAV
+- **Masked Language Modeling**: BERT, RoBERTa
+- **Autoregressive Generation**: GPT, PaLM
+
+---
+
+### Neural Architecture Search (NAS)
+
+Automating architecture design:
+
+$$\mathcal{A}^* = \arg\max_{\mathcal{A} \in \mathcal{S}} \text{Accuracy}(\mathcal{A}) - \lambda \cdot \text{Complexity}(\mathcal{A})$$
+
+::: {.notes}
+This slide covers neural architecture search (nas).
+Note the mathematical expressions.
+:::
+
+---
+
+### Training Loop Template
+
+```python
+def train_epoch(model, dataloader, optimizer, criterion):
+    model.train()
+    total_loss = 0
+    
+    for batch_idx, (data, target) in enumerate(dataloader):
+        optimizer.zero_grad()
+        output = model(data)
+        loss = criterion(output, target)
+        loss.backward()
+        optimizer.step()
+```
+
+::: {.notes}
+This slide covers training loop template.
+Pay attention to the code examples.
+:::
+
+---
+
+### Code (continued)
+
+```python
+        
+        total_loss += loss.item()
+        
+        if batch_idx % 100 == 0:
+            print(f'Batch {batch_idx}, Loss: {loss.item:.4f}')
+    
+    return total_loss / len(dataloader)
+```
+
+<!-- Transition: Moving to next topic -->
+
+::: {.notes}
+This slide covers code (continued).
+Pay attention to the code examples.
+:::
+
+---
+
+## Key Takeaways
+
+---
+
+### Theoretical Insights
+1. **Universal Approximation**: Neural networks can approximate any function
+2. **Optimization Landscape**: Non-convex but practically trainable
+3. **Generalization**: Capacity control through regularization
+
+---
+
+### Practical Guidelines
+
+1. **Start Simple**: Begin with standard architectures
+2. **Data First**: Quality data > complex models
+3. **Iterate Fast**: Rapid prototyping and experimentation
+4. **Monitor Everything**: Loss, gradients, activations
+
+<!-- Transition: Moving to next topic -->
+
+---
+
+## References & Further Reading
+
+1. Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press.
+2. He, K., et al. (2016). Deep Residual Learning for Image Recognition. CVPR.
+3. Vaswani, A., et al. (2017). Attention is All You Need. NeurIPS.
+4. Kingma, D. P., & Ba, J. (2015). Adam: A Method for Stochastic Optimization. ICLR.
+
+---
+*Next lecture: Advanced Topics in Generative Models*
