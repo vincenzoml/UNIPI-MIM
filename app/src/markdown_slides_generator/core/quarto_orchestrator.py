@@ -241,24 +241,27 @@ class QuartoCommandBuilder:
         """
         args = []
         
+        # Define which boolean options are valid Quarto CLI flags
+        # RevealJS-specific options should be set in the YAML frontmatter, not as CLI flags
+        # Only general Quarto CLI flags should be included here
+        valid_cli_flags = {
+            # General Quarto CLI flags that are valid for all formats
+            # RevealJS-specific options like slide-number, chalkboard, hash, etc.
+            # should be configured in the document's YAML frontmatter instead
+        }
+        
         for key, value in config.items():
             if value is None:
                 continue
                 
-            # Handle different value types
-            if isinstance(value, bool):
+            # Only convert boolean flags that are valid CLI options
+            if isinstance(value, bool) and key in valid_cli_flags:
                 if value:
                     args.extend([f'--{key}'])
-            elif isinstance(value, (str, int, float)):
-                args.extend([f'--{key}', str(value)])
-            elif isinstance(value, dict):
-                # For nested configurations, we'll handle them in YAML frontmatter
-                # This is more appropriate for complex Quarto configurations
+            else:
+                # Skip values that should be set in frontmatter
+                # or are not valid CLI flags
                 continue
-            elif isinstance(value, list):
-                # Handle list values (e.g., for multiple options)
-                for item in value:
-                    args.extend([f'--{key}', str(item)])
         
         return args
     
@@ -428,14 +431,37 @@ class QuartoExecutor:
             env = dict(os.environ)
             env.update(command.env_vars)
             
+            # Determine working directory. If the input file exists, run Quarto
+            # from its parent directory and pass only the filename as the input
+            # to avoid duplicated path segments (e.g., "output/output/...")
+            input_path = Path(command.input_file)
+            cwd = input_path.parent if input_path.exists() else None
+
+            # If we run with cwd set to the input file's parent, replace the
+            # input file argument in the command with the basename so Quarto
+            # is invoked with a path relative to cwd.
+            args = list(command.args)
+            if cwd is not None:
+                try:
+                    idx = args.index(str(command.input_file))
+                    args[idx] = input_path.name
+                except ValueError:
+                    # If the exact string isn't found, try with an absolute path
+                    try:
+                        idx = args.index(str(input_path.resolve()))
+                        args[idx] = input_path.name
+                    except ValueError:
+                        # Fallback: leave args unchanged
+                        pass
+
             # Execute command
             result = subprocess.run(
-                command.args,
+                args,
                 capture_output=True,
                 text=True,
                 timeout=timeout,
                 env=env,
-                cwd=Path(command.input_file).parent if Path(command.input_file).exists() else None
+                cwd=str(cwd) if cwd is not None else None
             )
             
             execution_time = time.time() - start_time

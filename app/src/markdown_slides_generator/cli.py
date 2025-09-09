@@ -312,10 +312,14 @@ def generate(
         slides_file = output_dir / f"{input_file.stem}_slides.qmd"
         notes_file_path = output_dir / f"{input_file.stem}_notes.qmd"
         
+        # Prepend YAML frontmatter so Quarto reads document-level options
+        slides_frontmatter = f"---\nformat: revealjs\ntheme: {theme}\n---\n\n"
+        notes_frontmatter = "---\nformat: pdf\n---\n\n"
+
         with open(slides_file, 'w', encoding='utf-8') as f:
-            f.write(slides_content)
+            f.write(slides_frontmatter + slides_content)
         with open(notes_file_path, 'w', encoding='utf-8') as f:
-            f.write(notes_content)
+            f.write(notes_frontmatter + notes_content)
         
         # Prepare template variables from config and CLI
         variables = dict(final_config.variables)

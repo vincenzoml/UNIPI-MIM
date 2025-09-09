@@ -238,6 +238,9 @@ class ConfigManager:
         config_dict = asdict(config)
         
         # Map CLI options to configuration paths
+        # Map simple CLI options to config paths. Boolean flags like 'verbose' and
+        # 'quiet' are handled specially below to avoid accidentally writing raw
+        # booleans into string fields (which caused .upper() on a bool).
         cli_mapping = {
             'format': ('output', 'formats'),
             'output_dir': ('output', 'directory'),
@@ -247,25 +250,29 @@ class ConfigManager:
             'title': ('variables', 'title'),
             'date': ('variables', 'date'),
             'institute': ('variables', 'institute'),
-            'verbose': ('logging', 'level'),
-            'quiet': ('logging', 'level'),
         }
         
         # Apply CLI options
         for cli_key, config_path in cli_mapping.items():
             if cli_key in cli_options and cli_options[cli_key] is not None:
                 value = cli_options[cli_key]
-                
+
                 # Special handling for some options
-                if cli_key == 'verbose' and value:
-                    value = 'DEBUG'
-                elif cli_key == 'quiet' and value:
-                    value = 'WARNING'
-                elif cli_key == 'format' and isinstance(value, (list, tuple)):
-                    value = list(value)
-                
+                if cli_key == 'format':
+                    # click passes multiple --format options as a tuple; convert to list
+                    if isinstance(value, (list, tuple)):
+                        value = list(value)
+
                 # Set the value in config dictionary
                 self._set_nested_value(config_dict, config_path, value)
+
+        # Handle boolean flags that map to logging level explicitly. Only
+        # apply them when True to avoid setting the logging.level to a boolean
+        # (which later code calls .upper() on).
+        if 'verbose' in cli_options and cli_options.get('verbose'):
+            self._set_nested_value(config_dict, ('logging', 'level'), 'DEBUG')
+        elif 'quiet' in cli_options and cli_options.get('quiet'):
+            self._set_nested_value(config_dict, ('logging', 'level'), 'WARNING')
         
         return self._create_config_from_dict(config_dict)
     

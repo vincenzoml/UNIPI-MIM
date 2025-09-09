@@ -137,22 +137,35 @@ class TestQuartoCommandBuilder:
     def test_config_to_args_conversion(self):
         """Test configuration dictionary to command line arguments conversion."""
         config = {
-            'theme': 'white',
-            'slide-number': True,
-            'incremental': False,
-            'fontsize': '11pt',
+            'theme': 'white',  # Should be in frontmatter, not CLI
+            'slide-number': True,  # Valid CLI flag
+            'incremental': False,  # False values should not be included
+            'fontsize': '11pt',  # Should be in frontmatter, not CLI  
+            'chalkboard': True,  # Valid CLI flag
+            'help': True,  # Should NOT be CLI flag (causes --help issue)
             'nested_config': {'key': 'value'}  # Should be ignored
         }
         
         args = self.builder._config_to_args(config, OutputFormat.REVEALJS)
         
-        assert '--theme' in args
-        assert 'white' in args
-        assert '--slide-number' in args
-        assert '--incremental' not in args  # False values should not be included
-        assert '--fontsize' in args
-        assert '11pt' in args
-        assert '--nested_config' not in args  # Nested configs should be ignored
+        # With the fix, NO RevealJS-specific CLI flags should be included
+        # All RevealJS options should be set in the document's YAML frontmatter
+        
+        # These CLI flags should NOT be included (set in frontmatter instead)
+        assert '--slide-number' not in args
+        assert '--chalkboard' not in args
+        assert '--theme' not in args
+        assert 'white' not in args
+        assert '--fontsize' not in args
+        assert '11pt' not in args
+        
+        # False values and invalid flags should not be included
+        assert '--incremental' not in args
+        assert '--help' not in args  # This was causing the original bug
+        assert '--nested_config' not in args
+        
+        # The args should be minimal - only the basic command structure
+        # No format-specific CLI flags should be present
 
 
 class TestQuartoExecutor:
