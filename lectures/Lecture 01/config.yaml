@@ -12,9 +12,9 @@ output:
 
 # Slides configuration with standard RevealJS theme
 slides:
-  theme: "night"  
+  theme: "white"  
   template: null
-  max_content_length: 1000
+  max_content_length: 200
   auto_split: true
   transition: "slide"  # Standard slide transition
   controls: true
