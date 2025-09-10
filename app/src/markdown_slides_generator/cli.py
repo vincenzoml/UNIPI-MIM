@@ -68,7 +68,7 @@ def _perform_generation(
     
     # Generate proper YAML frontmatter with all RevealJS options
     slides_frontmatter = quarto_orchestrator.generate_revealjs_frontmatter(
-        final_config.slides.__dict__, theme
+        final_config.slides.__dict__, theme, str(input_file), str(slides_file)
     )
 
     # Determine notes format(s) from configuration (allowing override)

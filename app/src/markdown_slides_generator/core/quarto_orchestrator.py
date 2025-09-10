@@ -894,7 +894,7 @@ class QuartoOrchestrator:
                         content = parts[2].strip()
                 
                 # Generate new frontmatter with correct theme path
-                frontmatter = self.generate_revealjs_frontmatter(slides_config, actual_theme)
+                frontmatter = self.generate_revealjs_frontmatter(slides_config, actual_theme, input_file, output_file)
                 
                 # Overwrite the file with new frontmatter
                 with open(input_file, 'w', encoding='utf-8') as f:
@@ -1406,13 +1406,16 @@ class QuartoOrchestrator:
         """
         return self.template_manager
     
-    def generate_revealjs_frontmatter(self, slides_config: Dict[str, Any], theme: str = "white") -> str:
+    def generate_revealjs_frontmatter(self, slides_config: Dict[str, Any], theme: str = "white", 
+                                     input_file: Optional[str] = None, output_file: Optional[str] = None) -> str:
         """
         Generate proper RevealJS YAML frontmatter from slides configuration.
         
         Args:
             slides_config: Slides configuration dictionary
             theme: RevealJS theme name
+            input_file: Optional input file path (for resolving relative theme paths)
+            output_file: Optional output file path (for copying local theme files)
             
         Returns:
             YAML frontmatter string with proper RevealJS format
@@ -1426,8 +1429,37 @@ class QuartoOrchestrator:
         
         # Handle theme specification
         if theme.endswith('.scss'):
-            # Custom theme file - use SCSS processing
-            frontmatter['format']['revealjs']['theme'] = [theme]
+            # Custom local SCSS theme file
+            theme_path = Path(theme)
+            
+            # Handle relative paths if input_file is available
+            if not theme_path.is_absolute() and input_file:
+                theme_path = Path(input_file).parent / theme_path
+            
+            if theme_path.exists() and output_file:
+                # Copy the SCSS file to the output directory so Quarto can find it
+                output_dir = Path(output_file).parent
+                copied_theme = output_dir / theme_path.name
+                
+                # Ensure output directory exists
+                output_dir.mkdir(parents=True, exist_ok=True)
+                
+                # Read and copy the theme file
+                with open(theme_path, 'r', encoding='utf-8') as f:
+                    theme_content = f.read()
+                with open(copied_theme, 'w', encoding='utf-8') as f:
+                    f.write(theme_content)
+                
+                # Use the copied file name (relative to output directory)
+                frontmatter['format']['revealjs']['theme'] = [copied_theme.name]
+                logger.info(f"Copied local theme '{theme}' to output directory: {copied_theme.name}")
+            elif theme_path.exists():
+                # File exists but no output directory specified - use as-is
+                frontmatter['format']['revealjs']['theme'] = [theme]
+                logger.info(f"Using local theme file: {theme}")
+            else:
+                logger.warning(f"Local theme file not found: {theme_path}")
+                frontmatter['format']['revealjs']['theme'] = [theme]
         elif theme.startswith('academic-'):
             # Built-in academic theme - use generated SCSS file with proper processing
             scss_file = f"{theme}.scss"

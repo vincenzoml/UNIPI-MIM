@@ -35,6 +35,9 @@ class ConfigValidator:
         self.errors.clear()
         self.warnings.clear()
         
+        # Store config directory for relative path resolution
+        self._config_dir = config_path.parent if config_path else None
+        
         logger.debug("Starting configuration validation")
         
         try:
@@ -152,14 +155,27 @@ class ConfigValidator:
             if not isinstance(theme, str):
                 self.errors.append("slides.theme must be a string")
             else:
-                # Basic theme validation - check against common themes
-                common_themes = {
-                    'academic-minimal', 'academic-modern', 'academic-classic', 'academic-technical', 'academic-elegant',
-                    'dark', 'white', 'black', 'league', 'beige', 'sky',
-                    'night', 'serif', 'simple', 'solarized', 'blood', 'moon'
-                }
-                if theme not in common_themes and not theme.startswith('custom-'):
-                    self.errors.append(f"Unknown theme '{theme}'. Available themes: {', '.join(sorted(common_themes))}")
+                # Check if it's a local SCSS file
+                if theme.endswith('.scss'):
+                    theme_path = Path(theme)
+                    if not theme_path.is_absolute():
+                        # Relative path - check if file exists relative to config
+                        if hasattr(self, '_config_dir') and self._config_dir:
+                            theme_path = self._config_dir / theme_path
+                        else:
+                            theme_path = Path.cwd() / theme_path
+                    
+                    if not theme_path.exists():
+                        self.errors.append(f"Theme file '{theme}' not found at path: {theme_path}")
+                else:
+                    # Basic theme validation - check against common themes
+                    common_themes = {
+                        'academic-minimal', 'academic-modern', 'academic-classic', 'academic-technical', 'academic-elegant',
+                        'dark', 'white', 'black', 'league', 'beige', 'sky',
+                        'night', 'serif', 'simple', 'solarized', 'blood', 'moon'
+                    }
+                    if theme not in common_themes and not theme.startswith('custom-'):
+                        self.errors.append(f"Unknown theme '{theme}'. Available themes: {', '.join(sorted(common_themes))}")
         
         # Validate numeric options
         numeric_options = {
