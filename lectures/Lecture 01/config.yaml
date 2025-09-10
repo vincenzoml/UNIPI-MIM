@@ -28,10 +28,11 @@ slides:
 
 # Processing settings - enable good styling features
 processing:
-  intelligent_splitting: true
+  intelligent_splitting: false
   syntax_highlighting: true
+  fragments: false
   math_renderer: "mathjax"
-  content_validation: true
+  content_validation: false
   image_optimization: true
 
 # Notes configuration
@@ -43,4 +44,4 @@ notes:
 # Variables for templating
 variables:
   author: "Vincenzo Ciancia"
-  institution: "University of Pisa"
+  institution: "Istituto di Scienza e Tecnologie dell'Informazione, Consiglio Nazionale delle Ricerche (ISTI-CNR)"

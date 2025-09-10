@@ -4,15 +4,12 @@
 **Date:** September 10, 2025  
 **Instructor:** Vincenzo Ciancia
 
----
-
----
 
 <!-- NOTES -->
 
 ## The course
 
-This course stems from the need to introduce symbolic and hybrid methods to students and future professionals in the Informatics for Digital Health program, aligning with broader movements toward trustworthy, explainable, and auditable AI in sensitive domains.
+This course stems from the need to introduce symbolic and hybrid methods to students and future professionals in the Informatics for Digital Health program, aligning with broader movements toward trustworthy, explainable, a nd auditable AI in sensitive domains.
 
 While the methods presented here represent only a small part of the current research frontier, there is not yet a well-established methodology in this area. Thus, it is essential to foster the development and dissemination of these approaches among new generations which will be the ones shaping the actual implementation plan for digital health in the coming decades, and must possess all the needed instruments to critically evaluate and apply them.
 
@@ -38,7 +35,8 @@ The production of the course material **has been aided by AI agents**, but both 
 
 <!-- NOTES -->
 
-**Focus of the course:**  
+## Formal methods for medical imaging
+
 This course focuses on a selection of topics that are at the edge between classical programming and fully-blackbox-driven AI. For the "symbolic" part, we will study *model checking* (Clarke & Emerson, 1981; Queille & Sifakis, 1982). This approach, when applied to AI, diverts from the traditional "deductive" idea of symbolic AI using automated theorem proving and logic programming. Model checking emphasizes the pragmatic use of executable domain knowledge. In model checking, properties of a system (or, in our context, medical images and their features) are specified formally and then automatically verified against concrete models using efficient algorithms. As we shall see, this paradigm is particularly effective in Computer Vision, although such applications appeared only recently and in a totally unexpected way. 
 
 <!-- SLIDE -->
@@ -75,8 +73,6 @@ By fostering knowledge and skills in these areas, the course supports the broade
 <!-- SLIDE -->
 <!-- NOTES -->
 
----
-
 ## Multidisciplinary, seminar-style structure of the course
 
 This course is intentionally multidisciplinary and delivered in a seminar-style format: multiple experts active at the research frontier contribute lectures, discussions, and hands-on sessions, reflecting the integrative demands articulated in hybrid AI discourse (Sun, 2002; Bengio, 2019). Rather than a single-perspective treatment, you will encounter complementary viewpoints spanning methodology, clinical/technical imaging practice, and hybrid AI engineering (Belmonte et al., 2024). The rotating instructors each focus on their domain strengths—ensuring that formal reasoning, imaging physics, data engineering, spatial logics, radiomics, and hybrid AI practices are all grounded in current research questions and real-world constraints (Russell, 2019).
@@ -84,22 +80,32 @@ This course is intentionally multidisciplinary and delivered in a seminar-style 
 ### Complementary thematic threads (as reflected in the schedule)
 
 - Foundations of paradigms: symbolic, formal, subsymbolic, and hybrid approaches; positioning model checking among verification techniques
+
 - Ethics and human‑centric AI: responsible use, transparency, professional considerations
+
 - Medical imaging physics & modalities: CT / MRI acquisition principles and reconstruction pipelines
+
 - Image reconstruction & enhancement: algorithms, low‑dose strategies, artifact reduction, links to deep learning
+
 - Data engineering & preparation: pipeline design, dataset creation, curation, governance
+
 - Pre-processing & segmentation fundamentals: from theoretical principles to practical brain imaging segmentation
+
 - Spatial logics & declarative image analysis: model checking, VoxLogicA, expressive spatial property specification
+
 - Advanced declarative workflows: performance optimisation, tooling (e.g. voxlogica.py), case study–driven refinement
+
 - Radiomics & machine learning: feature extraction, pipelines, evaluation protocols, model cards, ethical implications
+
 - Performance and constraints: metrics beyond accuracy (geometry, distance, reachability), pitfalls and failure modes
+
 - Hybrid AI integration: combining spatial logic specifications with neural architectures (e.g. nnU-Net), determinism and reproducibility concerns
+
 - Case studies: brain lesion segmentation, brain tissue identification, comparative methodological insights
+
 - Reproducibility & documentation: dataset selection, metrics reporting, traceability, exam preparation
 
 These threads are interleaved: conceptual lectures introduce formal or methodological tools, followed by practical hands-on sessions that expose implementation subtleties, optimisation trade-offs, and ethical or professional implications (Russell, 2019; Marcus, 2020). You are encouraged to treat the material not as a linear textbook narrative but as a mosaic of interoperable techniques that can be recombined when designing robust, explainable, and clinically relevant imaging workflows (Sun, 2002; Bengio, 2019).
-
----
 
 ## Symbolic and Hybrid AI
 ### Introduction
