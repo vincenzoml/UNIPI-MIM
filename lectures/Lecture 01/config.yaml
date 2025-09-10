@@ -2,17 +2,17 @@
 # Uses the 'moon' theme with dynamic animations and effects
 
 version: '1.0'
-name: fancy-revealjs-config
-description: Fancy style with standard RevealJS moon theme
+name: config
+description: Fancy style with standard RevealJS theme
 
 # Output configuration
 output:
-  formats: ["html"]  # Generate HTML slides with standard RevealJS theme
-  directory: "outputfr"
+  formats: ["revealjs"]  # Generate HTML slides with standard RevealJS theme
+  directory: "output"
 
 # Slides configuration with standard RevealJS theme
 slides:
-  theme: "moon"  # Dark, elegant RevealJS theme with fancy styling
+  theme: "night"  
   template: null
   max_content_length: 1000
   auto_split: true
@@ -23,3 +23,7 @@ slides:
   touch: true
   fragments: true  # Enable fancy fragment animations
   navigation_mode: default
+
+# Notes configuration: generate HTML notes as requested
+notes:
+  formats: ["html"]

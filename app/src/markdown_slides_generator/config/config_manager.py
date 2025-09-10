@@ -60,6 +60,8 @@ class SlideConfig:
 @dataclass
 class NotesConfig:
     """Configuration for notes generation."""
+    # Allow selecting desired notes output format(s) from configuration
+    formats: List[str] = field(default_factory=lambda: ['pdf'])
     style: str = 'academic'
     template: Optional[str] = None
     include_toc: bool = True

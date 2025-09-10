@@ -386,10 +386,12 @@ class BatchProcessor:
                     if self.config.batch.error_handling == 'stop':
                         raise
             
-            # Generate notes
+            # Generate notes (use configured notes formats, default to pdf)
             try:
+                notes_formats = getattr(self.config.notes, 'formats', None) or ['pdf']
+                notes_primary = notes_formats[0]
                 notes_output = self.quarto_orchestrator.generate_notes(
-                    str(notes_file_path), 'pdf'
+                    str(notes_file_path), notes_primary
                 )
                 generated_files.append(notes_output)
             except Exception as e:

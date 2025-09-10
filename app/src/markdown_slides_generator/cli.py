@@ -316,7 +316,13 @@ def generate(
         slides_frontmatter = quarto_orchestrator.generate_revealjs_frontmatter(
             final_config.slides.__dict__, theme
         )
-        notes_frontmatter = "---\nformat: pdf\n---\n\n"
+
+        # Determine notes format(s) from configuration (allowing override)
+        notes_formats = getattr(final_config.notes, 'formats', None) or ['pdf']
+        # Use the first requested notes format as the primary output
+        notes_primary_format = notes_formats[0]
+        # Generate simple notes frontmatter using the selected format
+        notes_frontmatter = f"---\nformat: {notes_primary_format}\n---\n\n"
 
         with open(slides_file, 'w', encoding='utf-8') as f:
             f.write(slides_frontmatter + slides_content)
@@ -376,15 +382,16 @@ def generate(
                 click.echo("📚 Generating notes...")
             
             try:
+                # Decide notes generation format(s) and trigger generation for primary
+                # If template explicitly targets notes, prefer templated generation
                 if template and 'notes' in template:
-                    # Use templated notes
                     notes_output = quarto_orchestrator.generate_templated_notes(
-                        str(notes_file_path), template, 'pdf', None, variables
+                        str(notes_file_path), template, notes_primary_format, None, variables
                     )
                 else:
-                    # Use standard notes generation
+                    # Use standard notes generation with configured primary format
                     notes_output = quarto_orchestrator.generate_notes(
-                        str(notes_file_path), 'pdf'
+                        str(notes_file_path), notes_primary_format
                     )
                 generated_files.append(notes_output)
                 click.echo(f"✓ Generated notes: {Path(notes_output).name}")
