@@ -1,0 +1,48 @@
+# Configuration for Fancy Style using Built-in Academic Theme
+# Uses the academic-elegant theme with sophisticated design
+
+# Output configuration
+output:
+  formats: ["html"]  # Generate HTML slides with built-in theme
+  directory: "outputfb"
+
+# Theme configuration - Built-in Academic Elegant Theme
+theme: "academic-elegant"  # Sophisticated design with Playfair Display fonts, purple/gold colors
+
+# Slides configuration
+slides:
+  title_slide: true
+  slide_numbers: true
+  progress_bar: true
+  controls: true
+  touch: true
+  fragments: true
+  transition: "fade"
+  background_transition: "fade"
+  
+  # Advanced RevealJS options
+  hash: true
+  history: false
+  keyboard: true
+  overview: true
+  center: false
+  loop: false
+  rtl: false
+  navigation_mode: "default"
+  
+  # Interactive features
+  chalkboard: true
+  menu: true
+  
+# Content validation
+validation:
+  enabled: true
+  strict_mode: false
+  latex_validation: true
+
+# Performance optimization
+optimization:
+  enabled: true
+  slide_splitting: "auto"
+  content_optimization: true
+  image_optimization: false

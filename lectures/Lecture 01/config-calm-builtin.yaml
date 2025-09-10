@@ -1,0 +1,48 @@
+# Configuration for Calm Style using Built-in Academic Theme
+# Uses the academic-minimal theme with clean, simple design
+
+# Output configuration
+output:
+  formats: ["html"]  # Generate HTML slides with built-in theme
+  directory: "output-cb"
+
+# Theme configuration - Built-in Academic Minimal Theme
+theme: "academic-minimal"  # Clean, minimal design perfect for academic presentations
+
+# Slides configuration
+slides:
+  title_slide: true
+  slide_numbers: false  # Cleaner look without slide numbers
+  progress_bar: true
+  controls: true
+  touch: true
+  fragments: false  # Less animation for calm style
+  transition: "none"  # No transitions for calm presentation
+  background_transition: "none"
+  
+  # Advanced RevealJS options
+  hash: false
+  history: false
+  keyboard: true
+  overview: true
+  center: true  # Centered content for calm style
+  loop: false
+  rtl: false
+  navigation_mode: "default"
+  
+  # Minimal interactive features
+  chalkboard: false  # No chalkboard for calm style
+  menu: false  # No menu for simplicity
+  
+# Content validation
+validation:
+  enabled: true
+  strict_mode: false
+  latex_validation: true
+
+# Performance optimization
+optimization:
+  enabled: true
+  slide_splitting: "auto"
+  content_optimization: true
+  image_optimization: false

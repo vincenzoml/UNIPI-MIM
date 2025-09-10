@@ -1,0 +1,54 @@
+# Configuration for Fancy Style using Standard RevealJS Theme
+# Uses the 'moon' theme with dynamic animations and effects
+
+# Output configuration
+output:
+  formats: ["html"]  # Generate HTML slides with standard RevealJS theme
+  directory: "outputfr"
+
+# Theme configuration - Standard RevealJS Moon Theme
+theme: "moon"  # Dark, elegant RevealJS theme with fancy styling
+
+# Slides configuration
+slides:
+  title_slide: true
+  slide_numbers: true
+  progress_bar: true
+  controls: true
+  touch: true
+  fragments: true  # Enable fancy fragment animations
+  transition: "convex"  # Fancy 3D transition effect
+  background_transition: "convex"
+  
+  # Advanced RevealJS options for fancy style
+  hash: true
+  history: true
+  keyboard: true
+  overview: true
+  center: true
+  loop: false
+  rtl: false
+  navigation_mode: "default"
+  
+  # Full interactive features for fancy style
+  chalkboard: true
+  menu: true
+  
+  # Additional fancy options
+  preview_links: true
+  auto_slide: 0  # Manual control for presentations
+  mouse_wheel: false
+  hide_address_bar: true
+  
+# Content validation
+validation:
+  enabled: true
+  strict_mode: false
+  latex_validation: true
+
+# Performance optimization
+optimization:
+  enabled: true
+  slide_splitting: "auto"
+  content_optimization: true
+  image_optimization: true  # Enable for fancy presentations

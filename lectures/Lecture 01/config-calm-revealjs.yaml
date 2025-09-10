@@ -1,0 +1,54 @@
+# Configuration for Calm Style using Standard RevealJS Theme
+# Uses the 'white' theme with minimal animations and clean design
+
+# Output configuration
+output:
+  formats: ["html"]  # Generate HTML slides with standard RevealJS theme
+  directory: "outputcr"
+
+# Theme configuration - Standard RevealJS White Theme
+theme: "white"  # Clean, minimal white RevealJS theme
+
+# Slides configuration
+slides:
+  title_slide: true
+  slide_numbers: false  # Clean look without slide numbers
+  progress_bar: false  # Minimal UI for calm style
+  controls: true
+  touch: true
+  fragments: false  # No fragment animations for calm style
+  transition: "none"  # No transitions for calm presentation
+  background_transition: "none"
+  
+  # Advanced RevealJS options for calm style
+  hash: false
+  history: false
+  keyboard: true
+  overview: false  # Disable overview for simplicity
+  center: true
+  loop: false
+  rtl: false
+  navigation_mode: "linear"  # Simple linear navigation
+  
+  # Minimal interactive features
+  chalkboard: false
+  menu: false
+  
+  # Calm presentation options
+  preview_links: false
+  auto_slide: 0
+  mouse_wheel: false
+  hide_address_bar: false
+  
+# Content validation
+validation:
+  enabled: true
+  strict_mode: false
+  latex_validation: true
+
+# Performance optimization
+optimization:
+  enabled: true
+  slide_splitting: "conservative"  # Less aggressive splitting for calm style
+  content_optimization: false  # Preserve original content structure
+  image_optimization: false
