@@ -59,6 +59,39 @@ These threads are interleaved: conceptual lectures introduce formal or methodolo
 
 ---
 
+## Symbolic and Hybrid AI
+
+You are an expert academic writer.
+Write a clear, engaging introduction (about 2–3 pages) to the topic of symbolic, subsymbolic, and hybrid AI, suitable for university students.
+
+The introduction should:
+	•	Start with a short historical overview of symbolic vs. subsymbolic AI.
+	•	Introduce hybrid approaches as a response to the limitations of both.
+	•	Explicitly refer to the perspectives of Stuart Russell, Gary Marcus, Yoshua Bengio, and Ron Sun.
+	•	Quote or paraphrase key arguments from their well-known works.
+	•	Use a balanced, didactic tone: critical but accessible.
+	•	End by motivating why hybrid AI is an important direction today.
+
+Use the following freely available references to ground the text (you may quote directly and cite them):
+	1.	Yoshua Bengio (2019). From System 1 Deep Learning to System 2 Reasoning.
+arXiv preprint
+	2.	Gary Marcus (2020). The Next Decade in AI: Four Steps Towards Robust Artificial Intelligence.
+arXiv preprint
+	3.	Stuart Russell (2019). Human Compatible: Artificial Intelligence and the Problem of Control.
+(Excerpts and summaries widely available; see Princeton talk PDF)
+	4.	Ron Sun (2002). Duality of the Mind: A Bottom-Up Approach Toward Cognition.
+(Book overview and selected chapters at ResearchGate)
+	5.	Newell & Simon (1976). Computer Science as Empirical Inquiry: Symbols and Search.
+PDF — the classic statement of symbolic AI.
+	6.	Rumelhart, McClelland & PDP Research Group (1986). Parallel Distributed Processing: Explorations in the Microstructure of Cognition.
+Vol. 1 online PDF — foundation of subsymbolic AI.
+
+⸻
+
+Instruction to the AI system
+
+Using the references above, draft an introduction to symbolic, subsymbolic, and hybrid AI that explains the debate, cites these authors, and motivates hybrid AI as a contemporary research frontier. Ensure that you integrate historical context (Newell & Simon, Rumelhart & McClelland) with modern perspectives (Bengio, Marcus, Russell, Sun).
+
 ## References and Further Reading
 
 1. **Belmonte, G., Bussi, L., Ciancia, V., Latella, D., Massink, M.** (2024). "Towards Hybrid-AI in Imaging Using VoxLogicA." *ISoLA 2024: Leveraging Applications of Formal Methods*, pp. 205-221. DOI: 10.1007/978-3-031-75387-9_13
