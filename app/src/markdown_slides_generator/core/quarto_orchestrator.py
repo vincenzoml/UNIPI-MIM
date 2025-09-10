@@ -792,7 +792,8 @@ class QuartoOrchestrator:
         format: str = "revealjs",
         output_file: Optional[str] = None,
         variables: Optional[Dict[str, Any]] = None,
-        custom_options: Optional[Dict[str, Any]] = None
+        custom_options: Optional[Dict[str, Any]] = None,
+        slides_config: Optional[Dict[str, Any]] = None
     ) -> str:
         """
         Generate slides with custom theme and template.
@@ -833,13 +834,18 @@ class QuartoOrchestrator:
         if custom_options:
             theme_options.update(custom_options)
         
-        # Generate theme CSS if needed
+        # Generate theme SCSS if needed
         if theme_name.startswith('academic-'):
-            css_content = self.theme_manager.generate_reveal_css(theme)
-            css_file = Path(input_file).parent / f"{theme_name}.css"
-            with open(css_file, 'w', encoding='utf-8') as f:
-                f.write(css_content)
-            theme_options['theme'] = str(css_file)
+            scss_content = self.theme_manager.generate_reveal_css(theme)
+            scss_file = Path(input_file).parent / f"{theme_name}.scss"
+            with open(scss_file, 'w', encoding='utf-8') as f:
+                f.write(scss_content)
+            # Use the SCSS file path as the theme - use relative path for Quarto
+            actual_theme = scss_file.name  # Just the filename, not full path
+            logger.info(f"Generated SCSS file for theme '{theme_name}' at: {scss_file}, using relative path: {actual_theme}")
+        else:
+            actual_theme = theme_name
+            logger.info(f"Using standard theme: {actual_theme}")
         
         # Use template if specified
         if template_name:
@@ -866,7 +872,7 @@ class QuartoOrchestrator:
             try:
                 # Generate slides from templated content
                 result_file = self.generate_slides(
-                    str(temp_file), format, output_file, theme_name, theme_options
+                    str(temp_file), format, output_file, actual_theme, theme_options
                 )
                 return result_file
             finally:
@@ -874,9 +880,31 @@ class QuartoOrchestrator:
                 if temp_file.exists():
                     temp_file.unlink()
         else:
+            # For built-in themes, regenerate the QMD file with correct frontmatter
+            if theme_name.startswith('academic-') and slides_config:
+                # Read the content from the input file (without frontmatter)
+                input_path = Path(input_file)
+                with open(input_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # Skip existing frontmatter if present
+                if content.startswith('---'):
+                    parts = content.split('---', 2)
+                    if len(parts) >= 3:
+                        content = parts[2].strip()
+                
+                # Generate new frontmatter with correct theme path
+                frontmatter = self.generate_revealjs_frontmatter(slides_config, actual_theme)
+                
+                # Overwrite the file with new frontmatter
+                with open(input_file, 'w', encoding='utf-8') as f:
+                    f.write(frontmatter + content)
+                
+                logger.info(f"Updated QMD file with themed frontmatter: {actual_theme}")
+            
             # Generate slides without template
             return self.generate_slides(
-                input_file, format, output_file, theme_name, theme_options
+                input_file, format, output_file, actual_theme, theme_options
             )
     
     @handle_exception
@@ -1377,6 +1405,69 @@ class QuartoOrchestrator:
             TemplateManager instance
         """
         return self.template_manager
+    
+    def generate_revealjs_frontmatter(self, slides_config: Dict[str, Any], theme: str = "white") -> str:
+        """
+        Generate proper RevealJS YAML frontmatter from slides configuration.
+        
+        Args:
+            slides_config: Slides configuration dictionary
+            theme: RevealJS theme name
+            
+        Returns:
+            YAML frontmatter string with proper RevealJS format
+        """
+        # Start with basic format structure
+        frontmatter = {
+            'format': {
+                'revealjs': {
+                    'theme': theme
+                }
+            }
+        }
+        
+        # Map config keys to RevealJS YAML keys
+        key_mapping = {
+            'transition': 'transition',
+            'controls': 'controls', 
+            'progress': 'progress',
+            'center': 'center',
+            'touch': 'touch',
+            'loop': 'loop',
+            'rtl': 'rtl',
+            'navigation_mode': 'navigation-mode',
+            'fragments': 'fragments',
+            'help': 'help',
+            'show_notes': 'show-notes', 
+            'auto_slide': 'auto-slide',
+            'auto_slide_stoppable': 'auto-slide-stoppable',
+            'mouse_wheel': 'mouse-wheel',
+            'hide_address_bar': 'hide-address-bar',
+            'preview_links': 'preview-links',
+            'viewport_width': 'width',
+            'viewport_height': 'height', 
+            'viewport_scale': 'scale'
+        }
+        
+        # Add RevealJS options from config
+        revealjs_config = frontmatter['format']['revealjs']
+        
+        for config_key, revealjs_key in key_mapping.items():
+            if config_key in slides_config:
+                value = slides_config[config_key]
+                # Convert certain values to proper types/formats
+                if config_key == 'navigation_mode' and value == 'default':
+                    revealjs_config[revealjs_key] = 'linear'
+                elif config_key in ['auto_slide'] and value == 0:
+                    # Don't include auto-slide if it's 0 (disabled)
+                    continue
+                else:
+                    # Add the value as-is (YAML will handle proper formatting)
+                    revealjs_config[revealjs_key] = value
+        
+        # Generate YAML content
+        yaml_content = yaml.dump(frontmatter, default_flow_style=False, sort_keys=False)
+        return f"---\n{yaml_content}---\n\n"
     
     def get_configuration_manager(self, project_dir: Optional[str] = None) -> 'QuartoConfigurationManager':
         """

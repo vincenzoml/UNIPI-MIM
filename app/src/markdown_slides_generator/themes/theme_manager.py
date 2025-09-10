@@ -428,7 +428,13 @@ class ThemeManager:
         if theme.custom_css:
             css_parts.append(theme.custom_css)
         
-        return "\n\n".join(css_parts)
+        # Wrap CSS in proper SCSS layer boundaries for Quarto
+        scss_content = f"""/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+{chr(10).join(css_parts)}
+"""
+        return scss_content
     
     def _generate_font_imports(self, typography: TypographyConfig) -> str:
         """Generate font import statements."""

@@ -312,12 +312,17 @@ def generate(
         slides_file = output_dir / f"{input_file.stem}_slides.qmd"
         notes_file_path = output_dir / f"{input_file.stem}_notes.qmd"
         
-        # Prepend YAML frontmatter so Quarto reads document-level options
-        slides_frontmatter = f"---\nformat: revealjs\ntheme: {theme}\n---\n\n"
+        # Generate proper YAML frontmatter with all RevealJS options
+        slides_frontmatter = quarto_orchestrator.generate_revealjs_frontmatter(
+            final_config.slides.__dict__, theme
+        )
         notes_frontmatter = "---\nformat: pdf\n---\n\n"
 
         with open(slides_file, 'w', encoding='utf-8') as f:
             f.write(slides_frontmatter + slides_content)
+        
+        # Debug: log the frontmatter content
+        logger.debug(f"Generated slides frontmatter:\n{slides_frontmatter}")
         with open(notes_file_path, 'w', encoding='utf-8') as f:
             f.write(notes_frontmatter + notes_content)
         
@@ -341,13 +346,18 @@ def generate(
             
             for fmt in final_config.output.formats:
                 try:
-                    if template:
-                        # Use themed slides with template
+                    # Check if theme is a built-in application theme
+                    is_builtin_theme = theme in [t for t in quarto_orchestrator.theme_manager.list_themes().keys()]
+                    
+                    if template or is_builtin_theme:
+                        # For built-in themes, we need to generate the frontmatter within generate_themed_slides
+                        # to include the correct CSS path
                         output_file = quarto_orchestrator.generate_themed_slides(
-                            str(slides_file), theme, template, fmt, None, variables
+                            str(slides_file), theme, template, fmt, None, variables, 
+                            slides_config=final_config.slides.__dict__
                         )
                     else:
-                        # Use standard generation
+                        # Use standard generation (for RevealJS standard themes)
                         output_file = quarto_orchestrator.generate_slides(
                             str(slides_file), fmt, None, theme
                         )
@@ -665,24 +675,56 @@ def themes():
         builtin_themes = {k: v for k, v in themes.items() if v['type'] == 'built-in'}
         custom_themes = {k: v for k, v in themes.items() if v['type'] == 'custom'}
         
+        # Show application built-in themes (comprehensive themes)
         if builtin_themes:
-            click.echo("Built-in Themes:")
+            click.echo("📚 Application Built-in Themes (Comprehensive Academic Themes):")
+            click.echo("   Use these for rich academic presentations with custom styling")
             for name, info in builtin_themes.items():
                 click.echo(f"  • {name}")
                 click.echo(f"    {info['display_name']} - {info['description']}")
                 click.echo(f"    Style: {info['style']}, Color: {info['color_scheme']}")
                 click.echo()
         
+        # Show RevealJS standard themes
+        click.echo("🌈 RevealJS Standard Themes (Basic Color Schemes):")
+        click.echo("   Use these for simple, standard RevealJS presentations")
+        revealjs_themes = [
+            ('white', 'Clean white background theme (default)'),
+            ('black', 'Black background with white text'),
+            ('league', 'Dark theme with orange accents'),
+            ('beige', 'Beige background with brown text'),
+            ('sky', 'Blue gradient background'),
+            ('night', 'Dark blue background'),
+            ('serif', 'Serif fonts with brown accents'),
+            ('simple', 'Minimal black on white'),
+            ('solarized', 'Solarized color scheme'),
+            ('blood', 'Dark red/black theme'),
+            ('moon', 'Dark theme with blue accents'),
+            ('dracula', 'Dark purple theme')
+        ]
+        
+        for theme_name, description in revealjs_themes:
+            click.echo(f"  • {theme_name}")
+            click.echo(f"    {description}")
+        click.echo()
+        
+        # Show custom themes if any
         if custom_themes:
-            click.echo("Custom Themes:")
+            click.echo("🔧 Custom Themes:")
             for name, info in custom_themes.items():
                 click.echo(f"  • {name}")
                 click.echo(f"    {info['display_name']} - {info['description']}")
                 click.echo(f"    Style: {info['style']}, Color: {info['color_scheme']}")
                 click.echo()
+        else:
+            click.echo("🔧 Custom Themes:")
+            click.echo("   No custom themes found. Create one with 'create-theme' command.")
         
-        if not custom_themes:
-            click.echo("No custom themes found. Create one with 'create-theme' command.")
+        # Usage instructions
+        click.echo("\n📝 Usage:")
+        click.echo("   • Built-in themes: markdown-slides generate file.md -t academic-minimal")
+        click.echo("   • RevealJS themes: markdown-slides generate file.md -t solarized")
+        click.echo("   • In config file:  theme: academic-minimal  or  theme: solarized")
         
     except Exception as e:
         logger.error(f"Error listing themes: {e}")

@@ -1,2 +1,55 @@
 PROMPT.md
 .DS_Store
+
+# Output directories and generated files
+**/output/
+**/presentations/
+**/generated/
+**/_site/
+**/_book/
+**/.quarto/
+
+# Generated slides and documents
+*.html
+*.pdf
+*.pptx
+*.scss
+*.qmd
+
+# Exclude important PDFs and documentation
+!syllabus/*.pdf
+!docs/*.html
+!**/template.qmd
+!README.md
+!**/README.md
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+*.log
+logs/
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride

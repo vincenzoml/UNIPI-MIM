@@ -3,7 +3,7 @@ name: standard-config
 description: Standard configuration for typical usage
 output:
   formats:
-  - revealjs
+  - pdf
   directory: ./output
   preserve_structure: true
   overwrite: false
