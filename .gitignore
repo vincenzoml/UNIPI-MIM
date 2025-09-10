@@ -1,3 +1,4 @@
+lectures/domain_knowledge/config/fetch_config.json
 PROMPT.md
 .DS_Store
 
@@ -9,13 +10,6 @@ PROMPT.md
 **/_site/
 **/_book/
 **/.quarto/
-
-# Generated slides and documents
-*.html
-*.pdf
-*.pptx
-*.scss
-*.qmd
 
 # Exclude important PDFs and documentation
 !syllabus/*.pdf

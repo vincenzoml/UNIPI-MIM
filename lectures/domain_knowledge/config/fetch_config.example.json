@@ -1,0 +1,9 @@
+{
+  "proxy_host": "your-ssh-host.example.com",
+  "proxy_port": 1080,
+  "auto_start_tunnel": true,
+  "ssh_user": "optional_username",
+  "ssh_host": "your-ssh-host.example.com",
+  "ssh_port": 22,
+  "download_delay_seconds": 1.0
+}
