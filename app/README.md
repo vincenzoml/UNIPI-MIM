@@ -11,6 +11,7 @@ Convert academic markdown lecture files into beautiful slides and comprehensive 
 - 🎛️ **Fine Control**: Special markdown syntax for slide boundaries and content flow
 - 📦 **Multiple Formats**: HTML, PDF, PowerPoint, and LaTeX Beamer output
 - 🚀 **Batch Processing**: Process entire lecture directories efficiently
+- 👁️ **Watch Mode**: Automatic regeneration when files change during development
 
 ## Quick Start
 
@@ -55,7 +56,42 @@ markdown-slides batch lectures/ --output-dir presentations/
 
 # Use custom theme and configuration
 markdown-slides generate lecture01.md --theme academic --config config.yaml
+
+# Watch mode - automatically regenerate on file changes
+markdown-slides generate lecture01.md --watch
 ```
+
+## Watch Mode
+
+The watch mode (`-w` or `--watch`) monitors your markdown file for changes and automatically regenerates the output files. This is perfect for development workflows where you want to see changes immediately.
+
+### Features
+- Monitors the input file for modifications
+- Automatic regeneration on save
+- Debounced to prevent excessive regeneration
+- Cross-platform file system monitoring
+- Graceful keyboard interrupt handling (Ctrl+C)
+
+### Usage
+```bash
+# Basic watch mode
+markdown-slides generate lecture.md --watch
+
+# Watch mode with specific output formats
+markdown-slides generate lecture.md --watch -f html -f pdf
+
+# Watch mode with custom theme
+markdown-slides generate lecture.md --watch --theme academic-modern
+
+# Watch mode is incompatible with dry-run
+markdown-slides generate lecture.md --watch --dry-run  # This will error
+```
+
+### Tips
+- Use watch mode during content creation for immediate feedback
+- The initial generation must succeed before watch mode activates
+- Files are automatically overwritten in watch mode
+- Press Ctrl+C to stop watching and exit
 
 ## Special Markdown Syntax
 
@@ -148,6 +184,7 @@ pytest tests/test_cli.py
 - **Quarto**: Document processing engine (install separately)
 - **click**: CLI framework
 - **pyyaml**: Configuration file support
+- **watchdog**: File system monitoring for watch mode
 
 ### Optional
 - **LaTeX**: For PDF generation (TeX Live or MiKTeX)

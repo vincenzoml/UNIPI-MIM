@@ -3,7 +3,7 @@
 **Course:** Formal and Hybrid Methods for Medical Imaging  
 **Date:** September 15, 2025  
 **Duration:** 2 hours  
-**Instructor:** Vincenzo
+**Instructor:** Vincenzo Ciancia
 
 ## Learning Objectives
 

@@ -7,12 +7,14 @@ Professional CLI using Click framework with comprehensive help text and options.
 import click
 import sys
 import os
+import time
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import yaml
 
 from .utils.logger import get_logger, setup_logging
 from .utils.exceptions import MarkdownSlidesError, InputError, ConfigurationError
+from .utils.watchdog_utils import create_file_watcher
 from .core.content_splitter import ContentSplitter
 from .core.quarto_orchestrator import QuartoOrchestrator
 from .config import ConfigManager, Config
@@ -20,6 +22,142 @@ from .config import ConfigManager, Config
 
 logger = get_logger(__name__)
 config_manager = ConfigManager()
+
+
+def _perform_generation(
+    input_file: Path,
+    final_config: Config,
+    output_dir: Path,
+    theme: str,
+    template: Optional[str],
+    title: Optional[str],
+    author: Optional[str],
+    date: Optional[str],
+    institute: Optional[str],
+    slides_only: bool,
+    notes_only: bool,
+    overwrite: bool,
+    progress: bool,
+    ctx
+) -> List[str]:
+    """
+    Internal function to perform the actual generation.
+    
+    Returns:
+        List of generated file paths
+    """
+    # Create output directory if it doesn't exist
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Initialize components
+    content_splitter = ContentSplitter()
+    quarto_orchestrator = QuartoOrchestrator()
+    
+    # Show progress if enabled
+    if progress and not ctx.obj.get('quiet', False):
+        click.echo("📝 Processing markdown content...")
+    
+    # Process the markdown file
+    slides_content, notes_content = content_splitter.split_content(str(input_file))
+    
+    # Create temporary files for slides and notes content
+    slides_file = output_dir / f"{input_file.stem}_slides.qmd"
+    notes_file_path = output_dir / f"{input_file.stem}_notes.qmd"
+    
+    # Generate proper YAML frontmatter with all RevealJS options
+    slides_frontmatter = quarto_orchestrator.generate_revealjs_frontmatter(
+        final_config.slides.__dict__, theme
+    )
+
+    # Determine notes format(s) from configuration (allowing override)
+    notes_formats = getattr(final_config.notes, 'formats', None) or ['pdf']
+    # Use the first requested notes format as the primary output
+    notes_primary_format = notes_formats[0]
+    # Generate simple notes frontmatter using the selected format
+    notes_frontmatter = f"---\nformat: {notes_primary_format}\n---\n\n"
+
+    with open(slides_file, 'w', encoding='utf-8') as f:
+        f.write(slides_frontmatter + slides_content)
+    
+    # Debug: log the frontmatter content
+    logger.debug(f"Generated slides frontmatter:\n{slides_frontmatter}")
+    with open(notes_file_path, 'w', encoding='utf-8') as f:
+        f.write(notes_frontmatter + notes_content)
+    
+    # Prepare template variables from config and CLI
+    variables = dict(final_config.variables)
+    if title:
+        variables['title'] = title
+    if author:
+        variables['author'] = author
+    if date:
+        variables['date'] = date
+    if institute:
+        variables['institute'] = institute
+    
+    generated_files = []
+    
+    # Generate outputs based on options
+    if not notes_only:
+        if progress and not ctx.obj.get('quiet', False):
+            click.echo("🎨 Generating slides...")
+        
+        for fmt in final_config.output.formats:
+            try:
+                # Check if theme is a built-in application theme
+                is_builtin_theme = theme in [t for t in quarto_orchestrator.theme_manager.list_themes().keys()]
+                
+                if template or is_builtin_theme:
+                    # For built-in themes, we need to generate the frontmatter within generate_themed_slides
+                    # to include the correct CSS path
+                    # Convert 'html' format to 'revealjs' for proper slide generation
+                    slide_format = 'revealjs' if fmt == 'html' else fmt
+                    output_file = quarto_orchestrator.generate_themed_slides(
+                        str(slides_file), theme, template, slide_format, None, variables, 
+                        slides_config=final_config.slides.__dict__
+                    )
+                else:
+                    # Use standard generation (for RevealJS standard themes)
+                    # Convert 'html' format to 'revealjs' for proper slide generation  
+                    slide_format = 'revealjs' if fmt == 'html' else fmt
+                    output_file = quarto_orchestrator.generate_slides(
+                        str(slides_file), slide_format, None, theme
+                    )
+                generated_files.append(output_file)
+                click.echo(f"✓ Generated slides ({fmt}): {Path(output_file).name}")
+            except Exception as e:
+                logger.error(f"Error generating {fmt} slides: {e}")
+                click.echo(f"✗ Failed to generate {fmt} slides: {e}", err=True)
+    
+    if not slides_only:
+        if progress and not ctx.obj.get('quiet', False):
+            click.echo("📚 Generating notes...")
+        
+        try:
+            # Decide notes generation format(s) and trigger generation for primary
+            # If template explicitly targets notes, prefer templated generation
+            if template and 'notes' in template:
+                notes_output = quarto_orchestrator.generate_templated_notes(
+                    str(notes_file_path), template, notes_primary_format, None, variables
+                )
+            else:
+                # Use standard notes generation with configured primary format
+                notes_output = quarto_orchestrator.generate_notes(
+                    str(notes_file_path), notes_primary_format
+                )
+            generated_files.append(notes_output)
+            click.echo(f"✓ Generated notes: {Path(notes_output).name}")
+        except Exception as e:
+            logger.error(f"Error generating notes: {e}")
+            click.echo(f"✗ Failed to generate notes: {e}", err=True)
+    
+    # Clean up temporary files
+    if slides_file.exists():
+        slides_file.unlink()
+    if notes_file_path.exists():
+        notes_file_path.unlink()
+    
+    return generated_files
 
 
 @click.group()
@@ -49,6 +187,7 @@ def cli(ctx, verbose: bool, quiet: bool):
     • Special markdown syntax for slide control
     • Multiple output formats (HTML, PDF, PowerPoint)
     • Batch processing for lecture series
+    • Watch mode for automatic regeneration on file changes
     
     Examples:
     
@@ -63,6 +202,9 @@ def cli(ctx, verbose: bool, quiet: bool):
         
         # Use custom theme and configuration
         markdown-slides generate lecture.md --theme academic --config config.yaml
+        
+        # Watch mode for development - regenerate on file changes
+        markdown-slides generate lecture.md --watch
     
     For detailed help on any command, use: markdown-slides COMMAND --help
     """
@@ -158,6 +300,11 @@ def cli(ctx, verbose: bool, quiet: bool):
     default=True,
     help="Show progress indicators"
 )
+@click.option(
+    '--watch', '-w',
+    is_flag=True,
+    help="Watch the input file for changes and regenerate automatically"
+)
 @click.pass_context
 def generate(
     ctx,
@@ -176,7 +323,8 @@ def generate(
     save_config: Optional[Path],
     dry_run: bool,
     overwrite: bool,
-    progress: bool
+    progress: bool,
+    watch: bool
 ):
     """
     Generate slides and notes from a markdown file.
@@ -207,12 +355,18 @@ def generate(
         # Generate only slides with custom config
         markdown-slides generate lecture01.md --slides-only -c my-config.yaml
         
+        # Watch file for changes and regenerate automatically  
+        markdown-slides generate lecture01.md --watch
+        
         # Save current options as config for reuse
         markdown-slides generate lecture01.md -f html -f pdf --save-config my-settings.yaml
     """
     try:
         if slides_only and notes_only:
             raise click.ClickException("Cannot specify both --slides-only and --notes-only")
+        
+        if watch and dry_run:
+            raise click.ClickException("Cannot use --watch with --dry-run")
         
         # Load configuration
         try:
@@ -294,116 +448,23 @@ def generate(
                     click.echo("Operation cancelled.")
                     return
         
-        # Create output directory if it doesn't exist
-        output_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Initialize components
-        content_splitter = ContentSplitter()
-        quarto_orchestrator = QuartoOrchestrator()
-        
-        # Show progress if enabled
-        if progress and not ctx.obj.get('quiet', False):
-            click.echo("📝 Processing markdown content...")
-        
-        # Process the markdown file
-        slides_content, notes_content = content_splitter.split_content(str(input_file))
-        
-        # Create temporary files for slides and notes content
-        slides_file = output_dir / f"{input_file.stem}_slides.qmd"
-        notes_file_path = output_dir / f"{input_file.stem}_notes.qmd"
-        
-        # Generate proper YAML frontmatter with all RevealJS options
-        slides_frontmatter = quarto_orchestrator.generate_revealjs_frontmatter(
-            final_config.slides.__dict__, theme
+        # Perform the actual generation
+        generated_files = _perform_generation(
+            input_file=input_file,
+            final_config=final_config,
+            output_dir=output_dir,
+            theme=theme,
+            template=template,
+            title=title,
+            author=author,
+            date=date,
+            institute=institute,
+            slides_only=slides_only,
+            notes_only=notes_only,
+            overwrite=overwrite,
+            progress=progress,
+            ctx=ctx
         )
-
-        # Determine notes format(s) from configuration (allowing override)
-        notes_formats = getattr(final_config.notes, 'formats', None) or ['pdf']
-        # Use the first requested notes format as the primary output
-        notes_primary_format = notes_formats[0]
-        # Generate simple notes frontmatter using the selected format
-        notes_frontmatter = f"---\nformat: {notes_primary_format}\n---\n\n"
-
-        with open(slides_file, 'w', encoding='utf-8') as f:
-            f.write(slides_frontmatter + slides_content)
-        
-        # Debug: log the frontmatter content
-        logger.debug(f"Generated slides frontmatter:\n{slides_frontmatter}")
-        with open(notes_file_path, 'w', encoding='utf-8') as f:
-            f.write(notes_frontmatter + notes_content)
-        
-        # Prepare template variables from config and CLI
-        variables = dict(final_config.variables)
-        if title:
-            variables['title'] = title
-        if author:
-            variables['author'] = author
-        if date:
-            variables['date'] = date
-        if institute:
-            variables['institute'] = institute
-        
-        generated_files = []
-        
-        # Generate outputs based on options
-        if not notes_only:
-            if progress and not ctx.obj.get('quiet', False):
-                click.echo("🎨 Generating slides...")
-            
-            for fmt in final_config.output.formats:
-                try:
-                    # Check if theme is a built-in application theme
-                    is_builtin_theme = theme in [t for t in quarto_orchestrator.theme_manager.list_themes().keys()]
-                    
-                    if template or is_builtin_theme:
-                        # For built-in themes, we need to generate the frontmatter within generate_themed_slides
-                        # to include the correct CSS path
-                        # Convert 'html' format to 'revealjs' for proper slide generation
-                        slide_format = 'revealjs' if fmt == 'html' else fmt
-                        output_file = quarto_orchestrator.generate_themed_slides(
-                            str(slides_file), theme, template, slide_format, None, variables, 
-                            slides_config=final_config.slides.__dict__
-                        )
-                    else:
-                        # Use standard generation (for RevealJS standard themes)
-                        # Convert 'html' format to 'revealjs' for proper slide generation  
-                        slide_format = 'revealjs' if fmt == 'html' else fmt
-                        output_file = quarto_orchestrator.generate_slides(
-                            str(slides_file), slide_format, None, theme
-                        )
-                    generated_files.append(output_file)
-                    click.echo(f"✓ Generated slides ({fmt}): {Path(output_file).name}")
-                except Exception as e:
-                    logger.error(f"Error generating {fmt} slides: {e}")
-                    click.echo(f"✗ Failed to generate {fmt} slides: {e}", err=True)
-        
-        if not slides_only:
-            if progress and not ctx.obj.get('quiet', False):
-                click.echo("📚 Generating notes...")
-            
-            try:
-                # Decide notes generation format(s) and trigger generation for primary
-                # If template explicitly targets notes, prefer templated generation
-                if template and 'notes' in template:
-                    notes_output = quarto_orchestrator.generate_templated_notes(
-                        str(notes_file_path), template, notes_primary_format, None, variables
-                    )
-                else:
-                    # Use standard notes generation with configured primary format
-                    notes_output = quarto_orchestrator.generate_notes(
-                        str(notes_file_path), notes_primary_format
-                    )
-                generated_files.append(notes_output)
-                click.echo(f"✓ Generated notes: {Path(notes_output).name}")
-            except Exception as e:
-                logger.error(f"Error generating notes: {e}")
-                click.echo(f"✗ Failed to generate notes: {e}", err=True)
-        
-        # Clean up temporary files
-        if slides_file.exists():
-            slides_file.unlink()
-        if notes_file_path.exists():
-            notes_file_path.unlink()
         
         # Summary
         if generated_files:
@@ -412,6 +473,51 @@ def generate(
             click.echo(f"📄 Generated {len(generated_files)} file(s)")
         else:
             click.echo(f"\n⚠️  No files were generated for {input_file.name}")
+        
+        # Handle watch mode after successful initial generation
+        if watch and generated_files:
+            click.echo(f"\n👁️  Watch mode enabled. Monitoring {input_file} for changes...")
+            click.echo("Press Ctrl+C to stop watching.")
+            
+            def regenerate_on_change(changed_file: Path) -> None:
+                """Callback function to regenerate files when input changes."""
+                # Only regenerate if the changed file is our input file
+                if changed_file.resolve() == input_file.resolve():
+                    click.echo(f"\n🔄 Change detected in {changed_file.name}, regenerating...")
+                    try:
+                        # Re-run the generation process with the same parameters
+                        # We'll call the internal generation logic directly
+                        _perform_generation(
+                            input_file=input_file,
+                            final_config=final_config,
+                            output_dir=output_dir,
+                            theme=theme,
+                            template=template,
+                            title=title,
+                            author=author,
+                            date=date,
+                            institute=institute,
+                            slides_only=slides_only,
+                            notes_only=notes_only,
+                            overwrite=True,  # Always overwrite in watch mode
+                            progress=progress,
+                            ctx=ctx
+                        )
+                        click.echo(f"✓ Regeneration complete at {time.strftime('%H:%M:%S')}")
+                    except Exception as e:
+                        click.echo(f"✗ Error during regeneration: {e}", err=True)
+                        logger.error(f"Watch mode regeneration error: {e}")
+            
+            try:
+                with create_file_watcher(regenerate_on_change, debounce_seconds=2.0) as watcher:
+                    watcher.watch_file(input_file)
+                    watcher.start()
+                    watcher.wait()
+            except KeyboardInterrupt:
+                click.echo(f"\n👋 Watch mode stopped.")
+            except Exception as e:
+                click.echo(f"\n❌ Watch mode error: {e}", err=True)
+                logger.error(f"Watch mode error: {e}")
         
     except ConfigurationError as e:
         logger.error(f"Configuration error: {e}")

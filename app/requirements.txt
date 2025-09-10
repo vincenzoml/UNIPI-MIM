@@ -2,6 +2,8 @@
 # Production dependencies
 click>=8.0.0              # Professional CLI framework
 pyyaml>=6.0               # YAML configuration file support
+watchdog>=3.0.0           # File system monitoring for watch mode
+aiohttp>=3.8.0            # Async HTTP client for link validation
 
 # Development dependencies
 pytest>=7.0.0             # Testing framework
