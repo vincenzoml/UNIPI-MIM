@@ -1,0 +1,19 @@
+/* Font Override - Sans-serif instead of serif */
+.reveal {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Code font remains monospace */
+.reveal pre,
+.reveal code {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}

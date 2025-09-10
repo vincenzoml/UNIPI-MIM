@@ -12,7 +12,7 @@ output:
 
 # Slides configuration
 slides:
-  theme: "white"
+  theme: "academic-modern"
   transition: "slide"
   controls: true
   progress: true
@@ -23,6 +23,10 @@ slides:
   help: true
   show_notes: false
   navigation_mode: default
+  css: 
+    - "fancy-sans-overrides.css"
+  js:
+    - "reveal-slide-ui.js"
 
 # Processing settings - enable good styling features
 processing:
