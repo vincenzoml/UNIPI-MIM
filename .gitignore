@@ -3,6 +3,7 @@ PROMPT.md
 
 # Output directories and generated files
 **/output/
+**/output*/
 **/presentations/
 **/generated/
 **/_site/
