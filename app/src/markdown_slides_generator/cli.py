@@ -467,9 +467,10 @@ def generate(
     content flow between slides and notes.
     
     Special Markdown Syntax:
-    • <!-- SLIDE --> - Start a new slide
+    • <!-- SLIDE --> or <!-- SLIDES --> - Start a new slide (case-insensitive)
     • <!-- SLIDE-ONLY --> - Content appears only in slides  
     • <!-- NOTES-ONLY --> - Content appears only in notes
+    • <!-- NOTES --> - Start new slide AND content appears only in notes
     • <!-- ALL --> - Resume normal content (appears in both)
     
     Examples:

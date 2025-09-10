@@ -136,6 +136,10 @@ This content only appears in slides.
 <!-- NOTES-ONLY -->
 This detailed explanation only appears in notes.
 
+<!-- NOTES -->
+This starts a new slide AND the content only appears in notes.
+Like using --- separator but for notes-only content.
+
 <!-- ALL -->
 Back to normal - appears in both slides and notes.
 

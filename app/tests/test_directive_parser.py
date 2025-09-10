@@ -664,5 +664,217 @@ Extended explanation that only appears in notes.
             shutil.rmtree(temp_dir)
 
 
+class TestNewDirectiveFeatures:
+    """Test new directive features: case-insensitive SLIDES and NOTES boundary."""
+    
+    def setup_method(self):
+        """Set up test fixtures."""
+        self.parser = MarkdownDirectiveParser()
+        self.splitter = ContentSplitter()
+    
+    def test_case_insensitive_slides_directive(self):
+        """Test that SLIDES directive works in both upper and lower case."""
+        content = """
+# Intro
+Some content.
+
+<!-- slide -->
+Lower case slide.
+
+<!-- SLIDE -->
+Upper case slide.
+
+<!-- Slides -->
+Mixed case slides.
+
+<!-- SLIDES -->
+Plural slides.
+"""
+        directives = self.parser.parse_directives(content)
+        
+        # Should find all 4 directives as SLIDE_BOUNDARY
+        assert len(directives) == 4
+        for directive in directives:
+            assert directive.mode == ContentMode.SLIDE_BOUNDARY
+        
+        # Test specific patterns
+        assert any('<!-- slide -->' in d.directive.lower() for d in directives)
+        assert any('<!-- slides -->' in d.directive.lower() for d in directives)
+    
+    def test_notes_directive_as_boundary_and_mode(self):
+        """Test that NOTES directive acts as both slide boundary and notes-only mode."""
+        content = """
+# Introduction
+This appears in both.
+
+<!-- NOTES -->
+This content should appear only in notes and start a new slide.
+More notes content here.
+
+<!-- ALL -->
+Back to both slides and notes.
+"""
+        
+        # Test directive parsing
+        directives = self.parser.parse_directives(content)
+        assert len(directives) == 2
+        assert directives[0].mode == ContentMode.NOTES_SLIDE_BOUNDARY
+        assert directives[1].mode == ContentMode.ALL
+        
+        # Test content splitting
+        result = self.splitter.process_directives(content)
+        slides_content = result["slides"]
+        notes_content = result["notes"]
+        
+        # Slides should NOT contain the notes content
+        assert "This content should appear only in notes" not in slides_content
+        assert "More notes content here" not in slides_content
+        
+        # Notes should contain all content
+        assert "This appears in both" in notes_content
+        assert "This content should appear only in notes" in notes_content
+        assert "Back to both slides and notes" in notes_content
+        
+        # Check slide boundaries are tracked
+        assert len(self.splitter.slide_boundaries) == 1
+    
+    def test_notes_directive_case_variations(self):
+        """Test NOTES directive with different case variations."""
+        content = """
+<!-- notes -->
+Lower case notes.
+
+<!-- NOTES -->  
+Upper case notes.
+
+<!-- Notes -->
+Mixed case notes.
+"""
+        directives = self.parser.parse_directives(content)
+        
+        assert len(directives) == 3
+        for directive in directives:
+            assert directive.mode == ContentMode.NOTES_SLIDE_BOUNDARY
+    
+    def test_notes_directive_with_state_management(self):
+        """Test NOTES directive properly manages state transitions."""
+        content = """
+Normal content.
+
+<!-- SLIDE-ONLY -->
+Slides only content.
+
+<!-- NOTES -->
+This should be notes only and end the slides-only section.
+
+<!-- ALL -->
+Back to normal.
+"""
+        
+        # Process content blocks
+        directives = self.parser.parse_directives(content)
+        blocks = self.parser.process_content_blocks(content, directives)
+        
+        # Check block modes
+        assert len(blocks) == 4
+        assert blocks[0].mode == ContentMode.ALL  # Normal content
+        assert blocks[1].mode == ContentMode.SLIDES_ONLY  # Slides only content  
+        assert blocks[2].mode == ContentMode.NOTES_ONLY  # Notes directive content
+        assert blocks[3].mode == ContentMode.ALL  # Back to normal
+    
+    def test_malformed_directive_suggestions_with_notes(self):
+        """Test suggestions for malformed NOTES and SLIDES directives."""
+        content = """
+<!-- SLDIE -->
+<!-- NOTE -->
+<!-- notes-slide -->
+<!-- SLIDE_BOUNDARY -->
+"""
+        
+        self.parser.parse_directives(content)
+        
+        # Check malformed directive suggestions
+        suggestions = [m['suggestion'] for m in self.parser.malformed_directives]
+        
+        # Should suggest corrections
+        assert '<!-- SLIDE -->' in suggestions
+        assert '<!-- NOTES -->' in suggestions
+    
+    def test_notes_directive_validation(self):
+        """Test validation warnings for NOTES directive usage."""
+        content = """
+<!-- SLIDE-ONLY -->
+Some slides content.
+
+<!-- NOTES -->
+This should warn about nested mode.
+"""
+        
+        directives = self.parser.parse_directives(content)
+        warnings = self.parser.validate_directive_structure(directives)
+        
+        # Should have a warning about NOTES directive while in SLIDES_ONLY mode
+        assert len(warnings) >= 1
+        assert any("NOTES directive while already in" in warning for warning in warnings)
+    
+    def test_complete_workflow_with_new_directives(self):
+        """Test complete workflow using new directive features."""
+        content = """
+# Lecture: Advanced Topics
+
+This is the introduction that appears everywhere.
+
+<!-- SLIDE -->
+## First Topic
+
+Key points for slides.
+
+<!-- NOTES -->
+## Detailed Notes Section
+
+This section provides comprehensive details that students can read later.
+It includes extended explanations and references.
+
+The NOTES directive both starts a new slide boundary and makes content notes-only.
+
+<!-- slides -->
+## Another Slide (lowercase)
+
+This tests case-insensitive slides directive.
+
+<!-- ALL -->
+## Conclusion
+
+This conclusion appears in both slides and notes.
+"""
+        
+        # Test the complete splitting process
+        result = self.splitter.process_directives(content)
+        
+        slides_content = result["slides"]
+        notes_content = result["notes"]
+        
+        # Verify slides content
+        assert "This is the introduction" in slides_content
+        assert "Key points for slides" in slides_content
+        assert "Another Slide (lowercase)" in slides_content  
+        assert "This conclusion appears" in slides_content
+        
+        # Notes-only content should NOT appear in slides
+        assert "Detailed Notes Section" not in slides_content
+        assert "comprehensive details" not in slides_content
+        
+        # Verify notes content (should have everything)
+        assert "This is the introduction" in notes_content
+        assert "Key points for slides" in notes_content
+        assert "Detailed Notes Section" in notes_content
+        assert "comprehensive details" in notes_content
+        assert "Another Slide (lowercase)" in notes_content
+        assert "This conclusion appears" in notes_content
+        
+        # Check slide boundaries
+        assert len(self.splitter.slide_boundaries) == 3  # SLIDE, NOTES, slides
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

@@ -26,6 +26,7 @@ class ContentMode(Enum):
     SLIDES_ONLY = "slides_only"  # Content appears only in slides
     NOTES_ONLY = "notes_only"  # Content appears only in notes
     SLIDE_BOUNDARY = "slide_boundary"  # Marks a new slide boundary
+    NOTES_SLIDE_BOUNDARY = "notes_slide_boundary"  # Marks a new slide boundary AND content is notes-only
 
 
 @dataclass
@@ -66,17 +67,19 @@ class MarkdownDirectiveParser:
     Robust parser for markdown directives with state machine implementation.
     
     Handles special comments:
-    - <!-- SLIDE --> : Creates slide boundary
+    - <!-- SLIDE --> or <!-- SLIDES --> : Creates slide boundary (case-insensitive)
     - <!-- SLIDE-ONLY --> : Content only in slides
-    - <!-- NOTES-ONLY --> : Content only in notes  
+    - <!-- NOTES-ONLY --> : Content only in notes
+    - <!-- NOTES --> : Creates slide boundary AND content only in notes (like --- separator)
     - <!-- ALL --> : Content in both (return to normal)
     """
     
     # Directive patterns - case insensitive with flexible whitespace
     DIRECTIVE_PATTERNS = {
-        r'<!--\s*SLIDE\s*-->': ContentMode.SLIDE_BOUNDARY,
+        r'<!--\s*SLIDES?\s*-->': ContentMode.SLIDE_BOUNDARY,  # SLIDE or SLIDES (case-insensitive)
         r'<!--\s*SLIDE-ONLY\s*-->': ContentMode.SLIDES_ONLY,
         r'<!--\s*NOTES-ONLY\s*-->': ContentMode.NOTES_ONLY,
+        r'<!--\s*NOTES\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,  # NOTES acts as both slide boundary and notes-only
         r'<!--\s*ALL\s*-->': ContentMode.ALL,
     }
     
@@ -232,7 +235,11 @@ class MarkdownDirectiveParser:
             return '<!-- SLIDE-ONLY -->'  # Correct to singular form
         elif 'SLDIE' in upper_text:  # Common typo
             return '<!-- SLIDE -->'
-        elif 'SLIDE' in upper_text:
+        elif 'NOTES' in upper_text and ('SLIDE' in upper_text or 'BOUNDARY' in upper_text):
+            return '<!-- NOTES -->'  # Suggest NOTES for notes + slide boundary
+        elif 'NOTE' in upper_text and 'SLIDE' not in upper_text:
+            return '<!-- NOTES -->'  # Suggest NOTES for general notes
+        elif 'SLIDES' in upper_text or 'SLIDE' in upper_text:
             return '<!-- SLIDE -->'
         elif 'ALL' in upper_text:
             return '<!-- ALL -->'
@@ -309,8 +316,13 @@ class MarkdownDirectiveParser:
         
         # Handle state transitions
         if new_mode == ContentMode.SLIDE_BOUNDARY:
-            # SLIDE directive doesn't change the content mode, just marks boundaries
-            return current_mode
+            # SLIDE/SLIDES directive resets to ALL mode and marks slide boundary
+            logger.debug(f"State transition: {current_mode.value} -> ALL (via SLIDE boundary) at line {directive.line_number}")
+            return ContentMode.ALL
+        elif new_mode == ContentMode.NOTES_SLIDE_BOUNDARY:
+            # NOTES directive marks a slide boundary AND changes mode to notes-only
+            logger.debug(f"State transition: {current_mode.value} -> notes_only (via NOTES boundary) at line {directive.line_number}")
+            return ContentMode.NOTES_ONLY
         else:
             # Direct mode changes
             logger.debug(f"State transition: {current_mode.value} -> {new_mode.value} at line {directive.line_number}")
@@ -338,6 +350,13 @@ class MarkdownDirectiveParser:
                                   f"while already in {current_mode.value} mode")
                 mode_stack.append((directive, current_mode))
                 current_mode = directive.mode
+                
+            elif directive.mode == ContentMode.NOTES_SLIDE_BOUNDARY:
+                # NOTES directive acts as slide boundary + notes-only mode
+                if current_mode != ContentMode.ALL:
+                    warnings.append(f"Line {directive.line_number}: NOTES directive while already in {current_mode.value} mode")
+                mode_stack.append((directive, current_mode))
+                current_mode = ContentMode.NOTES_ONLY
                 
             elif directive.mode == ContentMode.ALL:
                 # Returning to ALL mode
@@ -488,7 +507,7 @@ class ContentSplitter:
         
         # Track slide boundaries for later use in task 2.2
         self.slide_boundaries = [d.line_number for d in directives 
-                               if d.mode == ContentMode.SLIDE_BOUNDARY]
+                               if d.mode in [ContentMode.SLIDE_BOUNDARY, ContentMode.NOTES_SLIDE_BOUNDARY]]
         
         slides_content = '\n\n'.join(slides_blocks).strip()
         notes_content = '\n\n'.join(notes_blocks).strip()
