@@ -352,14 +352,18 @@ def generate(
                     if template or is_builtin_theme:
                         # For built-in themes, we need to generate the frontmatter within generate_themed_slides
                         # to include the correct CSS path
+                        # Convert 'html' format to 'revealjs' for proper slide generation
+                        slide_format = 'revealjs' if fmt == 'html' else fmt
                         output_file = quarto_orchestrator.generate_themed_slides(
-                            str(slides_file), theme, template, fmt, None, variables, 
+                            str(slides_file), theme, template, slide_format, None, variables, 
                             slides_config=final_config.slides.__dict__
                         )
                     else:
                         # Use standard generation (for RevealJS standard themes)
+                        # Convert 'html' format to 'revealjs' for proper slide generation  
+                        slide_format = 'revealjs' if fmt == 'html' else fmt
                         output_file = quarto_orchestrator.generate_slides(
-                            str(slides_file), fmt, None, theme
+                            str(slides_file), slide_format, None, theme
                         )
                     generated_files.append(output_file)
                     click.echo(f"✓ Generated slides ({fmt}): {Path(output_file).name}")

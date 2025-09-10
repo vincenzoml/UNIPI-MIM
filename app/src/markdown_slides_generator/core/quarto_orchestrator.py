@@ -1420,11 +1420,21 @@ class QuartoOrchestrator:
         # Start with basic format structure
         frontmatter = {
             'format': {
-                'revealjs': {
-                    'theme': theme
-                }
+                'revealjs': {}
             }
         }
+        
+        # Handle theme specification
+        if theme.endswith('.scss'):
+            # Custom theme file - use SCSS processing
+            frontmatter['format']['revealjs']['theme'] = [theme]
+        elif theme.startswith('academic-'):
+            # Built-in academic theme - use generated SCSS file with proper processing
+            scss_file = f"{theme}.scss"
+            frontmatter['format']['revealjs']['theme'] = [scss_file]
+        else:
+            # Standard RevealJS theme name
+            frontmatter['format']['revealjs']['theme'] = theme
         
         # Map config keys to RevealJS YAML keys
         key_mapping = {

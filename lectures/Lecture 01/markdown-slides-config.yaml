@@ -3,13 +3,14 @@ name: standard-config
 description: Standard configuration for typical usage
 output:
   formats:
+  - html
   - pdf
   directory: ./output
   preserve_structure: true
-  overwrite: false
+  overwrite: true
   naming_pattern: '{stem}_{type}.{ext}'
 slides:
-  theme: solarized
+  theme: academic-elegant
   template: null
   max_content_length: 1000
   auto_split: true
@@ -79,6 +80,6 @@ logging:
   console: true
   colors: true
 variables:
-  author: Your Name
-  institute: Your Institution
+  author: Prof. Vincenzo Ciancia
+  institute: University of Pisa
 custom: {}
