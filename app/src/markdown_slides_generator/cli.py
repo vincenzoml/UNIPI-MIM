@@ -8,6 +8,7 @@ import click
 import sys
 import os
 import time
+import asyncio
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import yaml
@@ -15,6 +16,7 @@ import yaml
 from .utils.logger import get_logger, setup_logging
 from .utils.exceptions import MarkdownSlidesError, InputError, ConfigurationError
 from .utils.watchdog_utils import create_file_watcher
+from .utils.live_server import start_live_server
 from .core.content_splitter import ContentSplitter
 from .core.quarto_orchestrator import QuartoOrchestrator
 from .config import ConfigManager, Config
@@ -158,6 +160,116 @@ def _perform_generation(
         notes_file_path.unlink()
     
     return generated_files
+
+
+async def _async_watch_with_serve(
+    input_file: Path,
+    final_config: Config,
+    output_dir: Path,
+    theme: str,
+    template: Optional[str],
+    title: Optional[str],
+    author: Optional[str],
+    date: Optional[str],
+    institute: Optional[str],
+    slides_only: bool,
+    notes_only: bool,
+    progress: bool,
+    ctx,
+    port: int,
+    auto_open: bool
+) -> None:
+    """
+    Async watch mode with live server support.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    
+    # Start the live server
+    try:
+        live_server = await start_live_server(output_dir, port, auto_open)
+        actual_port = live_server.port  # Use the actual port the server is running on
+        click.echo(f"\n👁️  Watch mode with live server enabled.")
+        click.echo(f"🌐 Server: http://localhost:{actual_port}")
+        click.echo(f"📁 Serving: {output_dir}")
+        click.echo("Press Ctrl+C to stop.")
+        
+        # Create a thread-safe way to communicate between file watcher and async server
+        reload_event = asyncio.Event()
+        
+        # Get the current event loop so we can reference it from the thread
+        main_loop = asyncio.get_running_loop()
+        
+        def regenerate_on_change(changed_file: Path) -> None:
+            """Callback function to regenerate files when input changes."""
+            # Only regenerate if the changed file is our input file
+            if changed_file.resolve() == input_file.resolve():
+                click.echo(f"\n🔄 Change detected in {changed_file.name}, regenerating...")
+                try:
+                    # Re-run the generation process with the same parameters
+                    _perform_generation(
+                        input_file=input_file,
+                        final_config=final_config,
+                        output_dir=output_dir,
+                        theme=theme,
+                        template=template,
+                        title=title,
+                        author=author,
+                        date=date,
+                        institute=institute,
+                        slides_only=slides_only,
+                        notes_only=notes_only,
+                        overwrite=True,  # Always overwrite in watch mode
+                        progress=progress,
+                        ctx=ctx
+                    )
+                    click.echo(f"✓ Regeneration complete at {time.strftime('%H:%M:%S')}")
+                    
+                    # Signal that we need to reload the browser using thread-safe call
+                    main_loop.call_soon_threadsafe(reload_event.set)
+                    
+                except Exception as e:
+                    click.echo(f"✗ Error during regeneration: {e}", err=True)
+                    logger.error(f"Watch mode regeneration error: {e}")
+        
+        # Start file watcher in a separate thread
+        def run_file_watcher():
+            try:
+                with create_file_watcher(regenerate_on_change, debounce_seconds=2.0) as watcher:
+                    watcher.watch_file(input_file)
+                    watcher.start()
+                    watcher.wait()
+            except Exception as e:
+                logger.error(f"File watcher error: {e}")
+        
+        # Start file watcher thread
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            watcher_future = executor.submit(run_file_watcher)
+            
+            try:
+                # Main async loop - wait for reload events and broadcast them
+                while True:
+                    await reload_event.wait()
+                    reload_event.clear()
+                    
+                    # Broadcast reload to all connected browsers
+                    await live_server.broadcast_reload()
+                    click.echo("🔄 Browser reload triggered")
+                    
+            except KeyboardInterrupt:
+                click.echo(f"\n👋 Stopping watch mode and server...")
+            except Exception as e:
+                click.echo(f"\n❌ Server error: {e}", err=True)
+                logger.error(f"Live server error: {e}")
+            finally:
+                # Stop the live server
+                await live_server.stop()
+                
+                # The file watcher will stop when we exit the context
+                
+    except Exception as e:
+        click.echo(f"❌ Failed to start live server: {e}", err=True)
+        logger.error(f"Live server startup error: {e}")
 
 
 @click.group()
@@ -305,6 +417,22 @@ def cli(ctx, verbose: bool, quiet: bool):
     is_flag=True,
     help="Watch the input file for changes and regenerate automatically"
 )
+@click.option(
+    '--serve', '-s',
+    is_flag=True,
+    help="Start a local server with auto-reload (requires --watch)"
+)
+@click.option(
+    '--port', '-p',
+    type=int,
+    default=8000,
+    help="Port for the local server (default: 8000)"
+)
+@click.option(
+    '--no-open',
+    is_flag=True,
+    help="Don't automatically open browser when serving"
+)
 @click.pass_context
 def generate(
     ctx,
@@ -324,7 +452,10 @@ def generate(
     dry_run: bool,
     overwrite: bool,
     progress: bool,
-    watch: bool
+    watch: bool,
+    serve: bool,
+    port: int,
+    no_open: bool
 ):
     """
     Generate slides and notes from a markdown file.
@@ -358,6 +489,9 @@ def generate(
         # Watch file for changes and regenerate automatically  
         markdown-slides generate lecture01.md --watch
         
+        # Watch mode with live server and auto-reload in browser
+        markdown-slides generate lecture01.md --watch --serve
+        
         # Save current options as config for reuse
         markdown-slides generate lecture01.md -f html -f pdf --save-config my-settings.yaml
     """
@@ -367,6 +501,12 @@ def generate(
         
         if watch and dry_run:
             raise click.ClickException("Cannot use --watch with --dry-run")
+        
+        if serve and not watch:
+            raise click.ClickException("--serve requires --watch mode")
+        
+        if serve and notes_only:
+            raise click.ClickException("--serve is not compatible with --notes-only (notes are PDFs, not HTML)")
         
         # Load configuration
         try:
@@ -476,48 +616,69 @@ def generate(
         
         # Handle watch mode after successful initial generation
         if watch and generated_files:
-            click.echo(f"\n👁️  Watch mode enabled. Monitoring {input_file} for changes...")
-            click.echo("Press Ctrl+C to stop watching.")
-            
-            def regenerate_on_change(changed_file: Path) -> None:
-                """Callback function to regenerate files when input changes."""
-                # Only regenerate if the changed file is our input file
-                if changed_file.resolve() == input_file.resolve():
-                    click.echo(f"\n🔄 Change detected in {changed_file.name}, regenerating...")
-                    try:
-                        # Re-run the generation process with the same parameters
-                        # We'll call the internal generation logic directly
-                        _perform_generation(
-                            input_file=input_file,
-                            final_config=final_config,
-                            output_dir=output_dir,
-                            theme=theme,
-                            template=template,
-                            title=title,
-                            author=author,
-                            date=date,
-                            institute=institute,
-                            slides_only=slides_only,
-                            notes_only=notes_only,
-                            overwrite=True,  # Always overwrite in watch mode
-                            progress=progress,
-                            ctx=ctx
-                        )
-                        click.echo(f"✓ Regeneration complete at {time.strftime('%H:%M:%S')}")
-                    except Exception as e:
-                        click.echo(f"✗ Error during regeneration: {e}", err=True)
-                        logger.error(f"Watch mode regeneration error: {e}")
-            
-            try:
-                with create_file_watcher(regenerate_on_change, debounce_seconds=2.0) as watcher:
-                    watcher.watch_file(input_file)
-                    watcher.start()
-                    watcher.wait()
-            except KeyboardInterrupt:
-                click.echo(f"\n👋 Watch mode stopped.")
-            except Exception as e:
-                click.echo(f"\n❌ Watch mode error: {e}", err=True)
-                logger.error(f"Watch mode error: {e}")
+            if serve:
+                # Start async watch mode with live server
+                asyncio.run(_async_watch_with_serve(
+                    input_file=input_file,
+                    final_config=final_config,
+                    output_dir=output_dir,
+                    theme=theme,
+                    template=template,
+                    title=title,
+                    author=author,
+                    date=date,
+                    institute=institute,
+                    slides_only=slides_only,
+                    notes_only=notes_only,
+                    progress=progress,
+                    ctx=ctx,
+                    port=port,
+                    auto_open=not no_open
+                ))
+            else:
+                # Regular watch mode without server
+                click.echo(f"\n👁️  Watch mode enabled. Monitoring {input_file} for changes...")
+                click.echo("Press Ctrl+C to stop watching.")
+                
+                def regenerate_on_change(changed_file: Path) -> None:
+                    """Callback function to regenerate files when input changes."""
+                    # Only regenerate if the changed file is our input file
+                    if changed_file.resolve() == input_file.resolve():
+                        click.echo(f"\n🔄 Change detected in {changed_file.name}, regenerating...")
+                        try:
+                            # Re-run the generation process with the same parameters
+                            # We'll call the internal generation logic directly
+                            _perform_generation(
+                                input_file=input_file,
+                                final_config=final_config,
+                                output_dir=output_dir,
+                                theme=theme,
+                                template=template,
+                                title=title,
+                                author=author,
+                                date=date,
+                                institute=institute,
+                                slides_only=slides_only,
+                                notes_only=notes_only,
+                                overwrite=True,  # Always overwrite in watch mode
+                                progress=progress,
+                                ctx=ctx
+                            )
+                            click.echo(f"✓ Regeneration complete at {time.strftime('%H:%M:%S')}")
+                        except Exception as e:
+                            click.echo(f"✗ Error during regeneration: {e}", err=True)
+                            logger.error(f"Watch mode regeneration error: {e}")
+                
+                try:
+                    with create_file_watcher(regenerate_on_change, debounce_seconds=2.0) as watcher:
+                        watcher.watch_file(input_file)
+                        watcher.start()
+                        watcher.wait()
+                except KeyboardInterrupt:
+                    click.echo(f"\n👋 Watch mode stopped.")
+                except Exception as e:
+                    click.echo(f"\n❌ Watch mode error: {e}", err=True)
+                    logger.error(f"Watch mode error: {e}")
         
     except ConfigurationError as e:
         logger.error(f"Configuration error: {e}")

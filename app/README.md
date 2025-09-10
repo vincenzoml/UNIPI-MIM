@@ -59,39 +59,62 @@ markdown-slides generate lecture01.md --theme academic --config config.yaml
 
 # Watch mode - automatically regenerate on file changes
 markdown-slides generate lecture01.md --watch
+
+# Watch mode with live server and auto-reload in browser
+markdown-slides generate lecture01.md --watch --serve
 ```
 
 ## Watch Mode
 
 The watch mode (`-w` or `--watch`) monitors your markdown file for changes and automatically regenerates the output files. This is perfect for development workflows where you want to see changes immediately.
 
-### Features
+### Basic Watch Mode Features
 - Monitors the input file for modifications
 - Automatic regeneration on save
 - Debounced to prevent excessive regeneration
 - Cross-platform file system monitoring
 - Graceful keyboard interrupt handling (Ctrl+C)
 
+### Live Server Mode (`--serve`)
+
+When combined with `--serve`, watch mode starts a local HTTP server with **real-time browser auto-reload**:
+
+- 🔥 **Hot Reload**: Browser automatically refreshes when files change
+- 🌐 **Local Server**: Serves files at `http://localhost:8000` (customizable port)
+- 🚀 **Auto-Open**: Automatically opens your default browser
+- 📡 **WebSocket**: Real-time communication for instant updates
+- 📱 **Network Access**: Available on local network for mobile testing
+
 ### Usage
 ```bash
 # Basic watch mode
 markdown-slides generate lecture.md --watch
 
+# Watch mode with live server (recommended for development)
+markdown-slides generate lecture.md --watch --serve
+
+# Custom port and disable auto-open
+markdown-slides generate lecture.md --watch --serve --port 3000 --no-open
+
 # Watch mode with specific output formats
-markdown-slides generate lecture.md --watch -f html -f pdf
+markdown-slides generate lecture.md --watch --serve -f html
 
 # Watch mode with custom theme
-markdown-slides generate lecture.md --watch --theme academic-modern
-
-# Watch mode is incompatible with dry-run
-markdown-slides generate lecture.md --watch --dry-run  # This will error
+markdown-slides generate lecture.md --watch --serve --theme academic-modern
 ```
 
 ### Tips
+- **Live server mode** is perfect for presentation development
 - Use watch mode during content creation for immediate feedback
 - The initial generation must succeed before watch mode activates
 - Files are automatically overwritten in watch mode
 - Press Ctrl+C to stop watching and exit
+- Live server automatically finds free ports if default is busy
+
+### Limitations
+- `--serve` requires `--watch` mode
+- `--serve` is not compatible with `--notes-only` (notes are PDFs)
+- `--watch` is incompatible with `--dry-run`
 
 ## Special Markdown Syntax
 

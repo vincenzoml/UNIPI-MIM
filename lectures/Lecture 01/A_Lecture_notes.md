@@ -1,8 +1,7 @@
 # Lecture 1: Introduction to Hybrid AI and Formal Methods in Medical Imaging
 
 **Course:** Formal and Hybrid Methods for Medical Imaging  
-**Date:** September 15, 2025  
-**Duration:** 2 hours  
+**Date:** September 10, 2025  
 **Instructor:** Vincenzo Ciancia
 
 ## Learning Objectives
