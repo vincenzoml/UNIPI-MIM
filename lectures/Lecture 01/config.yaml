@@ -1,29 +1,44 @@
-# Configuration for Fancy Style using Standard RevealJS Theme
-# Uses the 'moon' theme with dynamic animations and effects
+# Configuration for White Theme with Enhanced Features
 
 version: '1.0'
 name: config
-description: Fancy style with standard RevealJS theme
+description: White theme with enhanced code styling and UI features
 
 # Output configuration
 output:
-  formats: ["revealjs"]  # Generate HTML slides with standard RevealJS theme
+  formats: ["revealjs"]
   directory: "output"
+  overwrite: true
 
-# Slides configuration with standard RevealJS theme
+# Slides configuration
 slides:
-  theme: "white"  
-  template: null
-  max_content_length: 200
-  auto_split: true
-  transition: "slide"  # Standard slide transition
+  theme: "white"
+  transition: "slide"
   controls: true
   progress: true
   center: true
   touch: true
-  fragments: true  # Enable fancy fragment animations
+  fragments: true
+  preview_links: true
+  help: true
+  show_notes: false
   navigation_mode: default
 
-# Notes configuration: generate HTML notes as requested
+# Processing settings - enable good styling features
+processing:
+  intelligent_splitting: true
+  syntax_highlighting: true
+  math_renderer: "mathjax"
+  content_validation: true
+  image_optimization: true
+
+# Notes configuration
 notes:
   formats: ["html"]
+  style: "academic"
+  include_toc: true
+
+# Variables for templating
+variables:
+  author: "Vincenzo Ciancia"
+  institution: "University of Pisa"
