@@ -35,6 +35,7 @@ These course notes are based on the lectures delivered in the Formal and Hybrid 
 The production of the course material **has been aided by AI agents**, but both the provided input (including a domain-specific knowledge base) and the outputs have been supervised, curated, and manually edited by the author—reflecting current recommendations for human-in-the-loop oversight in safety‑critical AI contexts (Russell, 2019; FDA, 2021). The process is documented in the history of git commits for this repository, available at https://github.com/vincenzoml/UNIPI-MIM
 
 <!-- SLIDE -->
+
 <!-- NOTES -->
 
 **Focus of the course:**  

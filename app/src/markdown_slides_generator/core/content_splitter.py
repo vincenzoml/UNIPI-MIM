@@ -498,17 +498,35 @@ class ContentSplitter:
         # Split content based on modes
         slides_blocks = []
         notes_blocks = []
-        
+
+        # Build a lookup for directives by line number for quick checks
+        directives_by_line = {d.line_number: d for d in directives}
+
         for block in content_blocks:
+            # Append content to slides/notes according to mode
             if block.mode in [ContentMode.ALL, ContentMode.SLIDES_ONLY]:
                 slides_blocks.append(block.content)
+
             if block.mode in [ContentMode.ALL, ContentMode.NOTES_ONLY]:
                 notes_blocks.append(block.content)
-        
+
+            # If a slide-related directive immediately follows this block,
+            # insert an explicit markdown slide separator so downstream
+            # processors (Quarto/revealjs) split slides correctly.
+            next_line = block.end_line + 1
+            next_dir = directives_by_line.get(next_line)
+            if next_dir and next_dir.mode in [ContentMode.SLIDE_BOUNDARY, ContentMode.NOTES_SLIDE_BOUNDARY]:
+                # Only insert separator into slides output (notes-only blocks will not add their content)
+                # but ensure we don't add trailing separators at the end unintentionally.
+                # Use the Markdown horizontal rule '---' which the revealjs/slidify pipeline
+                # recognizes as a slide separator when processing data-markdown.
+                slides_blocks.append('---')
+
         # Track slide boundaries for later use in task 2.2
         self.slide_boundaries = [d.line_number for d in directives 
                                if d.mode in [ContentMode.SLIDE_BOUNDARY, ContentMode.NOTES_SLIDE_BOUNDARY]]
-        
+
+        # Join blocks into final markdown content. Keep separators as their own paragraphs.
         slides_content = '\n\n'.join(slides_blocks).strip()
         notes_content = '\n\n'.join(notes_blocks).strip()
         
