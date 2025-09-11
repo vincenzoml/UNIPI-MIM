@@ -180,14 +180,6 @@
 .reveal ul li {
   position: relative;
   margin: 0.6em 0;
-  
-  &:before {
-    content: '▸';
-    color: var(--fancy-accent);
-    font-weight: bold;
-    position: absolute;
-    left: -1.2em;
-  }
 }
 
 .reveal ol li {

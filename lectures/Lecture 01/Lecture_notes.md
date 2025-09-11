@@ -9,17 +9,26 @@
 
 ## The course
 
-This course stems from the need to introduce symbolic and hybrid methods to students and future professionals in the Informatics for Digital Health program, aligning with broader movements toward trustworthy, explainable, a nd auditable AI in sensitive domains.
-
-While the methods presented here represent only a small part of the current research frontier, there is not yet a well-established methodology in this area. Thus, it is essential to foster the development and dissemination of these approaches among new generations which will be the ones shaping the actual implementation plan for digital health in age of Artificial Intelligence, and must possess all the needed instruments to critically evaluate and apply these methodologies.
+*This course stems from the need to bridge a specific gap between recent research, and university-level education, driven by major improvements in Artificial Intelligence, particularly deep learning. We aim to introduce symbolic and hybrid methods to students of the Informatics for Digital Health program, aligning with broader efforts toward trustworthy, explainable, accountable, and auditable AI in sensitive domains. In the field of Medical Image Analysis, model checking has shown promising results in applying logical methods to Computer Vision, and this will be a central theme of the course, while departing from the symbolic/deductive AI tradition.*
 
 <!-- SLIDE -->
+Bridging Research and Education in Medical Image Analysis
 
-- The course introduces symbolic and hybrid methods for Informatics for Digital Health students.
-- Aligns with movements toward trustworthy, explainable, and auditable AI in sensitive domains.
-- Methods presented are a small part of the research frontier; no well-established methodology yet.
-- Essential to foster development and dissemination among new generations.
-- Future professionals will shape digital health implementation and must critically evaluate/apply these methods.
+Recent advances in AI, especially deep learning, have created a gap between research and university curricula.
+This course introduces symbolic and hybrid methods to Informatics for Digital Health students.
+Focus: trustworthy, explainable, accountable, and auditable AI in sensitive domains.
+Model checking applies logical methods to Computer Vision—central to the course, moving beyond traditional symbolic/deductive AI.
+<!-- NOTES -->
+
+*While the methods presented here represent only a small part of the current research frontier, there is not yet a well-established methodology in this area. Thus, it is essential to foster the development and dissemination of these approaches among new generations which will be the ones shaping the actual implementation plan for digital health in age of Artificial Intelligence, and must possess all the needed instruments to critically evaluate and apply these methodologies.*
+
+<!-- SLIDE -->
+**Emerging Methodologies in Digital Health AI**
+
+- Current symbolic and hybrid methods represent a small fraction of ongoing research.
+- No universally established methodology exists yet in this area.
+- Fostering development and dissemination is crucial for future professionals.
+- New generations will shape digital health implementation and must be equipped to critically evaluate and apply these approaches.
 
 <!-- NOTES -->
 
@@ -29,6 +38,16 @@ While the methods presented here represent only a small part of the current rese
 These course notes are based on the lectures delivered in the Formal and Hybrid Methods for Medical Imaging course for the Informatics for Digital Health program at the University of Pisa in fall 2025 (cf. Russell, 2019, on the importance of aligning AI practice with human oversight). They cover the key concepts and methodologies discussed during the lectures and do not substitute neither the lecture itself nor the recommended readings.
 
 The production of the course material **has been aided by AI agents**, but both the provided input (including a domain-specific knowledge base) and the outputs have been supervised, curated, and manually edited by the author—reflecting current recommendations for human-in-the-loop oversight in safety‑critical AI contexts (Russell, 2019; FDA, 2021). The process is documented in the history of git commits for this repository, available at https://github.com/vincenzoml/UNIPI-MIM
+
+<!-- SLIDE -->
+Course Notes: AI-Aided, Human-Curated
+
+- Course notes summarize key concepts and methodologies from lectures.
+- They do not replace attending lectures or reading recommended materials.
+- AI agents assisted in producing the material, but all content was supervised and edited by the instructor.
+H- uman-in-the-loop oversight ensures safety and accountability, following current best practices.
+<!-- NOTES -->
+
 
 <!-- SLIDE -->
 
@@ -117,15 +136,25 @@ These threads are interleaved: conceptual lectures introduce formal or methodolo
 ## The Image Processing Pipeline
 
 ```{mermaid}
+%%{init: {
+    "theme": "neutral",
+    "flowchart": { "htmlLabels": true, "useMaxWidth": false },
+    "themeVariables": {
+                "fontSize": "20px",
+                "fontFamily": "Helvetica Neue, Arial, sans-serif",
+                "fontWeight": "700",
+                "padding": 30px             
+    },
+        "themeCSS": ".label div{display:flex;align-items:center;justify-content:center;padding:20px 20px 20px 20px !important;line-height:1.05;} .node rect{stroke-width:3px;}"
+} }%%
 flowchart LR
     A["Image Acquisition"]:::big --> B["Preprocessing<br>Logical Methods"]:::big
     B --> C["Segmentation<br>Hybrid Methods"]:::big
     C --> D["Radiomics"]:::big
     D --> E["Postprocessing<br>Logical Methods"]:::big
     E --> F["Analysis / Modeling"]:::big
-
-    classDef big fill:#ffffff,stroke:#000000,stroke-width:3px,font-size:24px,font-weight:bold;
 ```
+
 <!-- NOTES -->
 
 
