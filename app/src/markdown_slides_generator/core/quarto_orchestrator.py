@@ -1494,9 +1494,6 @@ class QuartoOrchestrator:
         # Add RevealJS options from config
         revealjs_config = frontmatter['format']['revealjs']
         
-        # Enable Mermaid diagram support
-        revealjs_config['mermaid'] = {'theme': 'default'}
-        
         for config_key, revealjs_key in key_mapping.items():
             if config_key in slides_config:
                 value = slides_config[config_key]
