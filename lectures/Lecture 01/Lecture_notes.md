@@ -112,6 +112,7 @@ These threads are interleaved: conceptual lectures introduce formal or methodolo
 <!-- SLIDE -->
 
 ![alt text](image.png)
+
 <!-- NOTES -->
 
 ## The schedule revisited

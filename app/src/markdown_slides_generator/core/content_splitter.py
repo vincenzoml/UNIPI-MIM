@@ -41,45 +41,32 @@ class DirectiveMatch:
 
 @dataclass
 class ContentBlock:
-    """Represents a block of content with its associated mode."""
+    """Content block routed to slides/notes with associated mode and line span."""
     content: str
     mode: ContentMode
     start_line: int
     end_line: int
-    is_slide_boundary: bool = False
-    header_level: Optional[int] = None
 
 
 @dataclass
 class SlideSection:
-    """Represents a logical slide section with content and metadata."""
     title: str
     content: str
     slide_number: int
-    header_level: int
+    header_level: int = 1
     has_code: bool = False
     has_math: bool = False
     word_count: int = 0
 
 
-class MarkdownDirectiveParser:
-    """
-    Robust parser for markdown directives with state machine implementation.
-    
-    Handles special comments:
-    - <!-- SLIDE --> or <!-- SLIDES --> : Creates slide boundary (case-insensitive)
-    - <!-- SLIDE-ONLY --> : Content only in slides
-    - <!-- NOTES-ONLY --> : Content only in notes
-    - <!-- NOTES --> : Creates slide boundary AND content only in notes (like --- separator)
-    - <!-- ALL --> : Content in both (return to normal)
-    """
-    
-    # Directive patterns - case insensitive with flexible whitespace
-    DIRECTIVE_PATTERNS = {
-        r'<!--\s*SLIDES?\s*-->': ContentMode.SLIDE_BOUNDARY,  # SLIDE or SLIDES (case-insensitive)
+class MarkdownDirectiveParser:  # restore original class header (implementation below remains intact)
+    # Directive regex patterns mapped to modes
+    DIRECTIVE_PATTERNS: Dict[str, ContentMode] = {
         r'<!--\s*SLIDE-ONLY\s*-->': ContentMode.SLIDES_ONLY,
+        r'<!--\s*SLIDES-ONLY\s*-->': ContentMode.SLIDES_ONLY,
         r'<!--\s*NOTES-ONLY\s*-->': ContentMode.NOTES_ONLY,
-        r'<!--\s*NOTES\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,  # NOTES acts as both slide boundary and notes-only
+        r'<!--\s*NOTES\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,  # acts as boundary + notes-only
+        r'<!--\s*SLIDES?\s*-->': ContentMode.SLIDE_BOUNDARY,       # SLIDE or SLIDES
         r'<!--\s*ALL\s*-->': ContentMode.ALL,
     }
     
@@ -114,7 +101,7 @@ class MarkdownDirectiveParser:
                 if not in_code_block:
                     in_code_block = True
                     code_block_fence = stripped_line[:3]
-                elif stripped_line.startswith(code_block_fence):
+                elif code_block_fence and stripped_line.startswith(code_block_fence):
                     in_code_block = False
                     code_block_fence = None
                 continue
@@ -427,7 +414,7 @@ class ContentSplitter:
         except Exception as e:
             raise InputError(f"Error processing file {filepath}: {e}")
     
-    def process_directives(self, content: str) -> Dict[str, str]:
+    def process_directives(self, content: str) -> Dict[str, Any]:
         """
         Process markdown directives and split content accordingly.
         
@@ -488,8 +475,9 @@ class ContentSplitter:
             logger.info(f"Content optimization made {self.optimization_result.improvements_made} improvements")
             logger.info(f"Estimated slide count: {self.optimization_result.estimated_slide_count_before} → {self.optimization_result.estimated_slide_count_after}")
             
-            # Use optimized content if significant improvements were made
-            if self.optimization_result.improvements_made >= 3:
+            # TEMPORARILY DISABLED: Use optimized content if significant improvements were made
+            # The optimizer is overwriting our carefully inserted separators
+            if False and self.optimization_result.improvements_made >= 3:
                 logger.info("Using optimized content due to significant improvements")
                 content = self.optimization_result.optimized_content
                 # Re-process with optimized content
@@ -502,30 +490,29 @@ class ContentSplitter:
         # Build a lookup for directives by line number for quick checks
         directives_by_line = {d.line_number: d for d in directives}
 
+        # Insert separators BEFORE boundary directives instead of after blocks to prevent content bleed.
+        boundary_lines = {d.line_number for d in directives if d.mode in (ContentMode.SLIDE_BOUNDARY, ContentMode.NOTES_SLIDE_BOUNDARY)}
         for block in content_blocks:
-            # Append content to slides/notes according to mode
-            # SLIDES_ONLY content goes only to slides (not notes)
+            # If this block starts immediately after a boundary directive, add separator (unless first slide)
+            if (block.start_line - 1) in boundary_lines:
+                if slides_blocks and slides_blocks[-1].strip() != '---':
+                    slides_blocks.append('---')
+
             if block.mode == ContentMode.SLIDES_ONLY:
                 slides_blocks.append(block.content)
-            # NOTES_ONLY content goes only to notes (not slides) 
             elif block.mode == ContentMode.NOTES_ONLY:
                 notes_blocks.append(block.content)
-            # ALL content goes to both slides and notes
             elif block.mode == ContentMode.ALL:
                 slides_blocks.append(block.content)
                 notes_blocks.append(block.content)
-
-            # If a slide-related directive immediately follows this block,
-            # insert an explicit markdown slide separator so downstream
-            # processors (Quarto/revealjs) split slides correctly.
-            next_line = block.end_line + 1
-            next_dir = directives_by_line.get(next_line)
-            if next_dir and next_dir.mode in [ContentMode.SLIDE_BOUNDARY, ContentMode.NOTES_SLIDE_BOUNDARY]:
-                # Only insert separator into slides output (notes-only blocks will not add their content)
-                # but ensure we don't add trailing separators at the end unintentionally.
-                # Use the Markdown horizontal rule '---' which the revealjs/slidify pipeline
-                # recognizes as a slide separator when processing data-markdown.
-                slides_blocks.append('---')
+            elif block.mode == ContentMode.NOTES_SLIDE_BOUNDARY:
+                # Boundary already handled; content (if any) only to notes
+                if block.content.strip():
+                    notes_blocks.append(block.content)
+            elif block.mode == ContentMode.SLIDE_BOUNDARY:
+                # Usually empty; if user placed content same line region treat as slide-only after separator
+                if block.content.strip():
+                    slides_blocks.append(block.content)
 
         # Track slide boundaries for later use in task 2.2
         self.slide_boundaries = [d.line_number for d in directives 
@@ -566,8 +553,7 @@ class ContentSplitter:
     
     def has_latex_errors(self) -> bool:
         """Check if there are any LaTeX validation errors."""
-        return (self.latex_validation_result and 
-                not self.latex_validation_result.is_valid)
+        return bool(self.latex_validation_result and not self.latex_validation_result.is_valid)
     
     def get_validation_result(self) -> Optional[ValidationResult]:
         """Get the content validation result from the last processing."""
@@ -579,8 +565,7 @@ class ContentSplitter:
     
     def has_validation_errors(self) -> bool:
         """Check if there are any content validation errors."""
-        return (self.validation_result and 
-                not self.validation_result.is_valid)
+        return bool(self.validation_result and not self.validation_result.is_valid)
     
     def get_validation_summary(self) -> Dict[str, Any]:
         """Get a summary of all validation results."""
@@ -734,6 +719,15 @@ class ContentSplitter:
         slide_number = 1
         
         for line in lines:
+            # Check for slide separators
+            if line.strip() == '---':
+                # Save previous section if exists
+                if current_section and current_section.content.strip():
+                    sections.append(current_section)
+                    slide_number += 1
+                    current_section = None
+                continue
+            
             # Check for headers (potential slide boundaries)
             header_match = re.match(r'^(#{1,6})\s+(.+)', line)
             
