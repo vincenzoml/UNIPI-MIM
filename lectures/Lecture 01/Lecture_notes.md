@@ -11,8 +11,7 @@
 
 This course stems from the need to introduce symbolic and hybrid methods to students and future professionals in the Informatics for Digital Health program, aligning with broader movements toward trustworthy, explainable, a nd auditable AI in sensitive domains.
 
-While the methods presented here represent only a small part of the current research frontier, there is not yet a well-established methodology in this area. Thus, it is essential to foster the development and dissemination of these approaches among new generations which will be the ones shaping the actual implementation plan for digital health in the coming decades, and must possess all the needed instruments to critically evaluate and apply them.
-
+While the methods presented here represent only a small part of the current research frontier, there is not yet a well-established methodology in this area. Thus, it is essential to foster the development and dissemination of these approaches among new generations which will be the ones shaping the actual implementation plan for digital health in age of Artificial Intelligence, and must possess all the needed instruments to critically evaluate and apply these methodologies.
 
 <!-- SLIDE -->
 
@@ -115,20 +114,18 @@ These threads are interleaved: conceptual lectures introduce formal or methodolo
 
 ---
 
-```mermaid
-flowchart TD
-    A[Acquisizione Immagine] --> B[Preprocessing<br/>(Logical Methods)]
-    B --> C[Segmentazione<br/>(Hybrid Methods)]
-    C --> D[Radiomica]
-    D --> E[Postprocessing<br/>(Logical Methods)]
-    E --> F[Analisi / Modellazione]
-    
-    style B fill:#cce5ff,stroke:#3399ff,stroke-width:2px
-    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
-    style D fill:#fff3cd,stroke:#ffc107,stroke-width:3px
-    style E fill:#cce5ff,stroke:#3399ff,stroke-width:2px
-```
+## The Image Processing Pipeline
 
+```{mermaid}
+flowchart LR
+    A["Image Acquisition"]:::big --> B["Preprocessing<br>Logical Methods"]:::big
+    B --> C["Segmentation<br>Hybrid Methods"]:::big
+    C --> D["Radiomics"]:::big
+    D --> E["Postprocessing<br>Logical Methods"]:::big
+    E --> F["Analysis / Modeling"]:::big
+
+    classDef big fill:#ffffff,stroke:#000000,stroke-width:3px,font-size:24px,font-weight:bold;
+```
 <!-- NOTES -->
 
 

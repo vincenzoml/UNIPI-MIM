@@ -1,0 +1,2 @@
+In this repository, there's an app for rendering slides. NEVER RUN IT with "-w" or "-s" switches in production, as it will start a web server and keep the process alive indefinitely, so you will  get stuck. If you really need to debug the "-s" or "-w" features, run it in background. Without -w or -s it will just run and exit as expected.
+ 
