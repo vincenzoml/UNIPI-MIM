@@ -107,6 +107,13 @@ This course is intentionally multidisciplinary and delivered in a seminar-style 
 
 These threads are interleaved: conceptual lectures introduce formal or methodological tools, followed by practical hands-on sessions that expose implementation subtleties, optimisation trade-offs, and ethical or professional implications (Russell, 2019; Marcus, 2020). You are encouraged to treat the material not as a linear textbook narrative but as a mosaic of interoperable techniques that can be recombined when designing robust, explainable, and clinically relevant imaging workflows (Sun, 2002; Bengio, 2019).
 
+## Leading theme
+
+<!-- SLIDE -->
+
+![alt text](image.png)
+<!-- NOTES -->
+
 ## The schedule revisited
 
 
@@ -141,8 +148,6 @@ These threads are interleaved: conceptual lectures introduce formal or methodolo
 
 ### Reproducibility & Documentation (Pipeline Context: Lifecycle, Postprocessing & Evaluation Closure)
 - Week 12: Dataset selection; metrics; reproducibility & documentation; exam preparation (guidelines, demos, Q&A).
-
-
 
 ## Symbolic and Hybrid AI
 ### Introduction
