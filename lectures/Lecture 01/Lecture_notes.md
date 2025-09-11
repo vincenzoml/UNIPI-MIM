@@ -14,10 +14,10 @@
 <!-- SLIDE -->
 Bridging Research and Education in Medical Image Analysis
 
-Recent advances in AI, especially deep learning, have created a gap between research and university curricula.
-This course introduces symbolic and hybrid methods to Informatics for Digital Health students.
-Focus: trustworthy, explainable, accountable, and auditable AI in sensitive domains.
-Model checking applies logical methods to Computer Vision—central to the course, moving beyond traditional symbolic/deductive AI.
+- Recent advances in AI, especially deep learning, have created a gap between research and university curricula.
+- This course introduces symbolic and hybrid methods to Informatics for Digital Health students.
+- Focus: trustworthy, explainable, accountable, and auditable AI in sensitive domains.
+- Model checking applies logical methods to Computer Vision—central to the course, moving beyond traditional symbolic/deductive AI.
 <!-- NOTES -->
 
 *While the methods presented here represent only a small part of the current research frontier, there is not yet a well-established methodology in this area. Thus, it is essential to foster the development and dissemination of these approaches among new generations which will be the ones shaping the actual implementation plan for digital health in age of Artificial Intelligence, and must possess all the needed instruments to critically evaluate and apply these methodologies.*
@@ -40,7 +40,7 @@ These course notes are based on the lectures delivered in the Formal and Hybrid 
 The production of the course material **has been aided by AI agents**, but both the provided input (including a domain-specific knowledge base) and the outputs have been supervised, curated, and manually edited by the author—reflecting current recommendations for human-in-the-loop oversight in safety‑critical AI contexts (Russell, 2019; FDA, 2021). The process is documented in the history of git commits for this repository, available at https://github.com/vincenzoml/UNIPI-MIM
 
 <!-- SLIDE -->
-Course Notes: AI-Aided, Human-Curated
+## Course Notes: AI-Aided, Human-Curated
 
 - Course notes summarize key concepts and methodologies from lectures.
 - They do not replace attending lectures or reading recommended materials.

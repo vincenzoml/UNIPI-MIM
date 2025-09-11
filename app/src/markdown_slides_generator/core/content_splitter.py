@@ -66,7 +66,7 @@ class MarkdownDirectiveParser:  # restore original class header (implementation 
         r'<!--\s*SLIDES-ONLY\s*-->': ContentMode.SLIDES_ONLY,
         r'<!--\s*NOTES-ONLY\s*-->': ContentMode.NOTES_ONLY,
         r'<!--\s*NOTES\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,  # acts as boundary + notes-only
-        r'<!--\s*SLIDES?\s*-->': ContentMode.SLIDE_BOUNDARY,       # SLIDE or SLIDES
+        r'<!--\s*SLIDES?\s*-->': ContentMode.SLIDES_ONLY,         # SLIDE or SLIDES now means slides only
         r'<!--\s*ALL\s*-->': ContentMode.ALL,
     }
     
@@ -302,10 +302,10 @@ class MarkdownDirectiveParser:  # restore original class header (implementation 
         new_mode = directive.mode
         
         # Handle state transitions
-        if new_mode == ContentMode.SLIDE_BOUNDARY:
-            # SLIDE/SLIDES directive resets to ALL mode and marks slide boundary
-            logger.debug(f"State transition: {current_mode.value} -> ALL (via SLIDE boundary) at line {directive.line_number}")
-            return ContentMode.ALL
+        if new_mode == ContentMode.SLIDES_ONLY:
+            # SLIDE/SLIDES directive transitions to slides-only mode
+            logger.debug(f"State transition: {current_mode.value} -> SLIDES_ONLY (via SLIDE directive) at line {directive.line_number}")
+            return ContentMode.SLIDES_ONLY
         elif new_mode == ContentMode.NOTES_SLIDE_BOUNDARY:
             # NOTES directive marks a slide boundary AND changes mode to notes-only
             logger.debug(f"State transition: {current_mode.value} -> notes_only (via NOTES boundary) at line {directive.line_number}")
