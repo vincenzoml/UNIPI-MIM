@@ -504,10 +504,15 @@ class ContentSplitter:
 
         for block in content_blocks:
             # Append content to slides/notes according to mode
-            if block.mode in [ContentMode.ALL, ContentMode.SLIDES_ONLY]:
+            # SLIDES_ONLY content goes only to slides (not notes)
+            if block.mode == ContentMode.SLIDES_ONLY:
                 slides_blocks.append(block.content)
-
-            if block.mode in [ContentMode.ALL, ContentMode.NOTES_ONLY]:
+            # NOTES_ONLY content goes only to notes (not slides) 
+            elif block.mode == ContentMode.NOTES_ONLY:
+                notes_blocks.append(block.content)
+            # ALL content goes to both slides and notes
+            elif block.mode == ContentMode.ALL:
+                slides_blocks.append(block.content)
                 notes_blocks.append(block.content)
 
             # If a slide-related directive immediately follows this block,

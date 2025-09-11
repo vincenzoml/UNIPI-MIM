@@ -107,6 +107,43 @@ This course is intentionally multidisciplinary and delivered in a seminar-style 
 
 These threads are interleaved: conceptual lectures introduce formal or methodological tools, followed by practical hands-on sessions that expose implementation subtleties, optimisation trade-offs, and ethical or professional implications (Russell, 2019; Marcus, 2020). You are encouraged to treat the material not as a linear textbook narrative but as a mosaic of interoperable techniques that can be recombined when designing robust, explainable, and clinically relevant imaging workflows (Sun, 2002; Bengio, 2019).
 
+## The schedule revisited
+
+
+### Foundations & Ethics (Pipeline Context: Orientation)
+- Week 1 (Introduction): Symbolic, formal, subsymbolic, hybrid overview; ethics & human‑centric AI; formal methods motivation; tool installation.
+
+### Acquisition & Reconstruction (Pipeline Context: Data Acquisition)
+- Week 2: Imaging modalities (MRI, CT); reconstruction basics; modality characteristics; early DL applications in reconstruction.
+
+### Dataset Preparation & Preprocessing (Pipeline Context: Dataset Preparation + Preprocessing)
+- Week 3: CT reconstruction algorithms (hands‑on); low‑dose & artifact reduction; principles of image pre‑processing; dataset creation & curation.
+
+### Segmentation (Pipeline Context: Core Processing)
+- Week 4: Introduction to medical image segmentation; hands‑on background removal + brain segmentation.
+
+### Declarative / Formal Analysis (Pipeline Context: Processing – Declarative Layer)
+- Week 5: Spatial logics, model checking, VoxLogicA; hands‑on declarative analysis.
+- Week 8: Advanced declarative analysis, optimisation (voxlogica.py), case studies (performance tuning).
+
+### Evaluation & Mid-term (Pipeline Context: Quantitative Evaluation & Formative Assessment)
+- Week 6: Review + Q&A; mid‑term written/practical assignment.
+- Week 7: Break (no teaching activities).
+
+### Radiomics & Feature Engineering (Pipeline Context: Feature Extraction / Processing Extension)
+- Week 9: Radiomics concepts; ethics & professional considerations; model cards; hands‑on radiomics pipelines & evaluation.
+
+### Hybrid Integration & Performance (Pipeline Context: Hybrid Processing + Metrics)
+- Week 10: Performance metrics (geometry, distance, reachability); constraints & pitfalls; hybrid workflows combining VoxLogicA with neural models (nnU‑Net); determinism & reproducibility concerns.
+
+### Case Studies & Hybrid Practice (Pipeline Context: Postprocessing + Applied Hybrid Workflows)
+- Week 11: Case studies (brain lesion segmentation; brain tissue identification); practical hybrid workflows on provided datasets.
+
+### Reproducibility & Documentation (Pipeline Context: Lifecycle, Postprocessing & Evaluation Closure)
+- Week 12: Dataset selection; metrics; reproducibility & documentation; exam preparation (guidelines, demos, Q&A).
+
+
+
 ## Symbolic and Hybrid AI
 ### Introduction
 

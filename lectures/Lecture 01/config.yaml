@@ -30,7 +30,6 @@ slides:
 processing:
   intelligent_splitting: false
   syntax_highlighting: true
-  fragments: false
   math_renderer: "mathjax"
   content_validation: false
   image_optimization: true
