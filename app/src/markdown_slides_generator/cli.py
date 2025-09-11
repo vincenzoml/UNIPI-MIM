@@ -9,6 +9,8 @@ import sys
 import os
 import time
 import asyncio
+import re
+import shutil
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import yaml
@@ -24,6 +26,50 @@ from .config import ConfigManager, Config
 
 logger = get_logger(__name__)
 config_manager = ConfigManager()
+
+
+def _copy_referenced_images(source_file: str, output_dir: Path) -> None:
+    """
+    Copy images referenced in the markdown file to the output directory.
+    
+    Args:
+        source_file: Path to the source markdown file
+        output_dir: Output directory to copy images to
+    """
+    source_path = Path(source_file)
+    source_dir = source_path.parent
+    
+    # Read the original file to find image references
+    try:
+        content = source_path.read_text(encoding='utf-8')
+    except Exception as e:
+        logger.warning(f"Could not read source file for image detection: {e}")
+        return
+    
+    # Find image references in markdown: ![alt text](image.png)
+    image_pattern = r'!\[.*?\]\(([^)]+)\)'
+    image_matches = re.findall(image_pattern, content)
+    
+    for image_path in image_matches:
+        # Skip URLs (http/https)
+        if image_path.startswith(('http://', 'https://')):
+            continue
+            
+        # Handle relative paths
+        if not Path(image_path).is_absolute():
+            source_image_path = source_dir / image_path
+        else:
+            source_image_path = Path(image_path)
+        
+        if source_image_path.exists():
+            dest_image_path = output_dir / source_image_path.name
+            try:
+                shutil.copy2(source_image_path, dest_image_path)
+                logger.info(f"Copied image: {source_image_path.name} -> {dest_image_path}")
+            except Exception as e:
+                logger.warning(f"Failed to copy image {source_image_path}: {e}")
+        else:
+            logger.warning(f"Referenced image not found: {source_image_path}")
 
 
 def _perform_generation(
@@ -85,6 +131,9 @@ def _perform_generation(
     logger.debug(f"Generated slides frontmatter:\n{slides_frontmatter}")
     with open(notes_file_path, 'w', encoding='utf-8') as f:
         f.write(notes_frontmatter + notes_content)
+    
+    # Copy referenced images to output directory
+    _copy_referenced_images(str(input_file), output_dir)
     
     # Prepare template variables from config and CLI
     variables = dict(final_config.variables)
