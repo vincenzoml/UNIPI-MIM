@@ -469,19 +469,9 @@ class ContentSplitter:
         if self.validation_result.warnings:
             logger.info(f"Content validation found {len(self.validation_result.warnings)} warnings")
         
-        # Perform content optimization
-        self.optimization_result = self.slide_optimizer.optimize_content(content)
-        if self.optimization_result.improvements_made > 0:
-            logger.info(f"Content optimization made {self.optimization_result.improvements_made} improvements")
-            logger.info(f"Estimated slide count: {self.optimization_result.estimated_slide_count_before} → {self.optimization_result.estimated_slide_count_after}")
-            
-            # TEMPORARILY DISABLED: Use optimized content if significant improvements were made
-            # The optimizer is overwriting our carefully inserted separators
-            if False and self.optimization_result.improvements_made >= 3:
-                logger.info("Using optimized content due to significant improvements")
-                content = self.optimization_result.optimized_content
-                # Re-process with optimized content
-                content_blocks = self.parser.process_content_blocks(content, self.parser.parse_directives(content))
+        # Optimization system DISABLED - preserving manual slide separators
+        logger.info("Optimization system disabled to preserve manual slide boundaries")
+        self.optimization_result = None
         
         # Split content based on modes
         slides_blocks = []
@@ -584,7 +574,7 @@ class ContentSplitter:
             summary['total_issues'] += len(self.validation_result.errors) + len(self.validation_result.warnings)
             summary['suggestions'].extend([issue.suggestion for issue in self.validation_result.issues if issue.suggestion])
         
-        if self.optimization_result:
+        if self.optimization_result and self.optimization_result.suggestions:
             summary['suggestions'].extend([s.description for s in self.optimization_result.suggestions])
         
         return summary
