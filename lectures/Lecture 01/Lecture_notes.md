@@ -113,7 +113,25 @@ These threads are interleaved: conceptual lectures introduce formal or methodolo
 
 ![alt text](image.png)
 
+---
+
+```mermaid
+flowchart TD
+    A[Acquisizione Immagine] --> B[Preprocessing<br/>(Logical Methods)]
+    B --> C[Segmentazione<br/>(Hybrid Methods)]
+    C --> D[Radiomica]
+    D --> E[Postprocessing<br/>(Logical Methods)]
+    E --> F[Analisi / Modellazione]
+    
+    style B fill:#cce5ff,stroke:#3399ff,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style D fill:#fff3cd,stroke:#ffc107,stroke-width:3px
+    style E fill:#cce5ff,stroke:#3399ff,stroke-width:2px
+```
+
 <!-- NOTES -->
+
+
 
 ## The schedule revisited
 
