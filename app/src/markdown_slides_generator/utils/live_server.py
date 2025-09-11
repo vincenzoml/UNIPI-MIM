@@ -139,14 +139,13 @@ class LiveServer:
             return web.Response(text="File not found", status=404)
         
         try:
-            content = file_path.read_text(encoding='utf-8')
-            
-            # Inject auto-reload script for HTML files
+            # Handle HTML files with auto-reload script injection
             if file_path.suffix.lower() == '.html':
+                content = file_path.read_text(encoding='utf-8')
                 content = self._inject_reload_script(content)
                 return web.Response(text=content, content_type='text/html')
             else:
-                # Serve other files as-is
+                # Serve binary and other files directly using FileResponse
                 return web.FileResponse(file_path)
                 
         except Exception as e:
@@ -262,7 +261,8 @@ class LiveServer:
 async def start_live_server(
     serve_dir: Path, 
     port: int = 8000,
-    auto_open: bool = True
+    auto_open: bool = True,
+    target_file: Optional[str] = None
 ) -> LiveServer:
     """
     Start a live server and optionally open the browser.
@@ -271,6 +271,7 @@ async def start_live_server(
         serve_dir: Directory to serve files from
         port: Port number for the server
         auto_open: Whether to automatically open the browser
+        target_file: Specific file to open (optional)
         
     Returns:
         LiveServer instance
@@ -279,7 +280,13 @@ async def start_live_server(
     server_url = await server.start()
     
     if auto_open:
-        logger.info("Opening browser...")
-        webbrowser.open(server_url)
+        # Construct URL with target file if specified
+        if target_file:
+            target_url = f"{server_url}/{target_file}"
+            logger.info(f"Opening browser to {target_file}...")
+            webbrowser.open(target_url)
+        else:
+            logger.info("Opening browser...")
+            webbrowser.open(server_url)
     
     return server

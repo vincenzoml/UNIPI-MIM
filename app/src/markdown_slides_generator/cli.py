@@ -225,6 +225,7 @@ async def _async_watch_with_serve(
     notes_only: bool,
     progress: bool,
     ctx,
+    serve_target: str,
     port: int,
     auto_open: bool
 ) -> None:
@@ -234,13 +235,23 @@ async def _async_watch_with_serve(
     from concurrent.futures import ThreadPoolExecutor
     import threading
     
+    # Determine the target file based on serve_target
+    base_name = input_file.stem
+    if serve_target.lower() == 'slides':
+        target_file = f"{base_name}_slides.html"
+        content_type = "slides"
+    else:  # notes
+        target_file = f"{base_name}_notes.html"
+        content_type = "notes"
+    
     # Start the live server
     try:
-        live_server = await start_live_server(output_dir, port, auto_open)
+        live_server = await start_live_server(output_dir, port, auto_open, target_file)
         actual_port = live_server.port  # Use the actual port the server is running on
         click.echo(f"\n👁️  Watch mode with live server enabled.")
         click.echo(f"🌐 Server: http://localhost:{actual_port}")
         click.echo(f"📁 Serving: {output_dir}")
+        click.echo(f"📄 Target: {target_file} ({content_type})")
         click.echo("Press Ctrl+C to stop.")
         
         # Create a thread-safe way to communicate between file watcher and async server
@@ -472,6 +483,12 @@ def cli(ctx, verbose: bool, quiet: bool):
     help="Start a local server with auto-reload (requires --watch)"
 )
 @click.option(
+    '--serve-target',
+    type=click.Choice(['slides', 'notes'], case_sensitive=False),
+    default='slides',
+    help="Choose what to serve: slides or notes (default: slides)"
+)
+@click.option(
     '--port', '-p',
     type=int,
     default=8000,
@@ -503,6 +520,7 @@ def generate(
     progress: bool,
     watch: bool,
     serve: bool,
+    serve_target: str,
     port: int,
     no_open: bool
 ):
@@ -682,6 +700,7 @@ def generate(
                     notes_only=notes_only,
                     progress=progress,
                     ctx=ctx,
+                    serve_target=serve_target,
                     port=port,
                     auto_open=not no_open
                 ))
