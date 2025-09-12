@@ -178,42 +178,36 @@ The topics of this course fit into a mental model related to the typical image p
 flowchart LR
     A["Data Acquisition"] --> B["Preprocessing"]
     B --> C["Segmentation"]
-    C --> D["Radiomics"]
-    D --> E["Postprocessing"]
-    E --> F["Analysis / Modeling"]
+    C --> D["Feature Extraction"]
+    D --> E["Analysis"]
+    E --> F["Structure Classification"]
 ```
+
 ## The schedule revisited
 
-### Data Acquisition
+### Data Acquisition and Preprocessing
 
-**Acquisition & Reconstruction**
+**Acquisition**
 - Week 2: Imaging modalities (MRI, CT); reconstruction basics; modality characteristics; early DL applications in reconstruction.
 
-**Dataset Preparation & Preprocessing (Pipeline Context: Dataset Preparation + Preprocessing)**
+**Preprocessing**
 - Week 3: Principles of image pre‑processing; dataset creation & curation.
 
-### Segmentation (Pipeline Context: Core Processing)
+### Segmentation
 - Week 4: Introduction to medical image segmentation; hands‑on background removal + brain segmentation.
 
-### Declarative / Formal Analysis (Pipeline Context: Processing – Declarative Layer)
 - Week 5: Spatial logics, model checking, VoxLogicA; hands‑on declarative analysis.
+
 - Week 8: Advanced declarative analysis, optimisation (voxlogica.py), case studies (performance tuning).
 
-### Evaluation & Mid-term (Pipeline Context: Quantitative Evaluation & Formative Assessment)
-- Week 6: Review + Q&A; mid‑term written/practical assignment.
-- Week 7: Break (no teaching activities).
-
-### Radiomics & Feature Engineering (Pipeline Context: Feature Extraction / Processing Extension)
+### Feature Extraction
 - Week 9: Radiomics concepts; ethics & professional considerations; model cards; hands‑on radiomics pipelines & evaluation.
 
-### Hybrid Integration & Performance (Pipeline Context: Hybrid Processing + Metrics)
+### Analysis & Structure Classification
 - Week 10: Performance metrics (geometry, distance, reachability); constraints & pitfalls; hybrid workflows combining VoxLogicA with neural models (nnU‑Net); determinism & reproducibility concerns.
 
 ### Case Studies & Hybrid Practice (Pipeline Context: Postprocessing + Applied Hybrid Workflows)
 - Week 11: Case studies (brain lesion segmentation; brain tissue identification); practical hybrid workflows on provided datasets.
-
-### Reproducibility & Documentation (Pipeline Context: Lifecycle, Postprocessing & Evaluation Closure)
-- Week 12: Dataset selection; metrics; reproducibility & documentation; exam preparation (guidelines, demos, Q&A).
 
 ## Symbolic and Hybrid AI
 ### Introduction
@@ -403,5 +397,5 @@ In recent years, there has been a growing movement towards **neuro-symbolic AI**
 
 ---
 
-*Further Reading:* General background sources have been removed from inline citation form for clarity; a curated reading list will be provided separately.
+*Further Reading:* See `lectures/domain_knowledge/REFERENCES.md` (section: “Lecture 01 – Core Reference Subset”) for a minimal, high‑yield bibliography.
 <!-- References removed per request; original bibliographic section intentionally omitted. -->

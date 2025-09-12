@@ -26,3 +26,21 @@ Initial list (user-provided). Status values: pending, downloaded, paywalled, err
 | https://www.penguinrandomhouse.com/books/566677/human-compatible-by-stuart-russell/ | Russell 2019 | book | Human Compatible (no PDF) |
 | https://www.sciencedirect.com/science/article/pii/S0933365725000892?via%3Dihub |  S0933365725000892 | duplicate? | Already listed above; keep single downloaded entry |
 
+## Lecture 01 – Core Reference Subset (Minimal)
+
+The following 9 entries form the intentionally minimal, high‑yield set aligned with the Lecture 01 narrative (model checking foundations, spatial/logical methods in imaging, hybrid & neuro‑symbolic motivation, alignment/safety, and regulatory context). Each identifier maps to the full table above; no duplication of metadata/PDF storage occurs here.
+
+| Identifier | Topic | Role in Lecture 01 |
+|------------|-------|--------------------|
+| 10.1007/BFb0025774 | Model checking | Foundational branching‑time temporal logic & state‑space verification paradigm. |
+| 10.1016/j.tcs.2014.07.014 | Spatial model checking | Introduces spatial logics leveraged for imaging (conceptual bridge to VoxLogicA). |
+| 10.1007/978-3-031-75387-9_13 | Hybrid AI in imaging | Recent application of spatial model checking within hybrid imaging workflows. |
+| arXiv:2002.06177 | Robustness critique | Highlights structural limits of deep models motivating symbolic augmentation. |
+| arXiv:1909.01310 | System 1→2 shift | Proposes inductive biases for higher‑level (quasi‑symbolic) reasoning in deep learning. |
+| Sun 2002 | Dual‑layer cognition | Theoretical basis for coexistence of implicit (subsymbolic) and explicit (symbolic) processes. |
+| Russell 2019 | Alignment & control | Motivates explicit models for safety, corrigibility, and governance. |
+| FDA 2021 SaMD Action Plan | Regulation | Provides real‑world safety/regulatory driver for explainable, auditable pipelines. |
+| VoxLogicA repo | Tooling | Concrete implementation of spatial model checking supporting hybrid workflows. |
+
+Selection principles: (i) Eliminate redundancy among overlapping conceptual critiques; (ii) Prefer one authoritative exemplar per conceptual slot; (iii) Balance historical foundations with current applied and governance perspectives.
+
