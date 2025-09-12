@@ -216,7 +216,7 @@ Artificial Intelligence has been shaped by tension between two broad paradigms: 
 
 ### 1. Roots of the Symbolic Paradigm
 
-The symbolic tradition formalised cognition as manipulation of abstract structures. Foundational work (Logic Theorist, General Problem Solver) framed intelligent behaviour as heuristic search through structured problem spaces governed by production rules. Symbol systems promised transparency, compositionality, and explainability—qualities attractive for domains requiring traceable decision paths. Logic programming and automated theorem proving exemplified declarative specification of domain knowledge. Scaling exposed limitations: brittleness, combinatorial explosion, difficulty bridging noisy perceptual data.
+The symbolic tradition formalised cognition as manipulation of abstract structures. Foundational work (Logic Theorist, General Problem Solver {citation needed}) framed intelligent behaviour as heuristic search through structured problem spaces governed by production rules. Symbol systems promised transparency, compositionality, and explainability—qualities attractive for domains requiring traceable decision paths. Logic programming and automated theorem proving exemplified declarative specification of domain knowledge. Scaling exposed limitations: brittleness, combinatorial explosion, difficulty bridging noisy perceptual data.
 
 ### 2. Rise of the Subsymbolic / Connectionist Paradigm
 
