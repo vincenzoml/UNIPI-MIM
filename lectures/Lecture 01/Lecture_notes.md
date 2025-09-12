@@ -144,7 +144,7 @@ This course is intentionally multidisciplinary and delivered in a seminar-style 
 
 - Spatial logics & declarative image analysis: model checking, VoxLogicA, expressive spatial property specification
 
-- Advanced declarative workflows: performance optimisation, tooling (e.g. voxlogica.py), case study–driven refinement
+- Advanced declarative workflows: performance optimisation, tooling, case study–driven refinement
 
 - Radiomics & machine learning: feature extraction, pipelines, evaluation protocols, model cards, ethical implications
 
@@ -154,55 +154,46 @@ This course is intentionally multidisciplinary and delivered in a seminar-style 
 
 - Case studies: brain lesion segmentation, brain tissue identification, comparative methodological insights
 
-- Reproducibility & documentation: dataset selection, metrics reporting, traceability, exam preparation
-
-These threads are interleaved: conceptual lectures introduce formal or methodological tools, followed by practical hands-on sessions that expose implementation subtleties, optimisation trade-offs, and ethical or professional implications (Russell, 2019; Marcus, 2020). You are encouraged to treat the material not as a linear textbook narrative but as a mosaic of interoperable techniques that can be recombined when designing robust, explainable, and clinically relevant imaging workflows (Sun, 2002; Bengio, 2019).
+These threads are interleaved: conceptual lectures introduce formal or methodological tools, followed by practical hands-on sessions that expose implementation subtleties, optimisation trade-offs, and ethical or professional implications. You are encouraged to treat the material not as a linear textbook narrative but as a mosaic of interoperable techniques that can be recombined when designing robust, explainable, and clinically relevant imaging workflows.
 
 ## Leading theme
 
-<!-- SLIDE -->
-
-![alt text](image.png)
-
----
-
 ## The Image Processing Pipeline
 
+The topics of this course fit into a mental model related to the typical image processing pipeline, as shown in the following diagram.
+
+
 ```{mermaid}
+#| fig-width: 12
+#| fig-height: 6
+
 %%{init: {
     "theme": "neutral",
     "flowchart": { "htmlLabels": true, "useMaxWidth": false },
     "themeVariables": {
-                "fontSize": "20px",
+                "fontSize": "24px",
                 "fontFamily": "Helvetica Neue, Arial, sans-serif",
                 "fontWeight": "700",
-                "padding": 30px             
+                "padding": 40px             
     },
-        "themeCSS": ".label div{display:flex;align-items:center;justify-content:center;padding:20px 20px 20px 20px !important;line-height:1.05;} .node rect{stroke-width:3px;}"
+        "themeCSS": ".label div{display:flex;align-items:center;justify-content:center;padding:25px 25px 25px 25px !important;line-height:1.1;} .node rect{stroke-width:4px;}"
 } }%%
 flowchart LR
-    A["Image Acquisition"]:::big --> B["Preprocessing<br>Logical Methods"]:::big
-    B --> C["Segmentation<br>Hybrid Methods"]:::big
-    C --> D["Radiomics"]:::big
-    D --> E["Postprocessing<br>Logical Methods"]:::big
-    E --> F["Analysis / Modeling"]:::big
+    A["Data Acquisition"] --> B["Preprocessing"]
+    B --> C["Segmentation"]
+    C --> D["Radiomics"]
+    D --> E["Postprocessing"]
+    E --> F["Analysis / Modeling"]
 ```
-
-<!-- NOTES -->
-
-
-
 ## The schedule revisited
 
+### Data Acquisition
 
-### Foundations & Ethics (Pipeline Context: Orientation)
-- Week 1 (Introduction): Symbolic, formal, subsymbolic, hybrid overview; ethics & human‑centric AI; formal methods motivation; tool installation.
-
-### Acquisition & Reconstruction (Pipeline Context: Data Acquisition)
+**Acquisition & Reconstruction**
 - Week 2: Imaging modalities (MRI, CT); reconstruction basics; modality characteristics; early DL applications in reconstruction.
 
-### Dataset Preparation & Preprocessing (Pipeline Context: Dataset Preparation + Preprocessing)
-- Week 3: CT reconstruction algorithms (hands‑on); low‑dose & artifact reduction; principles of image pre‑processing; dataset creation & curation.
+**Dataset Preparation & Preprocessing (Pipeline Context: Dataset Preparation + Preprocessing)**
+- Week 3: Principles of image pre‑processing; dataset creation & curation.
 
 ### Segmentation (Pipeline Context: Core Processing)
 - Week 4: Introduction to medical image segmentation; hands‑on background removal + brain segmentation.
