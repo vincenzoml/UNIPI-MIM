@@ -4,6 +4,17 @@
 **Date:** September 10, 2025  
 **Instructor:** Vincenzo Ciancia
 
+TODO:
+
+- who we are
+
+- what we do
+
+- history of symbolic and subsymbolic AI
+
+- classifications
+
+- why hybrid AI now
 
 <!-- NOTES -->
 
@@ -55,7 +66,7 @@ H- uman-in-the-loop oversight ensures safety and accountability, following curre
 
 ## Formal methods for medical imaging
 
-This course focuses on a selection of topics that are at the edge between classical programming and fully-blackbox-driven AI. For the "symbolic" part, we will study *model checking* (Clarke & Emerson, 1981; Queille & Sifakis, 1982). This approach, when applied to AI, diverts from the traditional "deductive" idea of symbolic AI using automated theorem proving and logic programming. Model checking emphasizes the pragmatic use of executable domain knowledge. In model checking, properties of a system (or, in our context, medical images and their features) are specified formally and then automatically verified against concrete models using efficient algorithms. As we shall see, this paradigm is particularly effective in Computer Vision, although such applications appeared only recently and in a totally unexpected way. 
+This course focuses on a selection of topics that are at the edge between classical programming and AI. For the "symbolic" part, we will study *model checking* (Clarke & Emerson, 1981; Queille & Sifakis, 1982). This approach, when applied to AI, diverts from the traditional "deductive" idea of symbolic AI using automated theorem proving and logic programming. Model checking emphasizes the pragmatic use of executable domain knowledge. In model checking, properties of a system (or, in our context, medical images and their features) are specified formally and then automatically verified against concrete models using efficient algorithms. As we shall see, this paradigm is particularly effective in Computer Vision, although such applications appeared only recently and in a totally unexpected way. 
 
 <!-- SLIDE -->
 <!-- NOTES -->
@@ -68,13 +79,13 @@ The deductive tradition in symbolic AI dates back to the origins of artificial i
 <!-- NOTES -->
 
 **Model checking as a pragmatic alternative:**  
-Model checking, introduced in the early 1980s (Clarke & Emerson, 1981; Queille & Sifakis, 1982), departs from pure deduction by providing automated, algorithmic verification of properties over finite models amenable to exhaustive exploration. Instead of attempting to prove theorems in general, model checking tools explore reachable states to check whether specified properties hold (Clarke & Emerson, 1981). This approach has proven highly effective in hardware and software verification and, more recently, in domains such as medical imaging, where executable domain knowledge can be encoded and checked efficiently (Ciancia et al., 2014; Belmonte et al., 2024).
+Model checking, introduced in the early 1980s (Clarke & Emerson, 1981; Queille & Sifakis, 1982), departs from pure deduction by providing automated, algorithmic verification of properties over finite models amenable to exhaustive exploration. Instead of attempting to prove theorems in general, model checking tools explore reachable states to check whether specified properties hold (Clarke & Emerson, 1981). This approach has proven highly effective in hardware and software verification and, more recently, in domains such as medical imaging, where executable domain knowledge can be encoded and checked efficiently {Ciancia et al. 2014 -> 2016 (ask me)} {Add a citation to the spin tutoral} see (Ciancia et al., 2014; Belmonte et al., 2024) and the citations therein.
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 
-By focusing on model checking, this course emphasizes a methodology that is both expressive and practical, enabling the specification and verification of complex properties in medical images without the need for full-blown deductive reasoning (Ciancia et al., 2014; Belmonte et al., 2024). This shift reflects a broader trend in AI and formal methods towards tools and techniques that balance rigor with usability and scalability (Russell, 2019; Marcus, 2020).
+By focusing on model checking, this course emphasizes a methodology that is both expressive and practical, enabling the specification and verification of complex properties in medical images without the need for full-blown deductive reasoning {here cite Ciancia et al. 2019, not 2014} (Ciancia et al., 2019; Belmonte et al., 2024). This shift reflects a broader trend in AI and formal methods towards tools and techniques that balance rigor with usability and scalability (Russell, 2019; Marcus, 2020).
 
 <!-- SLIDE -->
 <!-- NOTES -->
@@ -258,7 +269,108 @@ Three converging forces make hybrid AI urgent today: (i) ceiling effects—scali
 
 In summary, hybrid AI is not a compromise born of indecision between symbolic and subsymbolic camps; it is an evidence‑based synthesis responding to real limitations identified over decades (Newell & Simon, 1976; Rumelhart et al., 1986; Marcus, 2020). By strategically combining complementary strengths—structured abstraction and flexible perception—we move toward AI systems capable of trustworthy, generalisable, and ethically aligned operation in complex domains such as medical imaging (Russell, 2019; Belmonte et al., 2024; Bengio, 2019).
 
-## References
+
+# Historical Connections Between Logic and Artificial Intelligence
+
+## Early Roots: Logic and Reasoning
+
+Artificial Intelligence (AI) has been deeply influenced by formal logic since its inception.
+
+| Period | Milestone | Contribution |
+|--------|-----------|--------------|
+| Antiquity → 19th c. | Aristotelian syllogistics → Frege’s predicate logic | Formal systems for reasoning; basis for symbolic representation. |
+| 19th c. | George Boole (Boolean algebra, 1854) | Algebraic formulation of logic, foundation for digital circuits and symbolic computation. |
+| 1930s–40s | Gödel, Turing, Church | Limits of logic (incompleteness, decidability) and computational models (Turing machines). |
+| 1950s | **Logic Theorist** (Newell & Simon, 1956) | First AI program: proved theorems from *Principia Mathematica*; milestone in automated reasoning. |
+| 1960s | Automated theorem proving (Robinson’s resolution, 1965) | Efficient deduction technique; foundation for formal reasoning systems. |
+| 1970s | Logic programming (Prolog, Kowalski, 1972) | Unified knowledge representation and inference; widely used in AI and symbolic reasoning. |
+| 1980s | Description logics (precursors of OWL) | Structured reasoning for ontologies, medical informatics, semantic web. |
+| 1990s–2000s | Knowledge representation, semantic web | Ontology-based reasoning integrated into web standards. |
+| 2010s–today | Hybrid AI (neural-symbolic) | Combines statistical learning with logic-based reasoning. |
+
+👉 Logic provided **formalisms, inference methods, and knowledge representation** that shaped entire generations of AI systems.
+
+---
+
+## Expert Systems: From Prototypes to Real-World Deployment
+
+Expert systems (1970s–1980s) were the first major wave of AI to leave the lab and enter industrial/medical practice.
+
+#### Canonical Academic Prototype
+
+| System | Domain | Technology | Impact | Limitation |
+|--------|--------|------------|--------|------------|
+| **MYCIN** (1970s, Stanford) | Medical diagnosis (bacterial infections, blood diseases) | Rule-based inference (~450 production rules) | Demonstrated that expert-level reasoning could be encoded in rules | Never deployed clinically (legal and ethical concerns) |
+
+---
+
+#### Canonical Industrial Success
+
+| System | Domain | Technology | Impact | Use |
+|--------|--------|------------|--------|-----|
+| **XCON (R1)** (late 1970s–1980s, DEC) | Computer system configuration (VAX computers) | Rule-based expert system (>2500 rules) | Saved DEC ~$25M/year | Actually deployed in industry, reduced costly errors |
+
+---
+
+#### Other Deployed Expert Systems
+
+| System | Domain | Technology | Real-World Use |
+|--------|--------|------------|----------------|
+| **DENDRAL** (1960s–70s, Stanford) | Chemistry (mass spectrometry) | Rule-based, hypothesis generation | Used by chemists; published scientific papers |
+| **PROSPECTOR** (1970s–80s) | Mineral exploration | Rule-based inference | 1980: identified a molybdenum deposit in Washington State → became a working mine |
+| **PUFF** (1980s, Stanford) | Pulmonary function diagnosis | Knowledge-based medical inference | Deployed in hospitals for years in lung disease diagnostics |
+| **CADET** (1980s, US Air Force) | Military planning & logistics | Planning + reasoning engine | Used operationally for contingency planning |
+
+👉 In summary:
+- **Science/medicine**: DENDRAL, PUFF  
+- **Industry**: XCON, PROSPECTOR  
+- **Defense**: CADET  
+
+---
+
+## Medical AI Beyond Expert Systems
+
+In later decades, medical AI evolved beyond symbolic expert systems:
+
+| Era | Approach | Example | Contribution |
+|-----|----------|---------|--------------|
+| 1980s–90s | Knowledge-based expert systems | MYCIN, PUFF | Reasoning from rules and clinical knowledge |
+| 2000s–2010s | Statistical learning, radiomics | Feature extraction from medical images | Linked imaging to prognosis and treatment |
+| 2010s–today | Deep learning, hybrid AI | Zebra Medical Vision, IBM Watson for Oncology | Automated image analysis and decision support |
+
+---
+
+## Radiomics in the Image Processing Pipeline
+
+Radiomics sits **after image acquisition and pre-processing, but before predictive modeling**:
+
+1. **Image acquisition** (CT, MRI, PET, X-ray).  
+2. **Pre-processing** (normalization, noise reduction, segmentation).  
+3. **Feature extraction** (radiomics: quantitative features like shape, texture, intensity).  
+4. **Data integration** (with clinical/genomic info).  
+5. **Modeling & prediction** (ML/AI models for diagnosis, prognosis, therapy planning).  
+
+---
+
+## Hybrid AI Pipelines (Today)
+
+- **Neural-symbolic AI**: combines statistical learning with symbolic reasoning.  
+- **Applications in medicine**: combining radiomic features with logical/ontological reasoning (e.g., linking imaging biomarkers with disease ontologies).  
+- **Industry trend**: From purely rule-based expert systems (XCON, PROSPECTOR) → to hybrid AI pipelines (Watson, Zebra, radiomics platforms).  
+
+---
+
+## Key Takeaways
+
+- Logic has been a **constant backbone** of AI, from Aristotle → Boole → Turing → Logic Theorist → Prolog → description logics → neural-symbolic AI.  
+- Expert systems (1970s–80s) marked the **first wave of AI in practice**, with notable successes like **XCON** and **PROSPECTOR**.  
+- Medicine pioneered both **prototypes (MYCIN)** and **deployments (PUFF, Watson, Zebra)**.  
+- Radiomics and hybrid AI pipelines represent the **modern integration of symbolic and statistical approaches**.
+
+
+# References
+
+{Notably missing Ciancia et al 2019; the SPIN tutorial, see the knowledge base; }
 
 Belmonte, G., Bussi, L., Ciancia, V., Latella, D., & Massink, M. (2024). Towards hybrid-AI in imaging using VoxLogicA. In *Leveraging Applications of Formal Methods, Verification and Validation. ISoLA 2024* (pp. 205–221). Springer. https://doi.org/10.1007/978-3-031-75387-9_13
 
