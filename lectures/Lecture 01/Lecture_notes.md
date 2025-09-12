@@ -4,41 +4,27 @@
 **Date:** September 10, 2025  
 **Instructor:** Vincenzo Ciancia
 
-{[Please make this text a well-written section; search and add people webpages]
+## Who We Are
 
-- who we are FMTLAB (Formal methods and tools) and SILAB (signal and image laboratory) at ISTI-CNR 
+We are researchers from two complementary groups at ISTI‑CNR working at the intersection of formal methods, signal processing and medical imaging: FMTLAB (Formal Methods and Tools) and SILAB (Signal and Image Laboratory). Our teams combine expertise in executable formal specifications, spatial logics and model checking, ethics in AI, machine learning, with practical experience in imaging, radiomics and machine learning. The goal is to develop reproducible, interpretable, and verifiable pipelines for medical image analysis that are suitable for research and clinical translation.
 
-FMT (VoxLogicA in particular)
-        Vincenzo Ciancia: computer science, formal methods, model checking, spatial logics, medical imaging - 
+### Key people (in the course):
 
-        - Ph.D. at UNIPI with Ugo Montanari --> semantics, formal languages, process calculi, model checking, category theory
+- Vincenzo Ciancia — Researcher, ISTI‑CNR (FMTLAB). Research interests include formal methods, model checking and spatial logics applied to image analysis and computational verification. Vincenzo works on spatial logics and spatial model checking, declarative image specification and tools that connect logical assertions to imaging pipelines.
 
-        - Postdoc at ILLC Amsterdam with Yde Venema --> automata, coalgebras, modal and spatial logics
+- Mieke Massink — Researcher, ISTI‑CNR. Focuses on model checking, formal methods and quantitative verification; other half of the core group working on spatial logics, model checking and its application to imaging.
 
-        - Researcher at IIT CNR: program synthesis
+- Manuela Imbriani — Researcher / Medical Physicist, ISTI‑CNR (collaborating with clinical partners). Works on imaging physics and the applied aspects of medical image analysis; will be joining IEO Milano in January 2026.
 
-        - Researcher at ISTI CNR: spatial logic  
+- Sara Colantonio — Researcher, SILAB (ISTI‑CNR). Specialises in signal analysis and AI methods for medical imaging and healthcare applications.
 
-        Not an AI researcher, or yes? Logics, model checking ---> AI
+- Danila Germanese — Researcher, SILAB (ISTI‑CNR). Works on radiomics, feature engineering and applied machine learning for imaging workflows.
 
-        Mieke Massink: Model Checking, Formal Methods, Quantitative Verification
+### What we do
 
-        Manuela Imbriani: medical physicist, researcher at ISTI CNR, starting to work at IEO Milano in January 2026
+Our work spans from foundational research (spatial formalisms and verification algorithms) to applied pipelines (segmentation, radiomics, hybrid neural‑symbolic workflows). We develop open tools, reproducible experiments, and teaching materials that make formal verification methods accessible to imaging practitioners and students.
 
-
-SILAB (Sara and Danila)
-
-        Sara Colantonio: signal analysis, AI in medical imaging and healthcare 
-
-        Danila Germanese: radiomics, Machine Learning
-
-
-- what we do:
-
-We focus on developing and applying formal, mathematical, statistical (in the classical sense!), symbolic, declarative, and hybrid methods to medical imaging, leveraging our expertise in symbolic AI, model checking, and signal analysis. Our work aims to enhance the reliability, interpretability, and effectiveness of AI systems in healthcare.
-}
-
-<!-- NOTES -->
+For more details and up‑to‑date profiles, see the ISTI‑CNR group pages and individual webpages linked from the course domain knowledge folder.
 
 ## The course
 
@@ -248,6 +234,12 @@ Concerns about alignment and control motivate explicit modelling of preferences,
 5. Bidirectional Learning: Inspired by Sun, allow implicit (neural) layers to propose hypotheses refined by explicit reasoning, with symbolic feedback shaping representation learning (e.g. through constraint‑based gradients).
 6. Lifecycle Verification: Employ model checking or temporal/spatial logic to audit key properties (e.g. no lesion mask encroaches forbidden anatomical zones) across datasets and updates.
 
+Together, the comparison table and action items outline a design pattern: apply neural components where raw variability and high-dimensional pattern learning are indispensable; elevate symbolic layers where structure, guarantees, or interpretability dominate requirements; and build deliberate interfaces (aligned representations, constraints, verification hooks) so that signal flows and logical abstractions co-evolve instead of competing. The practical decision is rarely “symbolic versus neural” but how to sequence, couple, and govern them.
+
+### 5. Integration Blueprint (Symbolic ↔ Subsymbolic)
+
+This interim step captures how the limitations (Section 4) map to concrete architectural integration choices. A practical hybrid stack typically (i) grounds perception in neural encoders; (ii) elevates intermediate, semantically meaningful representations (regions, shapes, relations); (iii) applies symbolic/spatial logic to enforce constraints or derive higher‑order features; and (iv) feeds verified outputs into decision or reporting layers. Tooling (e.g. VoxLogicA) acts as the bridge where declarative specifications interrogate or validate learned outputs.
+
 ### 6. Application Lens: Medical Imaging
 
 Medical imaging exemplifies hybrid needs: raw voxel data require high‑capacity perceptual extraction, yet clinical utility depends on structured interpretation and safety constraints. Symbolic spatial logics (e.g. VoxLogicA) enable declarative specification of image properties. Neural networks propose segmentations; logical layers can verify, constrain, and provide provenance.
@@ -257,6 +249,7 @@ Medical imaging exemplifies hybrid needs: raw voxel data require high‑capacity
 Research explores differentiable reasoning layers, graph‑neuro integration, constraint‑augmented training, and abstraction techniques enabling partial verification of deep models. Evaluation increasingly blends statistical metrics with logical property satisfaction to align with robustness and safety goals.
 
 ### 8. Synthesis of Author Perspectives
+The hybrid AI narrative is a convergence of partially overlapping research agendas. Each of the following perspectives stresses a different bottleneck (scalability, abstraction, safety, causality, modularity) and supplies design levers rather than slogans. Read them as complementary facets of a single engineering objective: dependable generalisation under constraint.
 
 - Symbolic search tradition: Intelligence as symbol manipulation plus heuristic exploration of structured problem spaces.
 - Distributed learning tradition: Intelligence emergent from adaptive networks; learning reduces manual knowledge engineering.
@@ -265,7 +258,7 @@ Research explores differentiable reasoning layers, graph‑neuro integration, co
 - Dual‑process view: Interaction between implicit and explicit processes yields robustness.
 - Alignment perspective: Safety and corrigibility require explicit modelling of preferences, goals, and uncertainty.
 
-Collectively these viewpoints converge on a hybrid thesis: future AI must integrate learned perceptual grounding with structured, inspectable reasoning to achieve robustness, generalisation, safety, and alignment in critical domains.
+Taken together these viewpoints converge on a hybrid thesis: future AI must integrate learned perceptual grounding with structured, inspectable reasoning to achieve robustness, generalisation, safety, and alignment in critical domains. The practical payoff is concrete: constraints, modular decomposition, explicit goals, and verifiable properties become first-class architectural components.
 
 ### 9. Why Hybrid AI Now?
 
@@ -276,9 +269,10 @@ In summary, hybrid AI is not a compromise; it is an evidence‑based synthesis r
 
 # Historical Connections Between Logic and Artificial Intelligence
 
-## Early Roots: Logic and Reasoning
+The relationship between logic and AI is cumulative rather than cyclical. Logic first contributed formal languages and inference rules; later it offered specification and verification techniques; today it reappears inside hybrid pipelines as a means of articulating constraints, auditing behaviour, and structuring knowledge alongside learned representations. The following sections give a scaffolded tour: foundational formalisms, deployment-era expert systems, their evolution into data‑driven medical AI, and the contemporary reintegration under hybrid paradigms.
 
-Artificial Intelligence has been deeply influenced by formal logic since its inception.
+## Early Roots: Logic and Reasoning
+Early logical systems supplied the abstraction machinery (symbols, quantifiers, proof procedures) that made computational reasoning thinkable. They also delineated limits—through incompleteness and undecidability—that still inform feasibility assessments for automated inference. The timeline below highlights inflection points and how each widened the design space for machine reasoning.
 
 | Period | Milestone | Contribution |
 |--------|-----------|--------------|
@@ -358,6 +352,8 @@ Radiomics sits **after image acquisition and pre-processing, but before predicti
 
 ## Hybrid AI Pipelines (Today)
 
+Modern medical imaging pipelines increasingly weave: (1) perceptual neural models for segmentation or detection; (2) feature-level summarisation (radiomics or learned embeddings); (3) symbolic/spatial or constraint layers for validation, explanation, and safety; and (4) lifecycle governance artifacts (provenance logs, configuration descriptors). This layering is driven by regulatory and clinical pressures as much as by technical optimisation.
+
 - **Neural-symbolic AI**: combines statistical learning with symbolic reasoning.  
 - **Applications in medicine**: combining radiomic features with logical/ontological reasoning (e.g., linking imaging biomarkers with disease ontologies).  
 - **Industry trend**: From purely rule-based expert systems (XCON, PROSPECTOR) → to hybrid AI pipelines (Watson, Zebra, radiomics platforms).  
@@ -365,6 +361,8 @@ Radiomics sits **after image acquisition and pre-processing, but before predicti
 ---
 
 ### Key Takeaways
+
+These points emphasise accumulation: each historical phase contributes tools (representation schemas, learning algorithms, constraint mechanisms) that the next repurposes. Rather than a pendulum oscillation, we now operate in an enlarged design space where hybrid composition is the norm for dependable imaging AI.
 
 - Logic has been a **constant backbone** of AI, from Aristotle → Boole → Turing → Logic Theorist → Prolog → description logics → neural-symbolic AI.  
 - Expert systems (1970s–80s) marked the **first wave of AI in practice**, with notable successes like **XCON** and **PROSPECTOR**.  
