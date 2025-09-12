@@ -11,6 +11,8 @@ import time
 import asyncio
 import re
 import shutil
+import webbrowser
+import threading
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import yaml
@@ -26,6 +28,68 @@ from .config import ConfigManager, Config
 
 logger = get_logger(__name__)
 config_manager = ConfigManager()
+
+
+def _print_server_help():
+    """Print help for interactive server commands."""
+    click.echo("\n📋 Interactive Server Commands:")
+    click.echo("  h, help    Show this help")
+    click.echo("  s, slides  Open slides in browser")
+    click.echo("  n, notes   Open notes in browser")
+    click.echo("  r, reload  Force reload all connected browsers")
+    click.echo("  q, quit    Stop server and quit")
+    click.echo("  c, clear   Clear console")
+    click.echo()
+
+
+def _handle_server_input(server, port: int, target_file: str, main_loop, reload_event):
+    """Handle interactive console input in server mode."""
+    base_url = f"http://localhost:{port}"
+    # Extract base name for generating slides/notes URLs
+    base_name = target_file.replace('_slides.html', '').replace('_notes.html', '')
+    
+    while True:
+        try:
+            # Use input() to get user input
+            command = input().strip().lower()
+            
+            if command in ['q', 'quit']:
+                click.echo("👋 Shutting down server...")
+                os._exit(0)  # Force exit
+            
+            elif command in ['h', 'help']:
+                _print_server_help()
+            
+            elif command in ['s', 'slides']:
+                url = f"{base_url}/{base_name}_slides.html"
+                click.echo(f"🎯 Opening slides: {url}")
+                webbrowser.open(url)
+            
+            elif command in ['n', 'notes']:
+                url = f"{base_url}/{base_name}_notes.html"
+                click.echo(f"📝 Opening notes: {url}")
+                webbrowser.open(url)
+            
+            elif command in ['r', 'reload']:
+                click.echo("🔄 Forcing browser reload...")
+                # Schedule the reload in the main loop
+                main_loop.call_soon_threadsafe(reload_event.set)
+            
+            elif command in ['c', 'clear']:
+                os.system('clear' if os.name == 'posix' else 'cls')
+                click.echo("🌐 Markdown Slides Server")
+                click.echo(f"📍 Server: {base_url}")
+                click.echo(f"📄 Serving: {target_file}")
+                click.echo("Type 'h' for help, 'q' to quit")
+                
+            elif command:
+                click.echo(f"❓ Unknown command: {command}. Type 'h' for help.")
+                
+        except (EOFError, KeyboardInterrupt):
+            click.echo("\n👋 Shutting down server...")
+            os._exit(0)
+        except Exception as e:
+            logger.debug(f"Input handler error: {e}")
 
 
 def _copy_referenced_images(source_file: str, output_dir: Path) -> None:
@@ -248,17 +312,27 @@ async def _async_watch_with_serve(
     try:
         live_server = await start_live_server(output_dir, port, auto_open, target_file)
         actual_port = live_server.port  # Use the actual port the server is running on
-        click.echo(f"\n👁️  Watch mode with live server enabled.")
-        click.echo(f"🌐 Server: http://localhost:{actual_port}")
-        click.echo(f"📁 Serving: {output_dir}")
-        click.echo(f"📄 Target: {target_file} ({content_type})")
-        click.echo("Press Ctrl+C to stop.")
         
         # Create a thread-safe way to communicate between file watcher and async server
         reload_event = asyncio.Event()
         
         # Get the current event loop so we can reference it from the thread
         main_loop = asyncio.get_running_loop()
+        
+        click.echo(f"\n🌐 Markdown Slides Server")
+        click.echo(f"📍 Server: http://localhost:{actual_port}")
+        click.echo(f"📁 Serving: {output_dir}")
+        click.echo(f"📄 Target: {target_file} ({content_type})")
+        click.echo("👁️  Watch mode enabled - files will auto-reload")
+        click.echo("Type 'h' for help, 'q' to quit")
+        
+        # Start interactive console in a separate thread
+        console_thread = threading.Thread(
+            target=_handle_server_input,
+            args=(live_server, actual_port, target_file, main_loop, reload_event),
+            daemon=True
+        )
+        console_thread.start()
         
         def regenerate_on_change(changed_file: Path) -> None:
             """Callback function to regenerate files when input changes."""
