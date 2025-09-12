@@ -4,17 +4,39 @@
 **Date:** September 10, 2025  
 **Instructor:** Vincenzo Ciancia
 
-TODO:
+{[Please make this text a well-written section; search and add people webpages]
 
-- who we are
+- who we are FMTLAB (Formal methods and tools) and SILAB (signal and image laboratory) at ISTI-CNR 
 
-- what we do
+FMT (VoxLogicA in particular)
+        Vincenzo Ciancia: computer science, formal methods, model checking, spatial logics, medical imaging - 
 
-- history of symbolic and subsymbolic AI
+        - Ph.D. at UNIPI with Ugo Montanari --> semantics, formal languages, process calculi, model checking, category theory
 
-- classifications
+        - Postdoc at ILLC Amsterdam with Yde Venema --> automata, coalgebras, modal and spatial logics
 
-- why hybrid AI now
+        - Researcher at IIT CNR: program synthesis
+
+        - Researcher at ISTI CNR: spatial logic  
+
+        Not an AI researcher, or yes? Logics, model checking ---> AI
+
+        Mieke Massink: Model Checking, Formal Methods, Quantitative Verification
+
+        Manuela Imbriani: medical physicist, researcher at ISTI CNR, starting to work at IEO Milano in January 2026
+
+
+SILAB (Sara and Danila)
+
+        Sara Colantonio: signal analysis, AI in medical imaging and healthcare 
+
+        Danila Germanese: radiomics, Machine Learning
+
+
+- what we do:
+
+We focus on developing and applying formal, mathematical, statistical (in the classical sense!), symbolic, declarative, and hybrid methods to medical imaging, leveraging our expertise in symbolic AI, model checking, and signal analysis. Our work aims to enhance the reliability, interpretability, and effectiveness of AI systems in healthcare.
+}
 
 <!-- NOTES -->
 
@@ -360,7 +382,7 @@ Radiomics sits **after image acquisition and pre-processing, but before predicti
 
 ---
 
-## Key Takeaways
+### Key Takeaways
 
 - Logic has been a **constant backbone** of AI, from Aristotle → Boole → Turing → Logic Theorist → Prolog → description logics → neural-symbolic AI.  
 - Expert systems (1970s–80s) marked the **first wave of AI in practice**, with notable successes like **XCON** and **PROSPECTOR**.  
@@ -368,6 +390,33 @@ Radiomics sits **after image acquisition and pre-processing, but before predicti
 - Radiomics and hybrid AI pipelines represent the **modern integration of symbolic and statistical approaches**.
 
 
+
+## Symbolic Artificial Intelligence
+
+Symbolic Artificial Intelligence, also known as **classical AI** or **logic-based AI**, refers to approaches that represent knowledge and reasoning explicitly through symbols and rules. In this paradigm, the world is modeled in terms of entities, their properties, and relationships, making it possible to perform logical inference, planning, and problem solving. This contrasts with subsymbolic methods, such as neural networks, which operate on numerical data without explicit symbolic structures.
+
+### Historical Development
+
+The origins of symbolic AI trace back to the **1950s and 1960s**, during the so-called *first AI summer*. Pioneering systems like the *Logic Theorist* and *General Problem Solver* demonstrated that reasoning processes could be captured in computational form. Research at that time focused on **knowledge representation**, heuristics, and automated theorem proving, reflecting a strong optimism about the prospects of human-level intelligence through symbolic reasoning.
+
+However, this optimism was tempered by subsequent **AI winters**, as limitations became apparent. Symbolic systems proved brittle: they often failed when faced with incomplete knowledge, ambiguity, or situations outside their carefully designed domains. Knowledge acquisition was another bottleneck, since encoding expertise into formal symbolic rules was time-consuming and error-prone.
+
+The **late 1970s and 1980s** saw the rise of **expert systems**, which encoded specialist knowledge into large rule bases and enjoyed considerable commercial success. These systems demonstrated practical value in fields such as medicine (e.g. MYCIN), engineering, and finance, although their limitations again surfaced when scaling beyond narrow domains.
+
+### Strengths and Weaknesses
+
+Symbolic AI excels in tasks requiring **explicit reasoning**, **planning**, and **interpretability**. Because rules and symbols are human-readable, the systems’ decisions can be explained and justified. They perform well in domains that are well specified and logically structured.
+
+On the other hand, symbolic approaches struggle with **scalability**, **common-sense reasoning**, and **robustness** in open-world contexts. They are not well suited to perception-heavy tasks such as vision or speech recognition, where subsymbolic methods like deep learning have proven more successful.
+
+### Contemporary Directions
+
+In recent years, there has been a growing movement towards **neuro-symbolic AI**, which aims to combine the strengths of symbolic and subsymbolic paradigms. The idea is to use neural networks for perception and pattern recognition, while employing symbolic methods for reasoning, structure, and explainability. This integration is viewed by many as a promising path toward more general and robust forms of artificial intelligence.
+
+---
+
+**Reference:**  
+[Wikipedia contributors. *Symbolic artificial intelligence.* Wikipedia](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)
 # References
 
 {Notably missing Ciancia et al 2019; the SPIN tutorial, see the knowledge base; }
