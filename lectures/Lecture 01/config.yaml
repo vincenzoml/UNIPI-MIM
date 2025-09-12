@@ -6,7 +6,7 @@ description: White theme with enhanced code styling and UI features
 
 # Output configuration
 output:
-  formats: ["revealjs"]
+  formats: ["revealjs","pdf"]
   directory: "output"
   overwrite: true
 
@@ -21,7 +21,7 @@ slides:
   fragments: true
   preview_links: true
   help: true
-  show_notes: false
+  show_notes: true
   navigation_mode: default
   viewport_width: 1200
   viewport_height: 1080
@@ -36,7 +36,7 @@ processing:
 
 # Notes configuration
 notes:
-  formats: ["html"]
+  formats: ["html","pdf"]
   style: "academic"
   include_toc: true
 

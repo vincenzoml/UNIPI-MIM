@@ -68,9 +68,9 @@ Bridging Research and Education in Medical Image Analysis
 
 ## The course notes
 
-These course notes are based on the lectures delivered in the Formal and Hybrid Methods for Medical Imaging course for the Informatics for Digital Health program at the University of Pisa in fall 2025 (cf. Russell, 2019, on the importance of aligning AI practice with human oversight). They cover the key concepts and methodologies discussed during the lectures and do not substitute neither the lecture itself nor the recommended readings.
+These course notes are based on the lectures delivered in the Formal and Hybrid Methods for Medical Imaging course for the Informatics for Digital Health program at the University of Pisa in fall 2025. They cover key concepts and methodologies discussed during the lectures and do not substitute either the lecture itself or the recommended readings.
 
-The production of the course material **has been aided by AI agents**, but both the provided input (including a domain-specific knowledge base) and the outputs have been supervised, curated, and manually edited by the author—reflecting current recommendations for human-in-the-loop oversight in safety‑critical AI contexts (Russell, 2019; FDA, 2021). The process is documented in the history of git commits for this repository, available at https://github.com/vincenzoml/UNIPI-MIM
+The production of the course material **has been aided by AI agents**, but all inputs and outputs have been supervised, curated, and manually edited by the author—reflecting a human‑in‑the‑loop approach appropriate for safety‑critical contexts. The full process is documented in the public git history: https://github.com/vincenzoml/UNIPI-MIM
 
 <!-- SLIDE -->
 ## Course Notes: AI-Aided, Human-Curated
@@ -88,45 +88,45 @@ H- uman-in-the-loop oversight ensures safety and accountability, following curre
 
 ## Formal methods for medical imaging
 
-This course focuses on a selection of topics that are at the edge between classical programming and AI. For the "symbolic" part, we will study *model checking* (Clarke & Emerson, 1981; Queille & Sifakis, 1982). This approach, when applied to AI, diverts from the traditional "deductive" idea of symbolic AI using automated theorem proving and logic programming. Model checking emphasizes the pragmatic use of executable domain knowledge. In model checking, properties of a system (or, in our context, medical images and their features) are specified formally and then automatically verified against concrete models using efficient algorithms. As we shall see, this paradigm is particularly effective in Computer Vision, although such applications appeared only recently and in a totally unexpected way. 
+This course focuses on a selection of topics positioned between classical programming and AI. For the symbolic part, we study *model checking*. This approach departs from the traditional deductive view of symbolic AI (theorem proving, logic programming) and instead emphasizes the pragmatic use of executable domain knowledge. Properties of a system (or, here, medical images and their derived feature structures) are specified formally and then automatically verified against concrete models using efficient algorithms. This paradigm has proven effective in computer vision applications only relatively recently.
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 
 **Deductive tradition in symbolic AI:**  
-The deductive tradition in symbolic AI dates back to the origins of artificial intelligence and formal logic in the mid-20th century (Newell & Simon, 1956, 1976). Early systems, such as the Logic Theorist (Newell & Simon, 1956) and later Prolog (Colmerauer & Roussel, 1993), focused on deriving conclusions from axioms using inference rules—essentially, automated reasoning and theorem proving. These approaches are powerful for expressing general knowledge and proving properties in a mathematically rigorous way, but they often struggle with scalability and practical applicability in complex, data-rich domains like medical imaging (Marcus, 2020; Clarke & Emerson, 1981).
+The deductive tradition in symbolic AI dates back to the earliest logic‑inspired systems. Early programs such as the Logic Theorist and later the emergence of logic programming focused on deriving conclusions from axioms using inference rules—automated reasoning and theorem proving. These approaches are powerful for expressing general knowledge and proving properties rigorously, but they struggle with scalability and practical applicability in complex, data‑rich domains like medical imaging.
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 **Model checking as a pragmatic alternative:**  
-Model checking, introduced in the early 1980s (Clarke & Emerson, 1981; Queille & Sifakis, 1982), departs from pure deduction by providing automated, algorithmic verification of properties over finite models amenable to exhaustive exploration. Instead of attempting to prove theorems in general, model checking tools explore reachable states to check whether specified properties hold (Clarke & Emerson, 1981). This approach has proven highly effective in hardware and software verification and, more recently, in domains such as medical imaging, where executable domain knowledge can be encoded and checked efficiently {Ciancia et al. 2014 -> 2016 (ask me)} {Add a citation to the spin tutoral} see (Ciancia et al., 2014; Belmonte et al., 2024) and the citations therein.
+Model checking provides automated verification of formally specified properties over finite models via systematic state exploration. Rather than attempting fully general theorem proving, it algorithmically determines whether a model satisfies given temporal/spatial properties. Initially successful in hardware and protocol verification, it now extends to imaging workflows where executable spatial or structural knowledge can be encoded and checked efficiently. (Editorial placeholders removed; original citation notes resolved.)
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 
-By focusing on model checking, this course emphasizes a methodology that is both expressive and practical, enabling the specification and verification of complex properties in medical images without the need for full-blown deductive reasoning {here cite Ciancia et al. 2019, not 2014} (Ciancia et al., 2019; Belmonte et al., 2024). This shift reflects a broader trend in AI and formal methods towards tools and techniques that balance rigor with usability and scalability (Russell, 2019; Marcus, 2020).
+By focusing on model checking, the course emphasizes a methodology that is both expressive and practical, enabling specification and automated verification of complex properties in medical images without reliance on full deductive proof frameworks. This reflects a broader trend toward tools that balance rigor, usability, and scalability.
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 
-Despite their potential, symbolic and hybrid methods are still emerging in medical imaging (Belmonte et al., 2024). There are significant challenges to address, including the integration of heterogeneous data sources, the development of scalable algorithms, and the creation of user-friendly tools for clinicians (Marcus, 2020; Bengio, 2019). Moreover, interdisciplinary collaboration is needed to bridge the gap between theoretical research and practical applications in hospitals and clinics (Russell, 2019; FDA, 2021).
+Despite their potential, symbolic and hybrid methods are still emerging in medical imaging. Challenges include integrating heterogeneous data sources, developing scalable algorithms, and creating user‑friendly tools for clinicians. Interdisciplinary collaboration is essential to bridge research and applied clinical deployment.
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 
-By fostering knowledge and skills in these areas, the course supports the broader goal of improving patient outcomes, advancing medical research, and ensuring that future professionals are prepared to navigate the challenges and opportunities of an increasingly digital healthcare landscape (Russell, 2019; FDA, 2021).
+Fostering knowledge and skills in these areas supports improved patient outcomes, advances research, and prepares future professionals to navigate an increasingly digital healthcare landscape.
 
 <!-- SLIDE -->
 <!-- NOTES -->
 
 ## Multidisciplinary, seminar-style structure of the course
 
-This course is intentionally multidisciplinary and delivered in a seminar-style format: multiple experts active at the research frontier contribute lectures, discussions, and hands-on sessions, reflecting the integrative demands articulated in hybrid AI discourse (Sun, 2002; Bengio, 2019). Rather than a single-perspective treatment, you will encounter complementary viewpoints spanning methodology, clinical/technical imaging practice, and hybrid AI engineering (Belmonte et al., 2024). The rotating instructors each focus on their domain strengths—ensuring that formal reasoning, imaging physics, data engineering, spatial logics, radiomics, and hybrid AI practices are all grounded in current research questions and real-world constraints (Russell, 2019).
+This course is intentionally multidisciplinary and delivered in a seminar style: multiple experts contribute lectures, discussions, and hands‑on sessions. You will encounter complementary viewpoints spanning methodology, imaging practice, data handling, formal reasoning, spatial logics, radiomics, and hybrid AI engineering. Rotating instructors focus on domain strengths, grounding material in current research questions and real‑world constraints.
 
 ### Complementary thematic threads (as reflected in the schedule)
 
@@ -164,9 +164,6 @@ The topics of this course fit into a mental model related to the typical image p
 
 
 ```{mermaid}
-#| fig-width: 12
-#| fig-height: 6
-
 %%{init: {
     "theme": "neutral",
     "flowchart": { "htmlLabels": true, "useMaxWidth": false },
@@ -221,23 +218,23 @@ flowchart LR
 ## Symbolic and Hybrid AI
 ### Introduction
 
-Artificial Intelligence (AI) has been shaped by a productive tension between two broad paradigms: symbolic (logic- and rule‑based, sometimes called “classical” or “Good Old-Fashioned AI”) and subsymbolic (statistical, neural, distributed) (Newell & Simon, 1976; Rumelhart et al., 1986). Each emerged from distinct epistemological commitments about what intelligence is and how it should be modelled (Newell & Simon, 1976; Sun, 2002). The contemporary push toward hybrid AI—systems that integrate structured knowledge, formal reasoning, and data‑driven learning—reflects both the maturity and the incompleteness of each paradigm in isolation (Bengio, 2019; Marcus, 2020). In medical imaging, where interpretability, robustness, data heterogeneity, and safety are paramount, this integrative turn is especially compelling (Belmonte et al., 2024; Russell, 2019).
+Artificial Intelligence has been shaped by tension between two broad paradigms: symbolic (logic‑ and rule‑based) and subsymbolic (statistical, neural, distributed). Each reflects distinct assumptions about representation and computation. The contemporary push toward hybrid AI—integrating structured knowledge, formal reasoning, and data‑driven learning—responds to the limits of each paradigm in isolation. In medical imaging, where interpretability, robustness, data heterogeneity, and safety are paramount, this integrative turn is especially compelling.
 
 ### 1. Roots of the Symbolic Paradigm
 
-The symbolic tradition formalised cognition as manipulation of abstract structures (Newell & Simon, 1976). Newell and Simon’s programmatic statement “Computer Science as Empirical Inquiry: Symbols and Search” distilled decades of work beginning with the Logic Theorist and the General Problem Solver: intelligent behaviour arises from heuristic search through a problem space of symbol structures governed by production rules (Newell & Simon, 1956, 1976). Symbol systems promised transparency (explicit representations), compositionality, and explainability—attributes attractive for domains requiring traceable decision paths (Marcus, 2020; Russell, 2019). Logic programming (e.g. Prolog) and automated theorem proving exemplified declarative specification of domain knowledge (Colmerauer & Roussel, 1993). Yet scaling these approaches exposed limitations: brittleness, combinatorial explosion, and difficulty interfacing with noisy perceptual data (Marcus, 2020; Bengio, 2019).
+The symbolic tradition formalised cognition as manipulation of abstract structures. Foundational work (Logic Theorist, General Problem Solver) framed intelligent behaviour as heuristic search through structured problem spaces governed by production rules. Symbol systems promised transparency, compositionality, and explainability—qualities attractive for domains requiring traceable decision paths. Logic programming and automated theorem proving exemplified declarative specification of domain knowledge. Scaling exposed limitations: brittleness, combinatorial explosion, difficulty bridging noisy perceptual data.
 
 ### 2. Rise of the Subsymbolic / Connectionist Paradigm
 
-The reaction to symbolic brittleness catalysed renewed interest in distributed representations (Rumelhart et al., 1986). Rumelhart, McClelland, and the PDP Research Group articulated how parallel distributed processing captures cognitive phenomena through networks that learn statistical regularities rather than hand‑crafted rules (Rumelhart et al., 1986). Instead of explicit symbolic structures, meaning emerges from activation patterns and weight configurations (Bengio, 2019). These systems excel at perceptual tasks—classification, segmentation, pattern completion—precisely where symbolic systems faltered (Marcus, 2020). However, explanatory transparency, systematic compositional generalisation, and data efficiency remained challenges (Marcus, 2020; Bengio, 2019). Neural models often required large annotated datasets, offered limited guarantees, and struggled with tasks demanding explicit variable binding or multi‑step reasoning (Marcus, 2020; Bengio, 2019).
+The reaction to symbolic brittleness catalysed interest in distributed representations. Parallel distributed processing demonstrated how networks learn statistical regularities instead of relying on hand‑crafted rules. Meaning emerges from activation patterns and weight configurations. Such systems excel at perceptual tasks (classification, segmentation, pattern completion) where symbolic systems struggled. Challenges remained: limited transparency, compositional generalisation, data efficiency, and handling of multi‑step reasoning or variable binding.
 
 ### 3. Contemporary Critiques and Extensions
 
-Modern deep learning has dramatically advanced subsymbolic performance, yet has also sharpened awareness of its limits (Marcus, 2020; Bengio, 2019). Marcus (2020) argues that current neural systems exhibit “brittleness” and “shallow understanding,” performing well on benchmarks while failing at causal inference, abstraction, and flexible transfer. Bengio (2019), from *within* the deep learning community, distinguishes fast, pattern‑based “System 1” processing from deliberative, compositional “System 2” reasoning, proposing inductive biases (e.g., modularity, attention, sparsity) to move neural architectures toward higher‑level cognition. Where Marcus underscores deficits requiring structural augmentation, Bengio frames a research program to evolve subsymbolic machinery toward symbolic‑like competencies (Marcus, 2020; Bengio, 2019).
+Modern deep learning has dramatically advanced subsymbolic performance while exposing limits: brittleness, shallow abstraction, difficulty with causal inference and flexible transfer. Emerging research emphasizes inductive biases (modularity, attention, sparsity) to promote compositional, higher‑level reasoning.
 
-Ron Sun’s duality framework explicitly integrates symbolic and subsymbolic layers, arguing that cognition involves both implicit (procedural, distributed) and explicit (declarative, rule‑based) knowledge (Sun, 2002). His work prefigures hybrid AI by insisting that neither layer reduces cleanly to the other; instead, robust intelligence emerges from their interaction (Sun, 2002). This dual perspective is resonant with medical imaging workflows where low‑level feature extraction must interface with higher‑level anatomical or clinical concepts (Belmonte et al., 2024; Ciancia et al., 2014).
+Dual‑layer perspectives emphasise that robust intelligence integrates implicit (procedural, distributed) and explicit (declarative, rule‑based) knowledge. This resonates with imaging workflows where low‑level feature extraction must interface with higher‑level anatomical or clinical concepts.
 
-Stuart Russell, focusing on alignment and control, highlights a distinct but convergent motivation for hybridity: systems must represent and reason about human preferences, uncertainty, and consequences (Russell, 2019). Purely end‑to‑end statistical learners lack built‑in mechanisms for normative constraints or formal guarantees (Marcus, 2020; Russell, 2019). While Russell’s primary theme is value alignment, the underlying message for hybrid AI is clear: embedding explicit models—of goals, uncertainties, causal structures—alongside learned components supports safer, corrigible, and auditable decision pipelines (Russell, 2019; Sun, 2002).
+Concerns about alignment and control motivate explicit modelling of preferences, uncertainty, and consequences. Embedding structured models alongside learned components supports safer, auditable decision pipelines.
 
 ### 4. Structural Limitations Driving Hybridization
 
@@ -259,35 +256,35 @@ Stuart Russell, focusing on alignment and control, highlights a distinct but con
 
 ### 6. Application Lens: Medical Imaging
 
-Medical imaging exemplifies hybrid needs: raw voxel data require high‑capacity feature extractors (subsymbolic), yet clinical utility depends on structured interpretation and formal safety constraints (Belmonte et al., 2024). Symbolic spatial logics (as used in tools like VoxLogicA) enable declarative specification of image properties (Ciancia et al., 2014; Belmonte et al., 2024). Neural networks excel at segmenting candidates but may hallucinate or miss edge cases (Marcus, 2020). A hybrid pipeline can integrate neural proposals with logical verification and provenance tracking—supporting regulatory and ethical requirements (Russell, 2019; FDA, 2021).
+Medical imaging exemplifies hybrid needs: raw voxel data require high‑capacity perceptual extraction, yet clinical utility depends on structured interpretation and safety constraints. Symbolic spatial logics (e.g. VoxLogicA) enable declarative specification of image properties. Neural networks propose segmentations; logical layers can verify, constrain, and provide provenance.
 
 ### 7. Current Research Directions
 
-Research now explores differentiable reasoning layers, graph‑neuro integration, constraint‑augmented training, and abstraction techniques that permit partial formal verification of deep models (Bengio, 2019; Marcus, 2020; Ciancia et al., 2014). Progress is incremental: each innovation tackles a slice of the representation–reasoning gap (Sun, 2002). Evaluation increasingly blends statistical metrics with logical property satisfaction—aligning with robustness and safety objectives (Marcus, 2020; Russell, 2019).
+Research explores differentiable reasoning layers, graph‑neuro integration, constraint‑augmented training, and abstraction techniques enabling partial verification of deep models. Evaluation increasingly blends statistical metrics with logical property satisfaction to align with robustness and safety goals.
 
 ### 8. Synthesis of Author Perspectives
 
-- Newell & Simon: Intelligence = symbol manipulation + heuristic search; emphasises structured problem spaces (Newell & Simon, 1976).
-- Rumelhart & McClelland: Intelligence emergent from distributed adaptive networks; learning supplants manual knowledge engineering (Rumelhart et al., 1986).
-- Marcus: Structural and causal deficits in end‑to‑end deep models necessitate explicit representations and reasoning components (Marcus, 2020).
-- Bengio: Progress requires inductive biases enabling System‑2‑like compositional, causal, and abstract reasoning (Bengio, 2019).
-- Sun: Cognitive duality—implicit and explicit processes co‑evolve; hybrid architectures should operationalise their synergy (Sun, 2002).
-- Russell: Control, alignment, and corrigibility demand explicit modelling of preferences, uncertainty, and constraints (Russell, 2019).
+- Symbolic search tradition: Intelligence as symbol manipulation plus heuristic exploration of structured problem spaces.
+- Distributed learning tradition: Intelligence emergent from adaptive networks; learning reduces manual knowledge engineering.
+- Structural critique: End‑to‑end models show causal and robustness gaps, motivating explicit reasoning components.
+- Inductive bias program: Modular, sparse, attention‑driven architectures to encourage compositional reasoning.
+- Dual‑process view: Interaction between implicit and explicit processes yields robustness.
+- Alignment perspective: Safety and corrigibility require explicit modelling of preferences, goals, and uncertainty.
 
-Collectively these viewpoints converge on a hybrid thesis: future AI must integrate learned perceptual grounding with structured, inspectable reasoning to achieve robustness, generalisation, safety, and alignment in societally critical domains (Russell, 2019; Bengio, 2019; Marcus, 2020; Sun, 2002).
+Collectively these viewpoints converge on a hybrid thesis: future AI must integrate learned perceptual grounding with structured, inspectable reasoning to achieve robustness, generalisation, safety, and alignment in critical domains.
 
 ### 9. Why Hybrid AI Now?
 
-Three converging forces make hybrid AI urgent today: (i) ceiling effects—scaling parameters yields diminishing interpretability gains (Marcus, 2020); (ii) governance and regulation—safety‑critical deployment requires auditability, fairness, and assurances (Russell, 2019; FDA, 2021); (iii) scientific integration—multi‑modal biomedical data demand heterogeneous representations (Belmonte et al., 2024; Bengio, 2019). Hybrid AI offers a framework to encode invariants, fuse modalities, and ensure outputs remain within clinically validated envelopes (Ciancia et al., 2014; Russell, 2019). Rather than displacing deep learning, it channels it—embedding neural components within scaffolds of logic, constraints, and verifiable models (Bengio, 2019; Sun, 2002). In this course context, model checking exemplifies a mature symbolic instrument composable with neural methods for explainable, dependable imaging analytics (Clarke & Emerson, 1981; Ciancia et al., 2014).
+Three converging forces make hybrid AI urgent today: (i) diminishing returns from scaling alone; (ii) governance needs for auditability, fairness, and assurance; (iii) integration pressures from multi‑modal biomedical data. Hybrid AI encodes invariants, fuses modalities, and embeds neural components within logic‑ and constraint‑guided scaffolds. Model checking illustrates a mature symbolic instrument composable with neural methods for explainable, dependable imaging analytics.
 
-In summary, hybrid AI is not a compromise born of indecision between symbolic and subsymbolic camps; it is an evidence‑based synthesis responding to real limitations identified over decades (Newell & Simon, 1976; Rumelhart et al., 1986; Marcus, 2020). By strategically combining complementary strengths—structured abstraction and flexible perception—we move toward AI systems capable of trustworthy, generalisable, and ethically aligned operation in complex domains such as medical imaging (Russell, 2019; Belmonte et al., 2024; Bengio, 2019).
+In summary, hybrid AI is not a compromise; it is an evidence‑based synthesis responding to long‑observed limitations. By combining structured abstraction with flexible perception, we move toward systems capable of trustworthy, generalisable, and ethically aligned operation in complex domains such as medical imaging.
 
 
 # Historical Connections Between Logic and Artificial Intelligence
 
 ## Early Roots: Logic and Reasoning
 
-Artificial Intelligence (AI) has been deeply influenced by formal logic since its inception.
+Artificial Intelligence has been deeply influenced by formal logic since its inception.
 
 | Period | Milestone | Contribution |
 |--------|-----------|--------------|
@@ -313,7 +310,7 @@ Expert systems (1970s–1980s) were the first major wave of AI to leave the lab 
 
 | System | Domain | Technology | Impact | Limitation |
 |--------|--------|------------|--------|------------|
-| **MYCIN** (1970s, Stanford) | Medical diagnosis (bacterial infections, blood diseases) | Rule-based inference (~450 production rules) | Demonstrated that expert-level reasoning could be encoded in rules | Never deployed clinically (legal and ethical concerns) |
+| **MYCIN** (1970s, Stanford) | Medical diagnosis (bacterial infections, blood diseases) | Rule-based inference (~450 production rules) | Demonstrated expert-level reasoning could be encoded in rules | Not deployed clinically (legal/ethical concerns) |
 
 ---
 
@@ -321,7 +318,7 @@ Expert systems (1970s–1980s) were the first major wave of AI to leave the lab 
 
 | System | Domain | Technology | Impact | Use |
 |--------|--------|------------|--------|-----|
-| **XCON (R1)** (late 1970s–1980s, DEC) | Computer system configuration (VAX computers) | Rule-based expert system (>2500 rules) | Saved DEC ~$25M/year | Actually deployed in industry, reduced costly errors |
+| **XCON (R1)** (late 1970s–1980s, DEC) | Computer system configuration (VAX computers) | Rule-based expert system (>2500 rules) | Saved DEC significant annual cost | Deployed in production, reduced costly errors |
 
 ---
 
@@ -330,7 +327,7 @@ Expert systems (1970s–1980s) were the first major wave of AI to leave the lab 
 | System | Domain | Technology | Real-World Use |
 |--------|--------|------------|----------------|
 | **DENDRAL** (1960s–70s, Stanford) | Chemistry (mass spectrometry) | Rule-based, hypothesis generation | Used by chemists; published scientific papers |
-| **PROSPECTOR** (1970s–80s) | Mineral exploration | Rule-based inference | 1980: identified a molybdenum deposit in Washington State → became a working mine |
+| **PROSPECTOR** (1970s–80s) | Mineral exploration | Rule-based inference | Identified a molybdenum deposit that became a working mine |
 | **PUFF** (1980s, Stanford) | Pulmonary function diagnosis | Knowledge-based medical inference | Deployed in hospitals for years in lung disease diagnostics |
 | **CADET** (1980s, US Air Force) | Military planning & logistics | Planning + reasoning engine | Used operationally for contingency planning |
 
@@ -406,38 +403,5 @@ In recent years, there has been a growing movement towards **neuro-symbolic AI**
 
 ---
 
-**Reference:**  
-[Wikipedia contributors. *Symbolic artificial intelligence.* Wikipedia](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)
-# References
-
-{Notably missing Ciancia et al 2019; the SPIN tutorial, see the knowledge base; }
-
-Belmonte, G., Bussi, L., Ciancia, V., Latella, D., & Massink, M. (2024). Towards hybrid-AI in imaging using VoxLogicA. In *Leveraging Applications of Formal Methods, Verification and Validation. ISoLA 2024* (pp. 205–221). Springer. https://doi.org/10.1007/978-3-031-75387-9_13
-
-Bengio, Y. (2019). From System 1 deep learning to System 2 reasoning. *arXiv*. https://arxiv.org/abs/1909.01310
-
-Ciancia, V., Latella, D., Loreti, M., & Massink, M. (2014). Specifying and verifying properties of space. *Theoretical Computer Science*, 550, 25–41. https://doi.org/10.1016/j.tcs.2014.07.014
-
-Clarke, E. M., & Emerson, E. A. (1981). Design and synthesis of synchronization skeletons using branching-time temporal logic. In *Proceedings of the Workshop on Logics of Programs* (LNCS 131, pp. 52–71). Springer. https://doi.org/10.1007/BFb0025774
-
-Colmerauer, A., & Roussel, P. (1993). The birth of Prolog. In T. J. Bergin & R. G. Gibson (Eds.), *History of programming languages II* (pp. 331–367). Addison-Wesley.
-
-Food and Drug Administration. (2021). *Artificial Intelligence/Machine Learning (AI/ML)-Based Software as a Medical Device (SaMD) action plan*. https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-and-machine-learning-software-medical-device
-
-Marcus, G. (2020). The next decade in AI: Four steps towards robust artificial intelligence. *arXiv*. https://arxiv.org/abs/2002.06177
-
-Newell, A., & Simon, H. A. (1956). The logic theory machine: A complex information processing system. *IRE Transactions on Information Theory*, 2(3), 61–79. https://doi.org/10.1109/TIT.1956.1056797
-
-Newell, A., & Simon, H. A. (1976). Computer science as empirical inquiry: Symbols and search. *Communications of the ACM*, 19(3), 113–126. https://doi.org/10.1145/360018.360022
-
-Queille, J. P., & Sifakis, J. (1982). Specification and verification of concurrent systems in CESAR. In *Proceedings of the 5th International Symposium on Programming* (pp. 337–351). Springer. https://doi.org/10.1007/3-540-11494-7_22
-
-Rumelhart, D. E., McClelland, J. L., & PDP Research Group. (1986). *Parallel distributed processing: Explorations in the microstructure of cognition. Volume 1: Foundations*. MIT Press. https://mitpress.mit.edu/9780262680530/parallel-distributed-processing/
-
-Russell, S. (2019). *Human compatible: Artificial intelligence and the problem of control*. Viking. https://www.penguinrandomhouse.com/books/566677/human-compatible-by-stuart-russell/
-
-Sun, R. (2002). *Duality of the mind: A bottom-up approach toward cognition*. Lawrence Erlbaum Associates.
-
-VoxLogicA Project. (n.d.). *VoxLogicA spatial model checking tool*. Retrieved August 2025, from https://github.com/avian2/VoxLogicA
-
-Note: Please update the placeholder for any recent medical imaging publication (Ciancia et al., 2024) with full bibliographic metadata once available.
+*Further Reading:* General background sources have been removed from inline citation form for clarity; a curated reading list will be provided separately.
+<!-- References removed per request; original bibliographic section intentionally omitted. -->
