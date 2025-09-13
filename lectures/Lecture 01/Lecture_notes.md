@@ -302,8 +302,13 @@ In later decades, medical AI evolved beyond symbolic expert systems:
 | 2000s–2010s | Statistical learning, radiomics | Feature extraction from medical images | Linked imaging to prognosis and treatment |
 | 2010s–today | Deep learning, hybrid AI | Zebra Medical Vision, IBM Watson for Oncology | Automated image analysis and decision support |
 
+<!-- ADD A NEW SECTION ON NORMATIVE ACTS, ESPECIALLY RELATED TO RECENT EU AI ACT, AI REGULATION, GDPR, ETC. 
+Explain the risk levels identified in the AI act  and discuss some examples for each one. For each category also explain the prescribed countermeasures. Then categorize medical imaging and discuss how the contents of the course related to the AI act. Don't be brief, it's an interesting thing. Add to the .bib file the references to the AI act. -->
+-->
+
 ## References
 
-<!-- the following is a command for the app, not a comment for you; however: read the full text above, extrapolate and add many more references, divide them by topc and split into separate bib files -->
+<!-- the following is a command for the app, not a comment for you; however: read the full text above, extrapolate and add more major references, divide them by topc and split into separate bib files -->
+
 
 <!-- INSERT-BIB full_course_references.bib -->

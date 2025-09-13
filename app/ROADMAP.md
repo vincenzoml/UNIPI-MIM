@@ -1,0 +1,1 @@
+- permit ```bibtex ... ``` blocks in markdown notes and parse them into bibliography entries or lists of
