@@ -6,6 +6,7 @@ intelligently split content for slides and notes generation.
 """
 
 import re
+import os
 from enum import Enum
 from typing import Tuple, List, Dict, Any, Optional
 from dataclasses import dataclass
@@ -15,6 +16,7 @@ import yaml
 from ..utils.logger import get_logger
 from ..utils.exceptions import handle_exception, InputError
 from ..latex import LaTeXProcessor
+from ..utils.bibliography import render_bibliography_markdown
 from ..validation import ContentValidator, SlideOptimizer, ValidationResult, OptimizationResult
 
 logger = get_logger(__name__)
@@ -153,6 +155,36 @@ class MarkdownDirectiveParser:  # restore original class header (implementation 
         self._check_malformed_directives(content, lines)
         
         return sorted(directives, key=lambda d: (d.line_number, d.position))
+
+    def expand_bibliography(self, content: str, base_path: Optional[Path] = None) -> str:
+        """Expand bibliography insertion directives of the form <!-- INSERT-BIB filename.bib -->.
+
+        Args:
+            content: Raw markdown content
+            base_path: Optional base path for resolving bib filename (defaults to CWD)
+
+        Returns:
+            Content with bibliography directive replaced by generated markdown.
+        """
+        pattern = re.compile(r'<!--\s*INSERT-BIB\s+([^\s]+)\s*-->', re.IGNORECASE)
+
+        def repl(match):
+            bib_name = match.group(1).strip()
+            # Resolve path: relative to base_path if provided, else current working directory
+            if base_path:
+                candidate = (base_path / bib_name).resolve()
+            else:
+                candidate = Path(os.getcwd()) / bib_name
+            try:
+                rendered = render_bibliography_markdown(candidate)
+            except Exception as e:
+                logger.error(f"Bibliography rendering failed for {bib_name}: {e}")
+                return f"> Error rendering bibliography '{bib_name}': {e}"
+            return "\n" + rendered.strip() + "\n"
+
+        if '<!--' in content and 'INSERT-BIB' in content.upper():
+            content = pattern.sub(repl, content)
+        return content
     
     def _is_inside_inline_code(self, line: str, start_pos: int, end_pos: int) -> bool:
         """Check if a position range is inside inline code (backticks)."""
@@ -433,8 +465,10 @@ class ContentSplitter:
             Dictionary with 'slides' and 'notes' content
         """
         logger.debug("Processing markdown directives")
-        
-        # Parse all directives in the content
+
+        # Expand bibliography directives before parsing other directives
+        content = self.parser.expand_bibliography(content, base_path=Path.cwd())
+        # Parse all directives in the content (after expansion)
         directives = self.parser.parse_directives(content)
         logger.info(f"Found {len(directives)} directives")
         

@@ -227,7 +227,7 @@ Together, the comparison table and action items outline a design pattern: apply 
 
 ### Integration Blueprint (Symbolic ↔ Subsymbolic)
 
-This interim step captures how the limitations (Section 4) map to concrete architectural integration choices. A practical hybrid stack typically (i) grounds perception in neural encoders; (ii) elevates intermediate, semantically meaningful representations (regions, shapes, relations); (iii) applies symbolic/spatial logic to enforce constraints or derive higher‑order features; and (iv) feeds verified outputs into decision or reporting layers. Tooling (e.g. VoxLogicA) acts as the bridge where declarative specifications interrogate or validate learned outputs.
+A practical hybrid stack typically (i) grounds perception in neural encoders; (ii) elevates intermediate, semantically meaningful representations (regions, shapes, relations); (iii) applies symbolic/spatial logic to enforce constraints or derive higher‑order features; and (iv) feeds verified outputs into decision or reporting layers. Tooling (e.g. VoxLogicA) acts as the bridge where declarative specifications interrogate or validate learned outputs.
 
 Medical imaging exemplifies hybrid needs: raw voxel data require high‑capacity perceptual extraction, yet clinical utility depends on structured interpretation and safety constraints. Symbolic spatial logics (e.g. VoxLogicA) enable declarative specification of image properties. Neural networks propose segmentations; logical layers can verify, constrain, and provide provenance.
 
@@ -323,3 +323,6 @@ Radiomics sits **after image acquisition and pre-processing, but before predicti
 ## Symbolic Artificial Intelligence
 
 Symbolic Artificial Intelligence, also known as **classical AI** or **logic-based AI**, refers to approaches that represent knowledge and reasoning explicitly through symbols and rules. In this paradigm, the world is modeled in terms of entities, their properties, and relationships, making it possible to perform logical inference, planning, and problem solving. This contrasts with subsymbolic methods, such as neural networks, which operate on numerical data without explicit symbolic structures.
+
+## References
+<!-- INSERT-BIB course_references.bib -->

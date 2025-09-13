@@ -63,3 +63,9 @@ Some basic knowledge of propositional logics and programming.
 
 
 https://unipi.gda.cineca.it/syllabus/compilazione/insegnamento/AFE/1194689
+
+## Tooling Features
+
+- Directive-based content routing for slides vs notes (e.g. `<!-- SLIDE -->`, `<!-- NOTES -->`, `<!-- SLIDE-ONLY -->`).
+- Extended synonyms: `<!-- END SLIDE -->`, `<!-- SLIDE END -->` act as notes-only slide boundaries.
+- Inline bibliography injection via `<!-- INSERT-BIB filename.bib -->` which expands to a formatted References section at generation time without intermediate files.
