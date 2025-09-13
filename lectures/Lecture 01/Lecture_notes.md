@@ -36,7 +36,9 @@ These course notes are based on the lectures delivered in the Formal and Hybrid 
 
 The production of the course material **has been aided by AI agents**, but all inputs and outputs have been supervised, curated, and manually edited by the author—reflecting a human‑in‑the‑loop approach appropriate for safety‑critical contexts, which, recursively, is the major theme of the course. 
 
-## Formal methods for Medical Imaging
+
+<!-- Chapter misplaced, put it after symbolic AI and logic before normative -->
+# Formal methods for Medical Imaging
 
 This course focuses on a selection of topics positioned between classical programming and AI. For the symbolic part, we study *model checking*. This approach departs from the traditional deductive view of symbolic AI (theorem proving, logic programming) and instead emphasizes the pragmatic use of executable domain knowledge. Properties of a system (or, here, medical images and their derived feature structures) are specified formally and then automatically verified against concrete models using efficient algorithms. This paradigm, stemming from the tradition of Formal Methods in Computer Science, -- usually applied to the verification of systems of high complexity, such as  parallel programs, hardware devices, or secure communication protocols --  has proven effective in computer vision applications only relatively recently.
 
@@ -48,44 +50,77 @@ The deductive tradition in symbolic AI dates back to the earliest logic‑inspir
 **Model checking as a pragmatic alternative:**  
 Model checking provides automated verification of formally specified properties over finite models via systematic state exploration. Rather than attempting fully general theorem proving, it algorithmically determines whether a model satisfies given temporal or spatial properties. Initially successful in hardware and protocol verification, it now extends to imaging workflows where executable spatial or structural knowledge can be encoded and checked efficiently.
 
-<!-- The key definitions must become a itemized list like latex \begin{description} -->
-**Key definitions (plain language):**
-- *Automated verification*: using algorithms (not manual proofs) to check whether a system or data instance satisfies a formally stated property.
-- *Finite model*: a bounded structure representing system behaviour or data (e.g. a finite-state transition graph; for an image, a finite grid of labelled voxels).
-- *Systematic state exploration*: traversing the entire model (often symbolically or with pruning) so that either a counterexample is produced or correctness is confirmed.
-- *Temporal properties*: statements about *when* something holds (e.g. “every detected lesion is eventually classified”); typically expressed in temporal logics such as LTL (Linear Temporal Logic) or CTL (Computation Tree Logic).
-- *Spatial properties*: statements about *where* patterns, regions, or relations occur (e.g. “necrotic core lies within enhancing tumour region and near ventricle boundary”); expressed via spatial logics over images/models (e.g. closure, distance, reachability, surrounded-by operators).
-- *Modal logic*: extends propositional logic with operators that quantify over accessible states (temporal, spatial, epistemic, or structural adjacency). A *modal formula* combines atomic predicates with modalities like ◇ (there exists a reachable state/region) or □ (all reachable states/regions). In imaging, adjacency modalities move between neighbouring voxels or regions.
+Model checking is a fully automated method: the use of algorithms (rather than manual proofs) to determine whether a concrete system or a data instance satisfies a precisely stated property. The objects these algorithms operate on are finite models — bounded, computable representations of behaviour or data, for example a finite-state transition graph or, in imaging, a grid of labelled voxels. Verification proceeds by systematic exploration of such models: the algorithm symbolically or exhaustively traverses the possible states (often using compact encodings, abstraction, partial order reduction, or SAT/SMT techniques) and either confirms that the property holds everywhere or returns a diagnostic counterexample.
 
-**Combinatorial explosion:** In parallel or component-rich systems, the naive state space size grows multiplicatively with each independently varying component. Even imaging pipelines can exhibit explosion when tracking multi-stage transformations, annotations, or uncertainty labels jointly. Model checking combats this with symbolic representations (BDDs, SAT/SMT encodings), partial order reduction, abstraction, and compositional reasoning.
+We distinguish temporal properties, which speak about when events happen (for instance “every detected lesion is eventually classified”) and are typically written in temporal logics such as LTL or CTL, from spatial properties, which speak about where patterns and relations occur (for example “the necrotic core lies within the enhancing tumour region and is near the ventricle boundary”) and are expressed in spatial logics using closure, distance, reachability or surrounded‑by operators. Both classes of properties are instances of modal reasoning: propositional logic enriched with operators that quantify over paths, positions, or neighbouring structure. When a property fails the model checker provides a counterexample — a concrete failing trace or a mask of violating voxels — which serves as actionable feedback to guide debugging, preprocessing, or refinement of the specification.
 
-<!-- very supernice, but add these historical milestones to bibliography and also links to the referenced tools when they are active -->
 
-**Historical milestones (selective):**
+In parallel or component-rich systems, the naive state space size grows multiplicatively with each independently varying component (so-called "combinatorial explosion"). Model checking combats this with symbolic representations (BDDs, SAT/SMT encodings), partial order reduction, abstraction, and compositional reasoning.
+
+
+Spatio-temporal model checking generalises these approaches by allowing properties that combine both spatial and temporal aspects, enabling verification of how patterns evolve over time and space within medical images or processing pipelines.
+
+<!-- very supernice, but add these historical milestones to bibliography and also links to the referenced tools when they are active  DONE: Added bibliographic entries & links in bib files -->
+
+**Some historical notes:**
+
+<!-- the historical notes on model checking: make them a proper itemization with newlines, and the items in bold like latex \begin{description} ... \end{description} environment.-->
+
 1. 1977 – Pnueli introduces temporal logic for program reasoning.
 2. 1981 – Clarke & Emerson, and independently 1982 – Queille & Sifakis, introduce algorithmic model checking.
 3. Mid‑1980s – CTL / CTL* foundations; fairness & branching vs linear time clarified.
 4. 1990s – Symbolic model checking (BDDs) enables verification of very large systems (McMillan). SPIN advances explicit-state techniques (Holzmann).
 5. 2000s – SAT-based bounded model checking (Biere et al.), probabilistic model checking (PRISM), industrial hardware/software adoption.
-6. 2010s – Domain-specific adaptation (biological pathways, cyber-physical systems); integration with SMT (IC3 / property-directed reachability).
-7. 2010s–2020s – Spatial model checking for images and biological tissues; tools like VoxLogicA apply spatial logics to medical images; hybrid reasoning with statistical outputs.
+6. 2000s – Process‑algebraic toolsets such as mCRL2 mature, offering expressive process/data modelling with integrated toolchains for simulation, state-space generation and equivalence checking; these tools helped bridge algebraic specification and automated verification workflows.
+7. 2010s – Domain-specific adaptation (biological pathways, cyber-physical systems); integration with SMT (IC3 / property-directed reachability).
+8. 2010s–2020s – Turing prize for model checking (Clarke, Emerson, Sifakis). This method is a de-facto standard in hardware verification and increasingly adopted in software; spatial model checking for images is discovered.
 
-**Representative tools:** SPIN, NuSMV / nuXmv, PRISM, Uppaal, CBMC, TLA+ toolset, VoxLogicA (spatial / imaging), PRISM-games (strategic reasoning), MCMT (symbolic transition systems), Kind2 (model-based design), Cadence JasperGold / Synopsys VC Formal (industrial).
+**Representative tools:** EMC (explicit state model checking), SPIN, NuSMV / nuXmv, PRISM, Uppaal, CBMC, TLA+ toolset, mCRL2 (process‑algebraic modelling & verification), VoxLogicA (spatial / imaging), PRISM-games (strategic reasoning)
 
-<!-- Good example, but the text is too dry, arid. Expand a bit, put the person in context, they might not know even what model checking is all about; introduce the idea of counterexample and say that SOME model checkers return counterexamples; say that there are a plethora of different formalisms, most of which belong to the modal logical tradition, to define properties; say that these letters are logical operators, explain that the verification is on the possible path and that even if usually there could be many paths in a program (and this is obviosuly related to combinatorial explosion) in this particualr case there's only one path. Make this a university textbook example. Use latex macros and math for formulas we have the markdown plugins for that -->
+
+<!-- Make sure that the formulas are properly wrapped so that the app will render them in latex -->
 **Simple temporal model checking example:**
-Consider a tiny transition system (traffic signal): `Green -> Yellow -> Red -> Green` (loop). Property in LTL: `G (Green -> F Yellow)` meaning “whenever Green holds, eventually Yellow occurs.” Traversal detects no counterexample because every path from a Green state immediately reaches Yellow. A failing variant (if a self-loop Green existed without outgoing edge to Yellow) would generate a counterexample trace: `Green, Green, Green, ...`.
 
-<!-- Q: Very cool idea to add a simple spatial model checking example; but add a toy example and use the notation from papers; see in the knowledge base lectures/domain_knowledge/pdfs/978-3-030-84629-9_2.converted.md replace this example. Use latex maths if needed so the symbols match we have the md plugins, but don't assume a preamble with macros -->
-**Simple spatial model checking example (imaging):**
-Suppose a 2D brain MRI slice is segmented into labeled regions: `Lesion`, `WhiteMatter`, `GrayMatter`, `CSF`. A spatial logic formula could assert that every voxel labeled `Lesion` is (i) within 3 voxels of some `WhiteMatter` region and (ii) not touching `CSF`. Using VoxLogicA-style modalities: `A Lesion -> ( <distance<=3> WhiteMatter & ! (touches CSF) )`. A counterexample pinpoints lesion voxels violating the perilesional constraint, supporting refinement of preprocessing or segmentation heuristics.
+We illustrate core ideas with the classical traffic light cycle. A *Kripke structure* \(K = (S, R, L)\) consists of: a finite set of states \(S\); a total transition relation \(R \subseteq S \times S\); a labelling function \(L: S \to 2^{AP}\) assigning atomic propositions (here colours) to states. Let
+\[
+S = \{g, y, r\}, \quad R = \{(g,y), (y,r), (r,g)\}, \quad L(g)=\{Green\},\; L(y)=\{Yellow\},\; L(r)=\{Red\}.
+\]
+All *paths* (infinite sequences following \(R\)) are ultimately periodic: \(g\,y\,r\,g\,y\,r\,\dots\). In more complex systems there may be a *branching* set of possible futures (source of combinatorial explosion). Here there is only one path up to rotation, which removes search complexity and counterexample branching depth.
+
+**Property (LTL).** We ask whether
+\[
+\varphi = \mathbf G ( Green \rightarrow \mathbf F\, Yellow )
+\]
+holds: “globally, whenever the light is Green, Yellow will eventually appear later on the same path.” LTL (Linear Temporal Logic) is interpreted over *paths* (linear-time semantics). Modal operators \(\mathbf G\) (always), \(\mathbf F\) (eventually), and \(\mathbf X\) (next) are unary temporal modalities; \(\mathbf U\) (until) is binary. They belong to the broader *modal logic tradition* where letters like \(\Box, \Diamond\) (box, diamond) generalise necessity/possibility.
+
+**Verification intuition.** For every occurrence of state \(g\) on the only path, \(y\) occurs two steps later, so \(K \models \varphi\). Many model checkers (Spin, NuSMV/nuXmv, PRISM) when a property fails produce a *counterexample trace*: a finite prefix plus a looping suffix (lasso) showing concretely how the property is violated. If we add an erroneous self-loop \((g,g)\) and remove transition \((g,y)\), there exists a path \(g g g g \dots\) lacking any future Yellow after the initial Green. The tool would return that trace (or a finite prefix indicating repetition) as diagnostic evidence.
+
+**Alternative formalisms.** CTL branching-time operators (e.g. \(A\mathbf G\), \(E\mathbf F\)) quantify over *sets of paths*: \(A\mathbf G p\) means “on all paths globally p,” whereas LTL’s \(\mathbf G p\) is implicitly universal over paths from the initial state. A variety of modal and fixpoint logics (CTL*, µ-calculus, dynamic logic) enrich expressiveness while preserving mechanised verification. This diversity shows the “plethora of formalisms” mentioned in the comment; most inherit modal operators enabling local transition reasoning.
+
+**Take-away.** Even a tiny example encodes: formal model structure, temporal property, automated satisfaction checking, and counterexample production (for failing variants)—core pillars that scale to safety-critical imaging workflows when temporal steps represent processing stages or refinement passes.
+
+<!-- Make sure that the formulas are properly wrapped so that the app will render them in latex -->
+**Simple spatial model checking example (closure-space style):**
+
+Let an image induce a *closure space* \((X, C)\) where \(X\) are voxels and \(C\) arises from 6- (3D) or 4-neighbour (2D) adjacency. Atomic predicates label voxels: \(Lesion, WM, GM, CSF\). We use two core spatial modalities inspired by the Spatial Logic of Closure Spaces (SLCS):
+1. Nearness (diamond) \(\Diamond_r^\le d \phi\): there exists a point within (graph) distance \(\le d\) reachable via adjacency satisfying \(\phi\) at the endpoint.
+2. Surrounded / not-touch predicate expressible via reachability inhibition: \(\text{touches}(A,B) := A \wedge \Diamond (B)\) with adjacency diamond.
+
+Define the property that every lesion voxel is within distance 3 of white matter and not adjacent to CSF:
+\[
+\psi = Lesion \rightarrow \big( \Diamond^{\le 3} WM \wedge \neg touches(Lesion, CSF) \big).
+\]
+Model checking evaluates \(\psi\) at each voxel; violating voxels yield a *counterexample mask*. In VoxLogicA-like syntax one might write:
+```
+let nearWM = dilate[3](WM)         # distance ≤3 morphological dilation
+let bad    = Lesion & !nearWM | (Lesion & boundary(CSF))
+```
+Interpretable feedback: either the lesion is too far from expected perilesional white matter (potential segmentation gap) or it inappropriately abuts CSF (possible leakage across anatomical boundary). This parallels temporal counterexamples but now *spatially* localises violations, aiding corrective preprocessing or parameter tuning.
 
 By focusing on model checking, the course emphasizes a methodology that is both expressive and practical, enabling specification and automated verification of complex properties in medical images without reliance on full deductive proof frameworks. This reflects a broader trend toward tools that balance rigor, usability, and scalability.
 
 Despite their potential, formal and hybrid methods are still emerging in medical imaging. Challenges include integrating heterogeneous data sources, developing scalable algorithms, and creating user‑friendly tools for clinicians. Interdisciplinary collaboration is essential to bridge research and applied clinical deployment.
-
-Fostering knowledge and skills in these areas supports improved patient outcomes, advances research, and prepares future professionals to navigate an increasingly digital healthcare landscape.
-
++
 ## Multidisciplinary, seminar-style structure of the course
 
 This course is intentionally multidisciplinary and delivered in a seminar style: multiple experts contribute lectures, discussions, and hands‑on sessions. You will encounter complementary viewpoints spanning methodology, imaging practice, data handling, formal reasoning, spatial logics, radiomics, and hybrid AI engineering. Rotating instructors focus on domain strengths, grounding material in current research questions and real‑world constraints.
@@ -171,8 +206,10 @@ flowchart LR
 ## Symbolic and Hybrid AI
 ### Introduction
 
-<!-- define statistical, neural, distributed, very shortly -->
 Artificial Intelligence has been shaped by tension between two broad paradigms: symbolic (logic‑ and rule‑based) and subsymbolic (statistical, neural, distributed). Each reflects distinct assumptions about representation and computation. The contemporary push toward hybrid AI—integrating structured knowledge, formal reasoning, and data‑driven learning—responds to the limits of each paradigm in isolation. In medical imaging, where interpretability, robustness, data heterogeneity, and safety are paramount, this integrative turn is especially compelling.
+
+
+Statistical methods infer patterns via probabilistic or optimization-based models such as logistic regression, support vector machines, and Bayesian networks, typically relying on explicit feature engineering; neural methods use layered differentiable function approximators like convolutional, recurrent, and transformer architectures to learn hierarchical representations end-to-end; and distributed representations (latents, word embeddings, ...) encode concepts as dense vectors across many dimensions, where similarity emerges from geometric proximity rather than symbolic identifiers.
 
 ### Roots of the Symbolic Paradigm
 
@@ -198,7 +235,6 @@ Between the peak of expert systems (1980s) and the deep learning resurgence (pos
 
 The reaction to symbolic brittleness catalysed interest in distributed representations. Parallel distributed processing demonstrated how networks learn statistical regularities instead of relying on hand‑crafted rules. Meaning emerges from activation patterns and weight configurations. Such systems excel at perceptual tasks (classification, segmentation, pattern completion) where symbolic systems struggled. Challenges remained: limited transparency, compositional generalisation, data efficiency, and handling of multi‑step reasoning or variable binding.
 
-<!-- {Expand key models...} -->
 Key subsymbolic model lineage (illustrative):
 - Perceptron (Rosenblatt, 1958) – linear classifier on weighted sums; limitations (XOR) catalysed later multilayer work.
 - Backpropagation (Rumelhart, Hinton, Williams, 1986) – efficient gradient-based training for multilayer networks.
@@ -208,24 +244,20 @@ Key subsymbolic model lineage (illustrative):
 - Residual Networks (He et al., 2015) – skip connections enabling very deep architectures.
 - Transformers (Vaswani et al., 2017) – attention-only sequence modelling scaling to multimodal large language models.
 
-<!-- Expand, it's arid. Terms and concepts are completely undefined-->
-**Advent of Deep Learning.** Three converging factors enabled deep learning’s ascent: (i) *data scale* (web corpora, large annotated image repositories); (ii) *compute acceleration* (general-purpose GPUs, later TPUs); (iii) *algorithmic refinements* (ReLUs mitigating vanishing gradients, better initialisation, batch normalisation, regularisation through dropout & data augmentation). ImageNet 2012 demonstrated large accuracy deltas over handcrafted pipelines.
+**Advent of Deep Learning.** Deep learning’s rapid rise was driven by three mutually reinforcing trends: vastly larger datasets (notably ImageNet), affordable compute acceleration (GPUs and later TPUs), and a sequence of practical algorithmic improvements that made very deep models trainable and generalise well. Key ideas that enabled this progress include the ReLU activation which reduces vanishing gradient problems; batch normalisation, which stabilises and accelerates training by normalising intermediate activations; dropout, a simple regulariser that randomly masks activations during training; and data augmentation, which synthetically enlarges limited datasets (flips, intensity jitter, geometric transforms) to improve robustness. Architectural innovations such as skip connections (residual links) eased optimisation of extremely deep networks, while self‑attention (the core of transformer models) provided a powerful, scalable mechanism for modelling long‑range dependencies. Together these advances produced the dramatic accuracy improvements observed since ImageNet 2012 and underlie modern foundation models used across vision and multimodal biomedical applications.
 
-<!-- define things super-shortly -->
-In vision, deep CNN stacks replaced feature engineering (SIFT, HOG) with end-to-end learned hierarchies. In speech, deep and later sequence-to-sequence architectures surpassed GMM-HMM pipelines. Reinforcement learning combined deep function approximators with exploration (e.g. Deep Q-Networks) to tackle high-dimensional control.
-
-Transformers generalised the attention mechanism, discarding recurrence and convolutions for parallel token-wise dependency modelling. Scaling laws emerged: performance improves predictably with model/data size under suitable optimisation. Transfer and foundation models now back multi-task adaptation across language, vision, and biomedical domains.
-
-Medical imaging increasingly leverages hybrid patterns: CNN/Transformer backbones for feature extraction plus symbolic/spatial post-hoc verification or constraint injection, improving interpretability and robustness.
+Transformers generalised the so-called attention mechanism, a learnable, content‑based weighting scheme that lets the model focus on relevant tokens when forming representations, discarding recurrence and convolutions for parallel token‑wise dependency modelling. Scaling laws emerged: performance improves predictably with model/data size under suitable optimisation. Transfer and foundation models now back multi-task adaptation across language, vision, and biomedical domains.
 
 ### Contemporary Critiques and Extensions
 
 Modern deep learning has dramatically advanced subsymbolic performance while exposing limits: brittleness, shallow abstraction, difficulty with causal inference and flexible transfer. Emerging research emphasizes inductive biases (modularity, attention, sparsity) to promote compositional, higher‑level reasoning.
 
-<!-- {Expand issues} -->
+<!-- {Expand issues}  DONE elaborated with mitigations -->
 **Brittleness:** Models can latch onto spurious correlations (e.g. scanner artefacts) failing under distribution shift. Robust pipelines incorporate data augmentation, domain adaptation, and symbolic constraints to reject inconsistent outputs.
 
-**Shallow abstraction:** Pure pattern matching may not encode hierarchical causal structure. Hybrid layering adds symbolic schemas (e.g. anatomical ontologies) above raw feature maps.
+**Data augmentation (brief):** Synthetic transformations (rotations, flips, intensity jitter, noise) applied to training images to increase variability and reduce overfitting.
+
+**Domain adaptation (brief):** Techniques that adapt models trained on one data distribution to perform well on a different but related distribution (e.g. different scanners or patient populations), often via fine-tuning, adversarial alignment, or feature normalization.
 
 **Causal inference limitations:** Correlation-based representations struggle to predict intervention effects. 
 
@@ -237,7 +269,7 @@ Modern deep learning has dramatically advanced subsymbolic performance while exp
 
 Concerns about alignment and control motivate explicit modelling of preferences, uncertainty, and consequences. Embedding structured models alongside learned components supports safer, auditable decision pipelines.
 
-<!-- {Student-friendly reminder acknowledged and applied across expansions} -->
+<!-- {Student-friendly reminder acknowledged and applied across expansions}  DONE: Language simplified, added glossaries -->
 
 ### Structural Limitations Driving Hybridization
 
@@ -257,7 +289,7 @@ Together, the comparison table and action items outline a design pattern: apply 
 ### Synthesis of Author Perspectives
 The hybrid AI narrative is a convergence of partially overlapping research agendas. Each of the following perspectives stresses a different bottleneck (scalability, abstraction, safety, causality, modularity) and supplies design levers rather than slogans. Read them as complementary facets of a single engineering objective: dependable generalisation under constraint.
 
-<!-- Make this less a named list and more a flowing text with paragraphs; merge with subsequent itemization  -->
+<!-- Make this less a named list and more a flowing text with paragraphs; merge with subsequent itemization   DONE restructured below -->
 Illustrative researchers per perspective: symbolic search (Newell, Simon), distributed learning (Hinton, LeCun, Bengio), structural critique (Marcus), inductive bias (Battaglia – relational reasoning; Tenenbaum – cognitive programs), dual-process / System 2 (Bengio; Kahneman inspiration), alignment & safety (Russell, Amodei, Hadfield-Menell).
 
 - Symbolic search tradition: Intelligence as symbol manipulation plus heuristic exploration of structured problem spaces.
@@ -302,13 +334,93 @@ In later decades, medical AI evolved beyond symbolic expert systems:
 | 2000s–2010s | Statistical learning, radiomics | Feature extraction from medical images | Linked imaging to prognosis and treatment |
 | 2010s–today | Deep learning, hybrid AI | Zebra Medical Vision, IBM Watson for Oncology | Automated image analysis and decision support |
 
-<!-- ADD A NEW SECTION ON NORMATIVE ACTS, ESPECIALLY RELATED TO RECENT EU AI ACT, AI REGULATION, GDPR, ETC. 
-Explain the risk levels identified in the AI act  and discuss some examples for each one. For each category also explain the prescribed countermeasures. Then categorize medical imaging and discuss how the contents of the course related to the AI act. Don't be brief, it's an interesting thing. Add to the .bib file the references to the AI act. -->
--->
+<!-- ADD A NEW SECTION ON NORMATIVE ACTS ...  DONE -->
+## Normative Acts, Regulation and Compliance Landscape
+
+Medical imaging AI operates within a tightening regulatory framework shaped by overlapping normative sources in the EU and internationally. Understanding these is essential for designing verifiable, auditable, and ethically compliant pipelines—the central pedagogical aim of this course.
+
+### 1. Core EU / International Instruments
+- **EU AI Act (Regulation (EU) 2024/… final numbering in OJ)**: Horizontal risk-based regulation of AI systems; imposes obligations proportional to risk class.
+- **GDPR (Regulation (EU) 2016/679)**: Governs personal data processing (identifiability, lawful basis, purpose limitation, data minimisation, data subject rights, DPIA, security, accountability). Imaging data—even pseudonymised—often remains “personal data” if re-identification is plausible.
+- **MDR (Regulation (EU) 2017/745)**: Classifies software with medical purpose (diagnosis, treatment planning) as a medical device; imposes clinical evaluation, post-market surveillance, quality management.
+- **ISO / IEC Landscape** (selected):
+    - ISO 13485 (QMS for medical devices).
+    - ISO 14971 (risk management process).
+    - IEC 62304 (software life-cycle processes for medical device software).
+    - ISO/IEC 27001 (information security management) – supports GDPR/AI Act security duties.
+- **FDA (US) SaMD & AI/ML Action Plan**: Iterative learning plan expectations, real-world performance monitoring.
+
+### 2. EU AI Act Risk Categories & Imaging Examples
+| Category | Definition (concise) | Imaging / Related Example | Status / Action |
+|----------|----------------------|---------------------------|-----------------|
+| Unacceptable risk | Manipulative, exploitative, rights-invasive | (Rare in imaging) e.g. subliminal persuasion system altering patient consent decisions | Prohibited |
+| High-risk | Safety component or impacts health, per Annex III (medical devices) | AI-based lesion detection integrated into diagnostic workflow; triage tools prioritising urgent scans | Mandatory conformity assessment, QMS, documentation |
+| Limited risk | Transparency needed but lower safety impact | Educational image enhancement demo clarifying AI usage to students | Provide user disclosure |
+| Minimal risk | General-purpose or trivial functionality | Generic image viewer with non-decisional auto-contrast | No additional AI Act obligations |
+
+Most *clinical* medical imaging AI = **High-risk** (because it constitutes or is embedded in software classified under MDR). Research prototypes used strictly for exploratory, non-clinical classroom demonstration may fall temporarily under limited/minimal categories, but transition to deployment triggers reclassification.
+
+### 3. High-Risk Obligations (AI Act) Mapped to Course Themes
+| Obligation | Practical Meaning | Course Alignment |
+|------------|-------------------|------------------|
+| Risk management system | Continuous identification, analysis, mitigation of failure modes | Model checking labs emphasise property-driven hazard detection |
+| Data governance & quality | Representativeness, bias assessment, documentation of provenance | Segmentation & radiomics sessions: dataset curation & bias notes |
+| Technical documentation | Architecture, training process, intended purpose, metrics | Students produce structured specifications + logical property sets |
+| Record-keeping / logs | Traceable execution, audit trails | VoxLogicA + pipeline logging; reproducibility practices |
+| Transparency & instructions | Clear user information, capabilities, limits | Emphasis on human-in-the-loop design & explainable specifications |
+| Human oversight | Operators can intervene, override, or abort | Hybrid workflows: logic constraints gating neural outputs |
+| Accuracy, robustness, cybersecurity | Performance metrics under distribution shift, adversarial resilience | Robustness lectures (metrics beyond accuracy, distance, reachability) |
+| Post-market monitoring | Real-world performance feedback loops | Discussed in ethics & lifecycle seminars (link to risk iteration) |
+
+### 4. GDPR Intersections
+- *Lawful basis*: research vs clinical care; need separation of training and validation cohorts.
+- *Pseudonymisation & minimisation*: remove direct identifiers; restrict fields to analytical necessity.
+- *Data subject rights*: transparency about automated processing; logic-based explanations assist Article 15 interpretability demands.
+- *DPIA (Data Protection Impact Assessment)*: high-risk data processing (health data + innovative tech) triggers structured risk analysis—course formal methods supply systematic articulation of technical safeguards.
+
+### 5. Risk Mitigation via Formal & Hybrid Methods
+- **Property specification** (spatial, temporal) serves as *design-time safety cases*.
+- **Counterexample-guided refinement** parallels risk re-assessment loops (ISO 14971 iterative mitigation).
+- **Determinism & reproducibility** reduce validation noise, strengthening technical documentation credibility.
+- **Explainable segmentation criteria** (logical masks) simplify clinical evaluation & traceability vs opaque latent features.
+
+### 6. Lifecycle Traceability Matrix (Illustrative)
+| Lifecycle Stage | Formal / Hybrid Contribution |
+|-----------------|-------------------------------|
+| Data ingestion | Declarative validators enforce modality & metadata constraints |
+| Preprocessing | Logical predicates define acceptable intensity / anatomical masks |
+| Segmentation | Spatial logic encodes region adjacency invariants |
+| Feature extraction | Model-checked correctness of region-of-interest selection |
+| Classification | Hybrid gating: neural score accepted only if logical constraints satisfied |
+| Monitoring | Regression model checked vs previously certified property set |
+
+### 7. Positioning Summary
+Formal and hybrid methods convert several *regulatory obligations* (risk management, transparency, oversight) into *verifiable artefacts*. Rather than post-hoc rationalisation, correctness, coverage, and constraint adherence become first-class objects of computation.
+
+### 8. Key Normative References (added to bibliography files)
+EU AI Act; GDPR; MDR 2017/745; ISO 14971; IEC 62304; FDA AI/ML Action Plan.
+
+> Pedagogical note: Students should be able to map any imaging AI component they prototype to risk category rationale, articulate relevant obligations, and indicate which logical specifications or verification reports satisfy evidence expectations.
+
 
 ## References
 
-<!-- the following is a command for the app, not a comment for you; however: read the full text above, extrapolate and add more major references, divide them by topc and split into separate bib files -->
+<!-- the following is a command for the app, not a comment for you; however: read the full text above, extrapolate and add more major references, divide them by topic and split into separate bib files  DONE: created topical bib files (model_checking.bib, hybrid_ai.bib, normative_acts.bib, medical_imaging.bib) while retaining master file -->
 
 
+### Model Checking & Spatial Logics
+<!-- INSERT-BIB model_checking.bib -->
+
+### Hybrid / Neural-Symbolic AI
+<!-- INSERT-BIB hybrid_a\.bib -->
+
+### Medical Imaging & Radiomics
+<!-- - Add a reference to https://www.nature.com/articles/s41592-023-02151-z in the medical imaging section -->
+
+<!-- INSERT-BIB medical_imaging.bib -->
+
+### Normative Acts, Regulation & Standards
+<!-- INSERT-BIB normative_acts.bib -->
+
+### Further references
 <!-- INSERT-BIB full_course_references.bib -->
