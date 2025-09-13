@@ -62,10 +62,18 @@ class SlideSection:
 class MarkdownDirectiveParser:  # restore original class header (implementation below remains intact)
     # Directive regex patterns mapped to modes
     DIRECTIVE_PATTERNS: Dict[str, ContentMode] = {
-        r'<!--\s*SLIDE-ONLY\s*-->': ContentMode.SLIDES_ONLY,
-        r'<!--\s*SLIDES-ONLY\s*-->': ContentMode.SLIDES_ONLY,
+        # Notes / end-of-slide synonyms (treated as notes-only + boundary)
+        r'<!--\s*END\s*SLIDE-ONLY\s*-->': ContentMode.NOTES_ONLY,
+        r'<!--\s*SLIDE\s*END-ONLY\s*-->': ContentMode.NOTES_ONLY,
+        r'<!--\s*END\s*SLIDE\s*ONLY\s*-->': ContentMode.NOTES_ONLY,
+        r'<!--\s*END\s*SLIDE\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,
+        r'<!--\s*SLIDE\s*END\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,
+        # Explicit notes directives
         r'<!--\s*NOTES-ONLY\s*-->': ContentMode.NOTES_ONLY,
         r'<!--\s*NOTES\s*-->': ContentMode.NOTES_SLIDE_BOUNDARY,  # acts as boundary + notes-only
+        # Slide directives (keep generic slide patterns after END SLIDE patterns)
+        r'<!--\s*SLIDE-ONLY\s*-->': ContentMode.SLIDES_ONLY,
+        r'<!--\s*SLIDES-ONLY\s*-->': ContentMode.SLIDES_ONLY,
         r'<!--\s*SLIDES?\s*-->': ContentMode.SLIDES_ONLY,         # SLIDE or SLIDES now means slides only
         r'<!--\s*ALL\s*-->': ContentMode.ALL,
     }
