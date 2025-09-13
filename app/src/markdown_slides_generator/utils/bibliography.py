@@ -46,7 +46,9 @@ def parse_bib_file(path: Path) -> List[BibEntry]:
         return entries
     first = raw_entries[0]
     if first.strip().startswith('@'):
-        raw_entries_processed = raw_entries
+        # First entry already has @, others need it added back
+        raw_entries_processed = [first]
+        raw_entries_processed += ['@' + r for r in raw_entries[1:]]
     else:
         raw_entries_processed = [first] if first.strip() else []
         raw_entries_processed += ['@' + r for r in raw_entries[1:]]
