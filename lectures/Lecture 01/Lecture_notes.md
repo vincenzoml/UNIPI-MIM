@@ -252,7 +252,6 @@ Transformers generalised the so-called attention mechanism, a learnable, content
 
 Modern deep learning has dramatically advanced subsymbolic performance while exposing limits: brittleness, shallow abstraction, difficulty with causal inference and flexible transfer. Emerging research emphasizes inductive biases (modularity, attention, sparsity) to promote compositional, higher‑level reasoning.
 
-<!-- {Expand issues}  DONE elaborated with mitigations -->
 **Brittleness:** Models can latch onto spurious correlations (e.g. scanner artefacts) failing under distribution shift. Robust pipelines incorporate data augmentation, domain adaptation, and symbolic constraints to reject inconsistent outputs.
 
 **Data augmentation (brief):** Synthetic transformations (rotations, flips, intensity jitter, noise) applied to training images to increase variability and reduce overfitting.
@@ -268,8 +267,6 @@ Modern deep learning has dramatically advanced subsymbolic performance while exp
 *Dual‑layer perspectives emphasise that robust intelligence integrates implicit (procedural, distributed) and explicit (declarative, rule‑based) knowledge. This resonates with imaging workflows where low‑level feature extraction must interface with higher‑level anatomical or clinical concepts.*
 
 Concerns about alignment and control motivate explicit modelling of preferences, uncertainty, and consequences. Embedding structured models alongside learned components supports safer, auditable decision pipelines.
-
-<!-- {Student-friendly reminder acknowledged and applied across expansions}  DONE: Language simplified, added glossaries -->
 
 ### Structural Limitations Driving Hybridization
 
@@ -289,7 +286,6 @@ Together, the comparison table and action items outline a design pattern: apply 
 ### Synthesis of Author Perspectives
 The hybrid AI narrative is a convergence of partially overlapping research agendas. Each of the following perspectives stresses a different bottleneck (scalability, abstraction, safety, causality, modularity) and supplies design levers rather than slogans. Read them as complementary facets of a single engineering objective: dependable generalisation under constraint.
 
-<!-- Make this less a named list and more a flowing text with paragraphs; merge with subsequent itemization   DONE restructured below -->
 Illustrative researchers per perspective: symbolic search (Newell, Simon), distributed learning (Hinton, LeCun, Bengio), structural critique (Marcus), inductive bias (Battaglia – relational reasoning; Tenenbaum – cognitive programs), dual-process / System 2 (Bengio; Kahneman inspiration), alignment & safety (Russell, Amodei, Hadfield-Menell).
 
 - Symbolic search tradition: Intelligence as symbol manipulation plus heuristic exploration of structured problem spaces.
@@ -325,7 +321,6 @@ Early logical systems supplied the abstraction machinery (symbols, quantifiers, 
 
 
 ## Medical AI: From Expert Systems to Hybrid Approaches
-<!-- Expand, make discoursive, leave the table but explain the concepts-->
 In later decades, medical AI evolved beyond symbolic expert systems:
 
 | Era | Approach | Example | Contribution |
@@ -334,7 +329,6 @@ In later decades, medical AI evolved beyond symbolic expert systems:
 | 2000s–2010s | Statistical learning, radiomics | Feature extraction from medical images | Linked imaging to prognosis and treatment |
 | 2010s–today | Deep learning, hybrid AI | Zebra Medical Vision, IBM Watson for Oncology | Automated image analysis and decision support |
 
-<!-- ADD A NEW SECTION ON NORMATIVE ACTS ...  DONE -->
 ## Normative Acts, Regulation and Compliance Landscape
 
 Medical imaging AI operates within a tightening regulatory framework shaped by overlapping normative sources in the EU and internationally. Understanding these is essential for designing verifiable, auditable, and ethically compliant pipelines—the central pedagogical aim of this course.
@@ -404,8 +398,6 @@ EU AI Act; GDPR; MDR 2017/745; ISO 14971; IEC 62304; FDA AI/ML Action Plan.
 
 
 ## References
-
-<!-- the following is a command for the app, not a comment for you; however: read the full text above, extrapolate and add more major references, divide them by topic and split into separate bib files  DONE: created topical bib files (model_checking.bib, hybrid_ai.bib, normative_acts.bib, medical_imaging.bib) while retaining master file -->
 
 
 ### Model Checking & Spatial Logics
