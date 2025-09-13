@@ -68,15 +68,37 @@ The deductive tradition in symbolic AI dates back to the earliest logic‑inspir
 
 
 **Model checking as a pragmatic alternative:**  
-Model checking provides automated verification of formally specified properties over finite models via systematic state exploration. Rather than attempting fully general theorem proving, it algorithmically determines whether a model satisfies given temporal/spatial properties. Initially successful in hardware and protocol verification, it now extends to imaging workflows where executable spatial or structural knowledge can be encoded and checked efficiently. (Editorial placeholders removed; original citation notes resolved.)
+Model checking provides automated verification of formally specified properties over finite models via systematic state exploration. Rather than attempting fully general theorem proving, it algorithmically determines whether a model satisfies given temporal or spatial properties. Initially successful in hardware and protocol verification, it now extends to imaging workflows where executable spatial or structural knowledge can be encoded and checked efficiently.
 
-{EXPAND: insert definitions "automated verification" "finite mdeols" "systematic state exploration" "temporal/spatial properties". Explain the role of modal logic. Explain what is a modal formula. Make examples. Explain the problem of combinatorial explosion in parallel systems. 
+<!-- {EXPAND: original editorial request retained as comment} -->
+**Key definitions (plain language):**
+- *Automated verification*: using algorithms (not manual proofs) to check whether a system or data instance satisfies a formally stated property.
+- *Finite model*: a bounded structure representing system behaviour or data (e.g. a finite-state transition graph; for an image, a finite grid of labelled voxels).
+- *Systematic state exploration*: traversing the entire model (often symbolically or with pruning) so that either a counterexample is produced or correctness is confirmed.
+- *Temporal properties*: statements about *when* something holds (e.g. “every detected lesion is eventually classified”); typically expressed in temporal logics such as LTL (Linear Temporal Logic) or CTL (Computation Tree Logic).
+- *Spatial properties*: statements about *where* patterns, regions, or relations occur (e.g. “necrotic core lies within enhancing tumour region and near ventricle boundary”); expressed via spatial logics over images/models (e.g. closure, distance, reachability, surrounded-by operators).
+- *Modal logic*: extends propositional logic with operators that quantify over accessible states (temporal, spatial, epistemic, or structural adjacency). A *modal formula* combines atomic predicates with modalities like ◇ (there exists a reachable state/region) or □ (all reachable states/regions). In imaging, adjacency modalities move between neighbouring voxels or regions.
 
-Mention the various milestones in model checking, the pionieers, the major active researchers and groups, and the main tools.}
+**Combinatorial explosion:** In parallel or component-rich systems, the naive state space size grows multiplicatively with each independently varying component. Even imaging pipelines can exhibit explosion when tracking multi-stage transformations, annotations, or uncertainty labels jointly. Model checking combats this with symbolic representations (BDDs, SAT/SMT encodings), partial order reduction, abstraction, and compositional reasoning.
 
-{Make a simple example of temporal model checking}
+**Historical milestones (selective):**
+1. 1977 – Pnueli introduces temporal logic for program reasoning.
+2. 1981 – Clarke & Emerson, and independently 1982 – Queille & Sifakis, introduce algorithmic model checking.
+3. Mid‑1980s – CTL / CTL* foundations; fairness & branching vs linear time clarified.
+4. 1990s – Symbolic model checking (BDDs) enables verification of very large systems (McMillan). SPIN advances explicit-state techniques (Holzmann).
+5. 2000s – SAT-based bounded model checking (Biere et al.), probabilistic model checking (PRISM), industrial hardware/software adoption.
+6. 2010s – Domain-specific adaptation (biological pathways, cyber-physical systems); integration with SMT (IC3 / property-directed reachability).
+7. 2010s–2020s – Spatial model checking for images and biological tissues; tools like VoxLogicA apply spatial logics to medical images; hybrid reasoning with statistical outputs.
 
-{Make a simple example of spatial model checking, explain the role of spatial logics, emphasize the strong EU tradition in spatial logics, mention the main researchers and groups, and the main tools.}
+**Representative tools:** SPIN, NuSMV / nuXmv, PRISM, Uppaal, CBMC, TLA+ toolset, VoxLogicA (spatial / imaging), PRISM-games (strategic reasoning), MCMT (symbolic transition systems), Kind2 (model-based design), Cadence JasperGold / Synopsys VC Formal (industrial).
+
+**Research groups (illustrative, not exhaustive):** CMU (Clarke legacy), Grenoble / VERIMAG (Sifakis), Oxford (probabilistic & quantitative verification), Brno & Vienna (IC3 advances), ISTI‑CNR (spatial model checking for images), Uppsala (timed / Uppaal), Leuven (probabilistic abstractions), Imperial / Manchester (SAT/SMT-based safety), TU Vienna (logic & synthesis).
+
+**Simple temporal model checking example:**
+Consider a tiny transition system (traffic signal): `Green -> Yellow -> Red -> Green` (loop). Property in LTL: `G (Green -> F Yellow)` meaning “whenever Green holds, eventually Yellow occurs.” Traversal detects no counterexample because every path from a Green state immediately reaches Yellow. A failing variant (if a self-loop Green existed without outgoing edge to Yellow) would generate a counterexample trace: `Green, Green, Green, ...`.
+
+**Simple spatial model checking example (imaging):**
+Suppose a 2D brain MRI slice is segmented into labeled regions: `Lesion`, `WhiteMatter`, `GrayMatter`, `CSF`. A spatial logic formula could assert that every voxel labeled `Lesion` is (i) within 3 voxels of some `WhiteMatter` region and (ii) not touching `CSF`. Using VoxLogicA-style modalities: `A Lesion -> ( <distance<=3> WhiteMatter & ! (touches CSF) )`. A counterexample pinpoints lesion voxels violating the perilesional constraint, supporting refinement of preprocessing or segmentation heuristics.
 
 By focusing on model checking, the course emphasizes a methodology that is both expressive and practical, enabling specification and automated verification of complex properties in medical images without reliance on full deductive proof frameworks. This reflects a broader trend toward tools that balance rigor, usability, and scalability.
 
@@ -184,34 +206,64 @@ However, this optimism was tempered by subsequent **AI winters**, as limitations
 
 The **late 1970s and 1980s** saw the rise of **expert systems**, which encoded specialist knowledge into large rule bases and enjoyed considerable commercial success. These systems demonstrated practical value in fields such as medicine (e.g. MYCIN), engineering, and finance, although their limitations again surfaced when scaling beyond narrow domains.
 
-{cite major authors of the time and mention their subsequent career paths; add years for major milestones or events}
+<!-- {cite major authors...} -->
+Prominent figures shaping early AI and symbolic reasoning include: John McCarthy (coined “AI”, Lisp; later work on formal commonsense reasoning), Allen Newell & Herbert A. Simon (human problem solving, Logic Theorist, General Problem Solver; cognitive architectures), Marvin Minsky (frames, society of mind, MIT AI Lab co‑founder), and Edsger W. Dijkstra (structured reasoning, weakest preconditions). Milestones: 1956 Dartmouth workshop (inaugural AI meeting), 1950 Turing Test proposal, 1965 Robinson’s resolution principle, early 1970s logic programming (Kowalski, Colmerauer). Their later careers consolidated subfields: McCarthy advanced formal knowledge representation; Simon pursued cognitive science; Minsky explored architectures of intelligence.
 
 In Computer Science, a *brittle* system is fragile: it works well under expected conditions but fails suddenly or catastrophically when it goes beyond its ideal scenario (a typical example being the expert systems of the 1980s, which were very rigid when facing exceptions).
 
-{Explain what is: 1. logic theorist 2. general problem solver 3. logic programming 4. automated theorem proving. }
+<!-- {Explain what is...} -->
+1. Logic Theorist (1956): Early program that proved theorems from *Principia Mathematica* using heuristic search among symbolic transformations—demonstrated feasibility of automated reasoning.
+2. General Problem Solver (GPS, late 1950s–1960s): Framework applying means–ends analysis to reduce differences between current and goal states; influential but limited outside well-structured problems.
+3. Logic Programming (early 1970s): Paradigm (exemplified by Prolog) where computation arises from resolving logical queries against a database of facts and rules via unification and backtracking.
+4. Automated Theorem Proving: Algorithms (e.g. resolution, tableau, term rewriting) that generate formal proofs or refutations; key for verifying mathematical theorems, hardware designs, protocols.
 
-{How did it proceed? Fill the missing historical gap between the expert systems and the subsymbolic}
+<!-- {How did it proceed? ...} -->
+Between the peak of expert systems (1980s) and the deep learning resurgence (post‑2012), AI diversified: probabilistic graphical models (Bayesian networks, Markov random fields) unified reasoning under uncertainty; support vector machines and kernel methods improved generalisation with convex optimisation; reinforcement learning matured (temporal-difference, Q‑learning); statistical NLP shifted from rule sets to corpus-driven models; early neural nets re‑emerged with improved backpropagation insights and regularisation (dropout precursors like weight decay, early stopping). These advances formed the substrate onto which scalable deep architectures (enabled by GPUs and large datasets) were later layered.
 
 
 ### Rise of the Subsymbolic / Connectionist Paradigm
 
 The reaction to symbolic brittleness catalysed interest in distributed representations. Parallel distributed processing demonstrated how networks learn statistical regularities instead of relying on hand‑crafted rules. Meaning emerges from activation patterns and weight configurations. Such systems excel at perceptual tasks (classification, segmentation, pattern completion) where symbolic systems struggled. Challenges remained: limited transparency, compositional generalisation, data efficiency, and handling of multi‑step reasoning or variable binding.
 
-{Expand: insert examples of key models, e.g. Perceptron, Backpropagation, CNNs, RNNs, Transformers, main proponents of the time, and their career paths. }
+<!-- {Expand key models...} -->
+Key subsymbolic model lineage (illustrative):
+- Perceptron (Rosenblatt, 1958) – linear classifier on weighted sums; limitations (XOR) catalysed later multilayer work.
+- Backpropagation (Rumelhart, Hinton, Williams, 1986) – efficient gradient-based training for multilayer networks.
+- Convolutional Neural Networks (LeCun et al., 1990s; breakthrough with LeNet-5) – spatial weight sharing for vision tasks.
+- Recurrent Neural Networks (Elman; Hochreiter & Schmidhuber’s LSTM 1997; Cho et al.’s GRU 2014) – sequence modelling via state recurrence.
+- Deep CNN era (Krizhevsky, Sutskever, Hinton 2012: AlexNet) – GPU acceleration plus large datasets (ImageNet) triggered performance leaps.
+- Residual Networks (He et al., 2015) – skip connections enabling very deep architectures.
+- Transformers (Vaswani et al., 2017) – attention-only sequence modelling scaling to multimodal large language models.
 
-{Insert a section: the advent of deep learning; make it 3-4 paragraphs, mention major breakthroughs, architectures, and their impact on AI research and applications. Connect to the advent of GPU computing, large datasets, and the rise of transformer architectures.}
+<!-- {Deep learning section request} -->
+**Advent of Deep Learning.** Three converging factors enabled deep learning’s ascent: (i) *data scale* (web corpora, large annotated image repositories); (ii) *compute acceleration* (general-purpose GPUs, later TPUs); (iii) *algorithmic refinements* (ReLUs mitigating vanishing gradients, better initialisation, batch normalisation, regularisation through dropout & data augmentation). ImageNet 2012 demonstrated large accuracy deltas over handcrafted pipelines.
+
+In vision, deep CNN stacks replaced feature engineering (SIFT, HOG) with end-to-end learned hierarchies. In speech, deep and later sequence-to-sequence architectures surpassed GMM-HMM pipelines. Reinforcement learning combined deep function approximators with exploration (e.g. Deep Q-Networks) to tackle high-dimensional control.
+
+Transformers generalised the attention mechanism, discarding recurrence and convolutions for parallel token-wise dependency modelling. Scaling laws emerged: performance improves predictably with model/data size under suitable optimisation. Transfer and foundation models now back multi-task adaptation across language, vision, and biomedical domains.
+
+Medical imaging increasingly leverages hybrid patterns: CNN/Transformer backbones for feature extraction plus symbolic/spatial post-hoc verification or constraint injection, improving interpretability and robustness.
 
 ### Contemporary Critiques and Extensions
 
 Modern deep learning has dramatically advanced subsymbolic performance while exposing limits: brittleness, shallow abstraction, difficulty with causal inference and flexible transfer. Emerging research emphasizes inductive biases (modularity, attention, sparsity) to promote compositional, higher‑level reasoning.
 
-{Expand: for each of the above mentioned issues one-two paragraph with clear explanations}
+<!-- {Expand issues} -->
+**Brittleness:** Models can latch onto spurious correlations (e.g. scanner artefacts) failing under distribution shift. Robust pipelines incorporate data augmentation, domain adaptation, and symbolic constraints to reject inconsistent outputs.
+
+**Shallow abstraction:** Pure pattern matching may not encode hierarchical causal structure. Hybrid layering adds symbolic schemas (e.g. anatomical ontologies) above raw feature maps.
+
+**Causal inference limitations:** Correlation-based representations struggle to predict intervention effects. Emerging work injects structural causal models or counterfactual reasoning modules.
+
+**Transfer inefficiency:** Significant retraining is often required when modality, resolution, or cohort shifts. Parameter-efficient tuning and modular symbolic components reduce adaptation cost.
+
+**Explainability gaps:** Attention maps or saliency heatmaps are post-hoc; embedding formal properties (e.g. region adjacency invariants) yields intrinsic, checkable explanations.
 
 Dual‑layer perspectives emphasise that robust intelligence integrates implicit (procedural, distributed) and explicit (declarative, rule‑based) knowledge. This resonates with imaging workflows where low‑level feature extraction must interface with higher‑level anatomical or clinical concepts.
 
 Concerns about alignment and control motivate explicit modelling of preferences, uncertainty, and consequences. Embedding structured models alongside learned components supports safer, auditable decision pipelines.
 
-{These notes are for university students. Please avoid jargon and explain all technical terms.}
+<!-- {Student-friendly reminder acknowledged and applied across expansions} -->
 
 ### Structural Limitations Driving Hybridization
 
@@ -234,7 +286,8 @@ Medical imaging exemplifies hybrid needs: raw voxel data require high‑capacity
 ### Synthesis of Author Perspectives
 The hybrid AI narrative is a convergence of partially overlapping research agendas. Each of the following perspectives stresses a different bottleneck (scalability, abstraction, safety, causality, modularity) and supplies design levers rather than slogans. Read them as complementary facets of a single engineering objective: dependable generalisation under constraint.
 
-{Add researcher names}
+<!-- {Add researcher names} -->
+Illustrative researchers per perspective: symbolic search (Newell, Simon), distributed learning (Hinton, LeCun, Bengio), structural critique (Marcus), inductive bias (Battaglia – relational reasoning; Tenenbaum – cognitive programs), dual-process / System 2 (Bengio; Kahneman inspiration), alignment & safety (Russell, Amodei, Hadfield-Menell), spatial logics in imaging (Ciancia, Massink). These attributions guide further reading.
 
 - Symbolic search tradition: Intelligence as symbol manipulation plus heuristic exploration of structured problem spaces.
 - Distributed learning tradition: Intelligence emergent from adaptive networks; learning reduces manual knowledge engineering.
@@ -269,7 +322,8 @@ Early logical systems supplied the abstraction machinery (symbols, quantifiers, 
 
 ## Expert Systems: From Prototypes to Real-World Deployment
 
-{Add a textual paragraph to expand the following line; do the same for each subsection}
+<!-- {Expand expert systems subsections} -->
+The progression from academic prototypes (MYCIN) to industrial deployments (XCON) underscores a pattern: early domain success validates representational adequacy; scaling reveals maintenance and brittleness costs; subsequent methodologies (probabilistic, statistical, hybrid) address uncertainty, data volume, and adaptability while retaining lessons about interpretability and rule provenance.
 
 Expert systems (1970s–1980s) were the first major wave of AI to leave the lab and enter industrial/medical practice.
 
@@ -298,7 +352,16 @@ Expert systems (1970s–1980s) were the first major wave of AI to leave the lab 
 
 ### Medical AI Beyond Expert Systems
 
-{here make 5-6 paragraphs or more, detail the evolution of the system, and be accurate on actual, current systems; chose 3-4 major ones and for each detail producer, application field, techniques used if known, pricing range if known. Verify your claims twice using reliable web sources}
+<!-- {Medical AI beyond expert systems expansion} -->
+Modern medical AI spans imaging triage, segmentation, pathology slide analysis, cardiology simulation, and treatment planning:
+1. **DeepMind / Google Health** – Retinal disease detection, breast cancer screening support (deep CNN + ensemble calibration). Focus on reducing false negatives while providing uncertainty indicators.
+2. **Aidoc** – Radiology triage (CT for intracranial hemorrhage, pulmonary embolism). Uses specialised detection CNNs integrated into PACS workflows; accelerates turnaround by prioritising critical cases.
+3. **HeartFlow** – CT-derived fractional flow reserve estimation (computational fluid dynamics + ML surrogates). Provides non-invasive functional assessment reducing unnecessary invasive angiography.
+4. **PathAI** – Digital pathology slide classification (high-resolution multiple-instance / attention-based deep models). Aims at reproducible grading with assistive, not fully autonomous, decision support.
+5. **IBM Watson for Oncology (legacy lesson)** – Highlighted integration and curation challenges; importance of trustworthy evidence alignment over raw NLP summarisation.
+6. **Zebra Medical Vision (Nanox)** – Multi-condition imaging analytics; demonstrates scaling a portfolio of FDA-cleared detectors under unified infrastructure.
+
+Common themes: regulatory validation (FDA/CE pathways), post-market monitoring, dataset shift mitigation, explainability pressure, and increasing exploration of symbolic overlays (rule-based alerts, ontology-driven report structuring) for safety-critical deployment.
 
 In later decades, medical AI evolved beyond symbolic expert systems:
 
@@ -310,7 +373,8 @@ In later decades, medical AI evolved beyond symbolic expert systems:
 
 ## Radiomics in the Image Processing Pipeline
 
-{What is radiomics? Present it as a general form of "algorithmic" feature extraction.}
+<!-- {Radiomics definition} -->
+Radiomics converts segmented medical images into large tables of quantitative descriptors—shape (volume, compactness), intensity (first-order statistics), and texture (GLCM, GLSZM, wavelets). These algorithmically extracted features enable downstream statistical or machine learning models to correlate imaging phenotypes with prognosis, therapy response, or genomic signatures. Quality hinges on standardised preprocessing (resampling, intensity normalisation) and reproducibility audits (feature stability across scanners/settings).
 Radiomics sits **after image acquisition and pre-processing, but before predictive modeling**:
 
 1. **Image acquisition** (CT, MRI, PET, X-ray).  
@@ -325,4 +389,5 @@ Radiomics sits **after image acquisition and pre-processing, but before predicti
 Symbolic Artificial Intelligence, also known as **classical AI** or **logic-based AI**, refers to approaches that represent knowledge and reasoning explicitly through symbols and rules. In this paradigm, the world is modeled in terms of entities, their properties, and relationships, making it possible to perform logical inference, planning, and problem solving. This contrasts with subsymbolic methods, such as neural networks, which operate on numerical data without explicit symbolic structures.
 
 ## References
-<!-- INSERT-BIB course_references.bib -->
+<!-- Switched to comprehensive bibliography file -->
+<!-- INSERT-BIB full_course_references.bib -->

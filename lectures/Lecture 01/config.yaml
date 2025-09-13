@@ -6,7 +6,7 @@ description: White theme with enhanced code styling and UI features
 
 # Output configuration
 output:
-  formats: ["revealjs","pdf"]
+  formats: ["revealjs"]
   directory: "output"
   overwrite: true
 

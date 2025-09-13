@@ -44,3 +44,7 @@ The following 9 entries form the intentionally minimal, high‑yield set aligned
 
 Selection principles: (i) Eliminate redundancy among overlapping conceptual critiques; (ii) Prefer one authoritative exemplar per conceptual slot; (iii) Balance historical foundations with current applied and governance perspectives.
 
+## Comprehensive Bibliography File
+
+A consolidated BibTeX file `full_course_references.bib` at the repository root aggregates foundational, spatial logic, hybrid AI, cognitive architecture, robustness, alignment, regulatory, and tooling references. It is injected into the lecture notes via the `<!-- INSERT-BIB full_course_references.bib -->` directive and rendered directly into markdown without intermediate files.
+
